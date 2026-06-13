@@ -1,0 +1,161 @@
+/* ==========================================================================
+   MBP Design Tokens — Fuente canónica: MBP-BRAND-ANALYSIS.md
+   Paleta del PDF de branding oficial (Marzo 2026)
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------
+     COLORES — Paleta MBP (6 colores base + destructive)
+     FUENTE: MBP_branding.pdf via MBP-BRAND-ANALYSIS.md
+     NO usar #C17A4A (terracota del UI-SPEC antiguo — no existe en el branding real)
+     ------------------------------------------------------------------ */
+
+  /** Verde Oliva — ESTABILIDAD */
+  --color-primary: #2D320F;
+
+  /** Lavanda — SENSIBILIDAD */
+  --color-lavender: #DCCDFF;
+
+  /** Sage Green — CRECIMIENTO */
+  --color-sage: #C8CD91;
+
+  /** Teal Muted — CONFIANZA */
+  --color-teal: #87AAAF;
+
+  /** Crema — SOBRIEDAD — fondo neutro principal */
+  --color-cream: #F0F0E6;
+
+  /** Blanco — cards internas */
+  --color-white: #FFFFFF;
+
+  /** Lavanda claro — patrón tono-sobre-tono */
+  --color-lavender-light: #EBE6FF;
+
+  /** Rojo desaturado — solo errores funcionales; usar con moderación */
+  --color-destructive: #C97070;
+
+  /* ------------------------------------------------------------------
+     COLORES SEMÁNTICOS — Texto y superficies
+     ------------------------------------------------------------------ */
+
+  /** Texto sobre fondo crema/lavanda/blanco */
+  --color-text: #2D320F;
+
+  /** Texto secundario (metadata, labels) — oliva ligeramente más claro */
+  --color-text-muted: #4A5020;
+
+  /** Superficie principal de página */
+  --color-surface: #F0F0E6;
+
+  /** Card / superficie elevada */
+  --color-surface-card: #FFFFFF;
+
+  /** Navegación — transparente → crema al scroll */
+  --color-nav: #F0F0E6;
+
+  /** Footer — fondo oscuro */
+  --color-footer: #2D320F;
+
+  /** Texto en footer oscuro */
+  --color-footer-text: #F0F0E6;
+
+  /** Borde sutil */
+  --color-border: #C8CD91;
+
+  /* ------------------------------------------------------------------
+     TIPOGRAFÍA
+     Familia: Josefin Sans (Google Fonts, pesos 100/300/400)
+     Fallback: sans-serif del sistema
+     ------------------------------------------------------------------ */
+
+  --font-sans: 'Josefin Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /** Pesos */
+  --font-thin:    100;
+  --font-light:   300;
+  --font-regular: 400;
+
+  /** Tracking (letter-spacing) */
+  --tracking-label:   0.45em;  /* Etiquetas tipo "PEDIATRÍA CON EXPERIENCIA" */
+  --tracking-heading: 0.35em;  /* H1, H2 all-caps */
+  --tracking-button:  0.30em;  /* "AGENDAR CITA" */
+  --tracking-body:    0.02em;  /* Cuerpo de texto mixto */
+
+  /** Tamaños de texto (base = 16px) */
+  --text-display: 3.25rem;    /* H1 hero — desktop 52px */
+  --text-h1:      2.25rem;    /* H1 hero — mobile 36px */
+  --text-h2:      2.375rem;   /* H2 sección — desktop 38px */
+  --text-h2-mob:  1.625rem;   /* H2 sección — mobile 26px */
+  --text-h3:      1.5rem;     /* H3 — desktop 24px */
+  --text-h3-mob:  1.125rem;   /* H3 — mobile 18px */
+  --text-card:    1.0625rem;  /* Card title capitalizado — 17px */
+  --text-body:    1rem;       /* Body — 16px */
+  --text-body-sm: 0.9375rem;  /* Body pequeño — 15px */
+  --text-label:   0.75rem;    /* Labels ALL CAPS — 12px */
+  --text-nav:     0.8125rem;  /* Navegación — 13px */
+  --text-footer:  0.8125rem;  /* Footer — 13px */
+
+  /** Line-heights */
+  --leading-tight:   1.1;
+  --leading-heading: 1.2;
+  --leading-body:    1.7;
+  --leading-card:    1.6;
+
+  /* ------------------------------------------------------------------
+     ESCALA DE ESPACIADO (base-8)
+     ------------------------------------------------------------------ */
+
+  --space-xs:  0.25rem;   /*  4px */
+  --space-sm:  0.5rem;    /*  8px */
+  --space-md:  1rem;      /* 16px */
+  --space-lg:  1.5rem;    /* 24px */
+  --space-xl:  2rem;      /* 32px */
+  --space-2xl: 3rem;      /* 48px */
+  --space-3xl: 4rem;      /* 64px */
+
+  /* ------------------------------------------------------------------
+     RADIOS
+     ------------------------------------------------------------------ */
+
+  --radius-pill:      9999px;  /* Botones */
+  --radius-card:      14px;    /* Cards de servicio */
+  --radius-container: 22px;    /* Gran contenedor de cards */
+  --radius-sm:        6px;     /* Badges, tags */
+
+  /* ------------------------------------------------------------------
+     BREAKPOINTS (referencias — usar en @media)
+     ------------------------------------------------------------------ */
+
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+
+  /* ------------------------------------------------------------------
+     LAYOUT
+     ------------------------------------------------------------------ */
+
+  --max-content: 1280px;
+  --page-padding-mob: var(--space-lg);   /* 24px en móvil */
+  --page-padding-desk: var(--space-xl);  /* 32px en >=768px */
+
+  /* ------------------------------------------------------------------
+     TRANSICIONES (solo dentro de prefers-reduced-motion: no-preference)
+     ------------------------------------------------------------------ */
+
+  --transition-btn:    200ms ease;
+  --transition-card:   250ms ease-out;
+  --transition-scroll: 400ms ease-out;
+
+  /* ------------------------------------------------------------------
+     BOTONES
+     ------------------------------------------------------------------ */
+
+  --btn-padding: 0.75rem 1.75rem;       /* 12px 28px */
+  --btn-min-height: 44px;               /* touch target mínimo WCAG 2.2 SC 2.5.8 */
+
+  /* ------------------------------------------------------------------
+     ALTURAS
+     ------------------------------------------------------------------ */
+
+  --nav-height: 84px;  /* ~80-88px según mockup */
+}

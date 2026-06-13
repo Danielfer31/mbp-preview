@@ -1,0 +1,332 @@
+/* ==========================================================================
+   MBP Global Styles
+   Importa tokens; reset mínimo; tipografía global; foco visible; movimiento
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;300;400&display=swap');
+@import './tokens.css';
+
+/* --------------------------------------------------------------------------
+   RESET MÍNIMO
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --------------------------------------------------------------------------
+   BASE
+   -------------------------------------------------------------------------- */
+
+html {
+  font-size: 16px;
+  scroll-behavior: auto; /* Se activa en prefers-reduced-motion: no-preference */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* scroll suave solo cuando el usuario no pide movimiento reducido */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: var(--font-light);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-body);
+  color: var(--color-text);
+  background-color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* text-align: left — nunca justify */
+}
+
+/* --------------------------------------------------------------------------
+   IMÁGENES Y MEDIOS
+   -------------------------------------------------------------------------- */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   TIPOGRAFÍA BASE
+   -------------------------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: var(--font-light);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+/* Thin solo para H1 grande (≥36px para evitar ilegibilidad) */
+h1 {
+  font-weight: var(--font-thin);
+  font-size: var(--text-h1);
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: var(--text-display);
+  }
+}
+
+h2 {
+  font-size: var(--text-h2-mob);
+}
+
+@media (min-width: 768px) {
+  h2 {
+    font-size: var(--text-h2);
+  }
+}
+
+h3 {
+  font-size: var(--text-h3-mob);
+  letter-spacing: 0.25em;
+}
+
+@media (min-width: 768px) {
+  h3 {
+    font-size: var(--text-h3);
+  }
+}
+
+p {
+  line-height: var(--leading-body);
+  font-weight: var(--font-light);
+  letter-spacing: var(--tracking-body);
+}
+
+/* --------------------------------------------------------------------------
+   ENLACES
+   -------------------------------------------------------------------------- */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   LISTAS
+   -------------------------------------------------------------------------- */
+
+ul, ol {
+  list-style: none;
+}
+
+/* --------------------------------------------------------------------------
+   FOCO VISIBLE — WCAG 2.2 SC 2.4.11
+   Visible en todos los elementos interactivos.
+   Color: --color-primary (oliva) para contraste sobre crema/lavanda/sage
+   -------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Eliminar outline nativo solo cuando :focus-visible es soportado */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   SKIP LINK — Accesibilidad por teclado
+   Oculto hasta recibir foco (left: -9999px → visible en :focus-visible)
+   -------------------------------------------------------------------------- */
+
+.skip-link {
+  position: absolute;
+  top: var(--space-sm);
+  left: -9999px;
+  z-index: 9999;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-primary);
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  font-weight: var(--font-light);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-button);
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.skip-link:focus-visible {
+  left: var(--space-md);
+  outline: 3px solid var(--color-cream);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   TRANSICIONES — Solo cuando el usuario no pide movimiento reducido
+   Por defecto: sin movimiento (ninguna transition declarada fuera de este bloque)
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Botones */
+  .btn,
+  button,
+  [role="button"] {
+    transition: background-color var(--transition-btn),
+                color var(--transition-btn),
+                border-color var(--transition-btn);
+  }
+
+  /* Cards */
+  .card {
+    transition: transform var(--transition-card),
+                box-shadow var(--transition-card);
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+  }
+
+  /* Scroll reveal — se activa via JS con class .reveal */
+  .reveal {
+    transition: opacity var(--transition-scroll),
+                transform var(--transition-scroll);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   BOTONES BASE
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--btn-padding);
+  min-height: var(--btn-min-height);
+  font-family: var(--font-sans);
+  font-weight: var(--font-light);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-button);
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Botón primario — oliva + crema */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-cream);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn-primary:hover {
+    background-color: #3D4420; /* oliva ligeramente más claro */
+  }
+}
+
+/* Botón outline sobre fondo oscuro */
+.btn-outline-dark {
+  background-color: transparent;
+  color: var(--color-cream);
+  border: 1px solid var(--color-cream);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn-outline-dark:hover {
+    background-color: var(--color-cream);
+    color: var(--color-primary);
+  }
+}
+
+/* Botón outline sobre fondo claro */
+.btn-outline-light {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn-outline-light:hover {
+    background-color: var(--color-primary);
+    color: var(--color-cream);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   CONTENEDOR DE PÁGINA
+   -------------------------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: var(--max-content);
+  margin-inline: auto;
+  padding-inline: var(--page-padding-mob);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-inline: var(--page-padding-desk);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   TEXTO AUXILIAR
+   -------------------------------------------------------------------------- */
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   TRACKING REDUCIDO EN MÓVIL MUY PEQUEÑO (<380px)
+   Previene overflow en headings ALL CAPS
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 379px) {
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 0.15em;
+  }
+
+  .btn {
+    letter-spacing: 0.15em;
+  }
+
+  .tracking-label {
+    letter-spacing: 0.15em;
+  }
+}

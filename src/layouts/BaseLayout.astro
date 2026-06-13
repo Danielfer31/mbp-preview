@@ -1,0 +1,90 @@
+---
+/**
+ * BaseLayout.astro — Layout base accesible del sitio MBP
+ *
+ * Características de accesibilidad:
+ * - lang="es" en <html> (WCAG + SEO — flag Gemini review)
+ * - Skip link "Ir al contenido principal" (visible en :focus-visible)
+ * - <main id="main-content"> como destino del skip link
+ * - Landmarks ARIA: header / nav / main / footer
+ * - prefers-reduced-motion respetado via global.css
+ */
+
+export interface Props {
+  title: string;
+  description?: string;
+  robots?: string;
+}
+
+const {
+  title,
+  description = 'Sitio profesional de medicina pediátrica. Información en proceso de verificación.',
+  robots = 'noindex, nofollow',
+} = Astro.props;
+
+const canonicalUrl = Astro.url.href;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Colores del tema -->
+    <meta name="theme-color" content="#2D320F" />
+
+    <!-- Preconexión a Google Fonts (Josefin Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Favicon temporal — SVG placeholder hasta recibir isotipo definitivo -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%232D320F'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23DCCDFF'/%3E%3C/svg%3E"
+    />
+
+    <!-- Estilos globales (incluye @import tokens.css y Google Fonts) -->
+    <link rel="stylesheet" href="/src/styles/global.css" />
+  </head>
+
+  <body>
+    <!--
+      SKIP LINK — Accesibilidad teclado (WCAG 2.4.1)
+      Oculto con left:-9999px; visible al recibir :focus-visible
+      Estilizado en global.css como .skip-link
+    -->
+    <a class="skip-link" href="#main-content">Ir al contenido principal</a>
+
+    <!--
+      HEADER — Landmark principal de navegación
+      Componente Header.astro inyectado aquí
+    -->
+    <slot name="header">
+      <!-- El componente Header.astro se inyecta en páginas individuales -->
+    </slot>
+
+    <!--
+      MAIN — Destino del skip link y contenido principal de la página
+      id="main-content" requerido por el skip link
+    -->
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <!--
+      FOOTER — Landmark de pie de página con disclaimer clínico persistente
+      Componente Footer.astro inyectado aquí
+    -->
+    <slot name="footer">
+      <!-- El componente Footer.astro se inyecta en páginas individuales -->
+    </slot>
+  </body>
+</html>
