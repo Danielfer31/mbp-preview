@@ -1,0 +1,56 @@
+import { describe, it, expect } from 'vitest';
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+describe('Smoke tests - fundacion Astro', () => {
+  it('src/pages/index.astro existe', () => {
+    const indexPath = resolve(process.cwd(), 'src', 'pages', 'index.astro');
+    expect(existsSync(indexPath)).toBe(true);
+  });
+
+  it('src/pages/index.astro contiene markup HTML valido', () => {
+    const indexPath = resolve(process.cwd(), 'src', 'pages', 'index.astro');
+    const content = readFileSync(indexPath, 'utf-8');
+    expect(content).toContain('<html');
+    expect(content).toContain('<head>');
+    expect(content).toContain('<body>');
+    expect(content).toContain('</html>');
+  });
+
+  it('src/pages/index.astro contiene h1 con nombre de la doctora', () => {
+    const indexPath = resolve(process.cwd(), 'src', 'pages', 'index.astro');
+    const content = readFileSync(indexPath, 'utf-8');
+    expect(content).toContain('<h1>');
+    expect(content).toContain('Maria Bernarlda');
+  });
+
+  it('astro.config.ts existe', () => {
+    const configPath = resolve(process.cwd(), 'astro.config.ts');
+    expect(existsSync(configPath)).toBe(true);
+  });
+
+  it('astro.config.ts contiene output static', () => {
+    const configPath = resolve(process.cwd(), 'astro.config.ts');
+    const content = readFileSync(configPath, 'utf-8');
+    expect(content).toContain("output: 'static'");
+  });
+
+  it('tsconfig.json contiene strict true', () => {
+    const tsconfigPath = resolve(process.cwd(), 'tsconfig.json');
+    const content = readFileSync(tsconfigPath, 'utf-8');
+    expect(content).toContain('"strict": true');
+  });
+
+  it('.nvmrc existe', () => {
+    const nvmrcPath = resolve(process.cwd(), '.nvmrc');
+    expect(existsSync(nvmrcPath)).toBe(true);
+  });
+
+  it('package.json contiene engines.node', () => {
+    const pkgPath = resolve(process.cwd(), 'package.json');
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
+    expect(pkg.engines).toBeDefined();
+    expect(pkg.engines.node).toBeDefined();
+    expect(pkg.engines.node).toContain('24');
+  });
+});
