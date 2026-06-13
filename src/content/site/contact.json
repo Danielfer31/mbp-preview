@@ -1,0 +1,38 @@
+[
+  {
+    "id": "PH-PHONE",
+    "value": "CTA deshabilitado",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md"
+  },
+  {
+    "id": "PH-EMAIL",
+    "value": "CTA deshabilitado",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md"
+  },
+  {
+    "id": "PH-WHATSAPP",
+    "value": "CTA deshabilitado",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md"
+  },
+  {
+    "id": "PH-ALTERNATE-CHANNEL",
+    "value": "Informacion disponible proximamente",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md / CNT-O06"
+  },
+  {
+    "id": "PH-CLINICAL-MESSAGE-PROCEDURE",
+    "value": "Texto preventivo sin gestion clinica",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md / CNT-O08"
+  },
+  {
+    "id": "PH-EMERGENCY-PROCEDURE",
+    "value": "Dirigir a servicios de emergencia locales sin triage",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md / CNT-O07"
+  }
+]
