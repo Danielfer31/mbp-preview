@@ -1,0 +1,251 @@
+---
+/**
+ * Footer.astro — Pie de página MBP con disclaimer clínico persistente
+ *
+ * REQUISITO LEGAL (Ley 23/1981 Colombia — Ética Médica):
+ * El disclaimer clínico es ELEMENTO VISIBLE PERSISTENTE en cada página, no metadata.
+ * Cierra concern T-01-09 (Information Disclosure) del threat model.
+ *
+ * ARIA: <aside aria-label="Aviso importante"> — NO role="alert" (es información
+ * estática, no una alerta de error dinámica — confirmado en 01-UI-SPEC.md)
+ */
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner container">
+
+    <!--
+      DISCLAIMER CLÍNICO PERSISTENTE — ELEMENTO VISIBLE OBLIGATORIO
+      Texto exacto del Copywriting Contract (01-UI-SPEC.md)
+      Visible en cada página que use BaseLayout.
+      Mitiga T-01-09: visitante podría intentar enviar datos clínicos por canales de contacto.
+    -->
+    <aside class="disclaimer" aria-label="Aviso importante">
+      <div class="disclaimer-icon" aria-hidden="true">
+        <!--
+          Icono de información SVG inline.
+          aria-hidden="true" — decorativo (el texto es el contenido real)
+        -->
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M10 8.5v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="10" cy="6" r="0.9" fill="currentColor"/>
+        </svg>
+      </div>
+      <p class="disclaimer-text">
+        Este sitio es solo informativo. No envie sintomas, diagnosticos, resultados ni
+        documentos medicos por ningun canal de contacto. En caso de urgencia, acuda al
+        servicio de emergencias mas cercano.
+      </p>
+    </aside>
+
+    <!-- Separador visual -->
+    <hr class="footer-divider" aria-hidden="true" />
+
+    <!-- CONTENIDO DEL FOOTER -->
+    <div class="footer-content">
+
+      <!-- Columna: Logo e identidad -->
+      <div class="footer-brand">
+        <a href="/" class="footer-logo-link" aria-label="María Bernarda Pacheco — Inicio">
+          <span class="footer-logo-name">MARIA BERNARDA PACHECO</span>
+          <span class="footer-logo-role">Pediatra</span>
+        </a>
+      </div>
+
+      <!-- Columna: Navegación rápida -->
+      <nav class="footer-nav" aria-label="Navegación del pie de página">
+        <ul class="footer-nav-list" role="list">
+          <li><a href="/" class="footer-link">Inicio</a></li>
+          <li><a href="/#servicios" class="footer-link">Servicios</a></li>
+          <li><a href="/#perfil" class="footer-link">Perfil</a></li>
+          <li><a href="/#contacto" class="footer-link">Contacto</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+    <!-- Copyright -->
+    <p class="footer-copy">
+      &copy; {currentYear} María Bernarda Pacheco Martelo. Todos los derechos reservados.
+    </p>
+
+  </div>
+</footer>
+
+<style>
+  /* ======================================================================
+     FOOTER BASE
+     ====================================================================== */
+
+  .site-footer {
+    background-color: var(--color-footer);   /* #2D320F — oliva oscuro */
+    color: var(--color-footer-text);          /* #F0F0E6 — crema */
+  }
+
+  .footer-inner {
+    padding-block: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  /* ======================================================================
+     DISCLAIMER CLÍNICO — Elemento visible persistente
+     ====================================================================== */
+
+  .disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    background-color: rgb(220 205 255 / 0.12); /* lavanda muy tenue sobre oscuro */
+    border: 1px solid rgb(220 205 255 / 0.25);
+    border-radius: var(--radius-card);
+  }
+
+  .disclaimer-icon {
+    flex-shrink: 0;
+    color: var(--color-lavender);
+    margin-top: 1px; /* alineación visual con la primera línea de texto */
+  }
+
+  .disclaimer-text {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-footer);
+    line-height: var(--leading-card);
+    letter-spacing: 0.03em;
+    color: var(--color-footer-text);
+  }
+
+  /* ======================================================================
+     SEPARADOR
+     ====================================================================== */
+
+  .footer-divider {
+    border: none;
+    border-top: 1px solid rgb(240 240 230 / 0.15);
+  }
+
+  /* ======================================================================
+     CONTENIDO
+     ====================================================================== */
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 768px) {
+    .footer-content {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  }
+
+  /* ======================================================================
+     BRAND
+     ====================================================================== */
+
+  .footer-logo-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    text-decoration: none;
+  }
+
+  .footer-logo-name {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-footer-text);
+    line-height: 1.4;
+  }
+
+  .footer-logo-role {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: 0.2em;
+    color: var(--color-teal);
+  }
+
+  /* ======================================================================
+     NAV DEL FOOTER
+     ====================================================================== */
+
+  .footer-nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .footer-nav-list {
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+  }
+
+  .footer-link {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-footer);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgb(240 240 230 / 0.75);
+    text-decoration: none;
+    /* Área de toque mínima */
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .footer-link {
+      transition: color var(--transition-btn);
+    }
+
+    .footer-link:hover {
+      color: var(--color-footer-text);
+    }
+  }
+
+  /* ======================================================================
+     COPYRIGHT
+     ====================================================================== */
+
+  .footer-copy {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: 0.05em;
+    color: rgb(240 240 230 / 0.5);
+    text-align: center;
+  }
+
+  /* ======================================================================
+     RESPONSIVE — tracking reducido en móvil muy pequeño
+     ====================================================================== */
+
+  @media (max-width: 379px) {
+    .footer-logo-name,
+    .footer-link {
+      letter-spacing: 0.15em;
+    }
+  }
+</style>

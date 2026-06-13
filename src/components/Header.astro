@@ -1,0 +1,405 @@
+---
+/**
+ * Header.astro — Navegación principal MBP
+ *
+ * - Nav horizontal en >=1024px (--bp-lg)
+ * - Toggle hamburger en móvil (<1024px)
+ * - JS inline < 1KB, sin framework de cliente
+ * - Área de toque mínima 44×44px (WCAG 2.2 SC 2.5.8)
+ * - Fondo: --color-nav (crema) con sombra sutil al scroll
+ * - Logo: SVG placeholder inline (isotipo definitivo pendiente del diseñador)
+ */
+
+export interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+const navLinks = [
+  { href: '/', label: 'Inicio' },
+  { href: '/#servicios', label: 'Servicios' },
+  { href: '/#perfil', label: 'Perfil' },
+  { href: '/#contacto', label: 'Contacto' },
+];
+---
+
+<header class="site-header" role="banner">
+  <div class="header-inner container">
+
+    <!-- LOGO — SVG placeholder inline hasta recibir isotipo definitivo -->
+    <a href="/" class="logo-link" aria-label="María Bernarda Pacheco — Inicio">
+      <!--
+        Isotipo SVG placeholder: 4 lóbulos orgánicos (descripción de MBP-BRAND-ANALYSIS.md)
+        Será reemplazado por el SVG definitivo del diseñador.
+        Combinación validada: isotipo oliva (#2D320F) sobre fondo lavanda (#DCCDFF).
+      -->
+      <svg
+        class="logo-isotipo"
+        width="40"
+        height="40"
+        viewBox="0 0 40 40"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <!-- Lóbulos orgánicos placeholders (4 pétalos) -->
+        <ellipse cx="20" cy="10" rx="6" ry="10" fill="#2D320F" opacity="0.85"/>
+        <ellipse cx="30" cy="20" rx="10" ry="6" fill="#2D320F" opacity="0.85"/>
+        <ellipse cx="20" cy="30" rx="7" ry="10" fill="#2D320F" opacity="0.85"/>
+        <ellipse cx="10" cy="20" rx="10" ry="6" fill="#2D320F" opacity="0.85"/>
+        <!-- Centro -->
+        <circle cx="20" cy="20" r="3" fill="#DCCDFF"/>
+      </svg>
+
+      <div class="logo-text">
+        <span class="logo-name">MARIA BERNARDA<br/>PACHECO</span>
+        <span class="logo-role">pediatra</span>
+      </div>
+    </a>
+
+    <!-- BOTÓN HAMBURGER — solo visible en móvil (<1024px) -->
+    <button
+      class="nav-toggle"
+      id="nav-toggle"
+      type="button"
+      aria-controls="main-nav"
+      aria-expanded="false"
+      aria-label="Abrir menú de navegación"
+    >
+      <!-- Icono hamburger SVG inline -->
+      <svg
+        class="icon-hamburger"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <line x1="4" y1="7" x2="20" y2="7"/>
+        <line x1="4" y1="12" x2="20" y2="12"/>
+        <line x1="4" y1="17" x2="20" y2="17"/>
+      </svg>
+      <!-- Icono cierre SVG inline -->
+      <svg
+        class="icon-close"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <line x1="6" y1="6" x2="18" y2="18"/>
+        <line x1="6" y1="18" x2="18" y2="6"/>
+      </svg>
+    </button>
+
+    <!-- NAVEGACIÓN PRINCIPAL -->
+    <nav
+      class="main-nav"
+      id="main-nav"
+      aria-label="Navegación principal"
+    >
+      <ul class="nav-list" role="list">
+        {navLinks.map(({ href, label }) => (
+          <li class="nav-item">
+            <a
+              href={href}
+              class:list={['nav-link', { 'nav-link--active': currentPath === href }]}
+              aria-current={currentPath === href ? 'page' : undefined}
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- CTA en navegación -->
+      <a href="/#contacto" class="btn btn-primary nav-cta">
+        Agendar consulta
+      </a>
+    </nav>
+
+  </div>
+</header>
+
+<style>
+  /* ======================================================================
+     HEADER BASE
+     ====================================================================== */
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    background-color: var(--color-nav);
+    border-bottom: 1px solid transparent;
+  }
+
+  /* Sombra sutil al hacer scroll (se activa via JS añadiendo .scrolled) */
+  .site-header.scrolled {
+    border-bottom-color: var(--color-border);
+    box-shadow: 0 1px 8px rgb(45 50 15 / 0.08);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    min-height: var(--nav-height);
+  }
+
+  /* ======================================================================
+     LOGO
+     ====================================================================== */
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .logo-isotipo {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .logo-name {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 0.625rem; /* 10px — MBP-BRAND-ANALYSIS: label size */
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    line-height: 1.3;
+  }
+
+  .logo-role {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 0.6rem; /* 9-10px — "pediatra" en lowercase */
+    letter-spacing: 0.35em;
+    color: var(--color-text-muted);
+    text-transform: lowercase;
+  }
+
+  /* ======================================================================
+     BOTÓN HAMBURGER — móvil
+     ====================================================================== */
+
+  .nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Área de toque mínima 44×44px — WCAG 2.2 SC 2.5.8 */
+    width: 44px;
+    height: 44px;
+    padding: var(--space-sm);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--color-primary);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .icon-close {
+    display: none;
+  }
+
+  /* Cuando el menú está abierto (clase .nav-open en header) */
+  .site-header.nav-open .icon-hamburger {
+    display: none;
+  }
+
+  .site-header.nav-open .icon-close {
+    display: block;
+  }
+
+  /* ======================================================================
+     NAVEGACIÓN — MÓVIL (<1024px)
+     ====================================================================== */
+
+  .main-nav {
+    /* Oculto por defecto en móvil */
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background-color: var(--color-nav);
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-md) var(--space-lg);
+    flex-direction: column;
+    gap: var(--space-md);
+    /* Sombra de panel móvil */
+    box-shadow: 0 8px 24px rgb(45 50 15 / 0.1);
+  }
+
+  /* Menú abierto */
+  .site-header.nav-open .main-nav {
+    display: flex;
+  }
+
+  .nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .nav-link {
+    display: block;
+    padding: var(--space-sm) 0;
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-nav);
+    letter-spacing: var(--tracking-button);
+    text-transform: uppercase;
+    color: var(--color-text);
+    text-decoration: none;
+    /* Área de toque mínima en móvil */
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-link--active {
+    color: var(--color-primary);
+    font-weight: var(--font-regular);
+    /* Indicador visual de página actual */
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  .nav-cta {
+    align-self: flex-start;
+    margin-top: var(--space-sm);
+  }
+
+  /* ======================================================================
+     NAVEGACIÓN — DESKTOP (>=1024px)
+     ====================================================================== */
+
+  @media (min-width: 1024px) {
+    .nav-toggle {
+      display: none;
+    }
+
+    .main-nav {
+      display: flex !important; /* Siempre visible en desktop */
+      position: static;
+      background: transparent;
+      border: none;
+      padding: 0;
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-xl);
+      box-shadow: none;
+    }
+
+    .nav-list {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+
+    .nav-link {
+      padding: var(--space-xs) 0;
+      min-height: auto;
+      font-size: var(--text-nav);
+    }
+
+    .nav-link--active {
+      border-bottom-width: 1px;
+    }
+
+    .nav-cta {
+      margin-top: 0;
+    }
+  }
+
+  /* ======================================================================
+     TRANSICIONES — Solo cuando no hay preferencia de movimiento reducido
+     ====================================================================== */
+
+  @media (prefers-reduced-motion: no-preference) {
+    .nav-link {
+      transition: color var(--transition-btn), opacity var(--transition-btn);
+    }
+
+    .nav-link:hover {
+      color: var(--color-primary);
+      opacity: 0.75;
+    }
+
+    .site-header {
+      transition: box-shadow var(--transition-btn), border-color var(--transition-btn);
+    }
+  }
+</style>
+
+<!--
+  JS inline del toggle hamburger — < 1KB, sin framework
+  Única pieza de JavaScript de cliente permitida en Fase 1 (por 01-UI-SPEC.md)
+-->
+<script>
+  (function () {
+    'use strict';
+
+    var header = document.querySelector('.site-header');
+    var toggle = document.getElementById('nav-toggle');
+
+    if (!header || !toggle) return;
+
+    // Toggle del menú móvil
+    toggle.addEventListener('click', function () {
+      var isOpen = header.classList.toggle('nav-open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      toggle.setAttribute(
+        'aria-label',
+        isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'
+      );
+    });
+
+    // Cerrar menú al hacer click en un enlace de nav (navegación suave en móvil)
+    var navLinks = document.querySelectorAll('.nav-link, .nav-cta');
+    navLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        header.classList.remove('nav-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+      });
+    });
+
+    // Cerrar menú con tecla Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && header.classList.contains('nav-open')) {
+        header.classList.remove('nav-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+        toggle.focus();
+      }
+    });
+
+    // Sombra de scroll
+    window.addEventListener('scroll', function () {
+      header.classList.toggle('scrolled', window.scrollY > 8);
+    }, { passive: true });
+  }());
+</script>

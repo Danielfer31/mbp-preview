@@ -8,18 +8,25 @@
  * - <main id="main-content"> como destino del skip link
  * - Landmarks ARIA: header / nav / main / footer
  * - prefers-reduced-motion respetado via global.css
+ *
+ * Header y Footer se importan directamente para garantizar presencia en cada página.
  */
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 export interface Props {
   title: string;
   description?: string;
   robots?: string;
+  currentPath?: string;
 }
 
 const {
   title,
   description = 'Sitio profesional de medicina pediátrica. Información en proceso de verificación.',
   robots = 'noindex, nofollow',
+  currentPath = '/',
 } = Astro.props;
 
 const canonicalUrl = Astro.url.href;
@@ -63,28 +70,25 @@ const canonicalUrl = Astro.url.href;
     -->
     <a class="skip-link" href="#main-content">Ir al contenido principal</a>
 
-    <!--
-      HEADER — Landmark principal de navegación
-      Componente Header.astro inyectado aquí
-    -->
-    <slot name="header">
-      <!-- El componente Header.astro se inyecta en páginas individuales -->
-    </slot>
+    <!-- HEADER — importado directamente para garantizar presencia en cada página -->
+    <Header currentPath={currentPath} />
 
     <!--
       MAIN — Destino del skip link y contenido principal de la página
       id="main-content" requerido por el skip link
     -->
-    <main id="main-content">
+    <!--
+      tabindex="-1" permite al skip link enfocar main programáticamente
+      (WCAG 2.4.1 — el main no es interactivo nativamente, necesita tabindex para recibir foco)
+    -->
+    <main id="main-content" tabindex="-1">
       <slot />
     </main>
 
     <!--
-      FOOTER — Landmark de pie de página con disclaimer clínico persistente
-      Componente Footer.astro inyectado aquí
+      FOOTER — importado directamente; contiene el disclaimer clínico persistente
+      requerido por Ley 23/1981 (Colombia) y el threat model T-01-09
     -->
-    <slot name="footer">
-      <!-- El componente Footer.astro se inyecta en páginas individuales -->
-    </slot>
+    <Footer />
   </body>
 </html>

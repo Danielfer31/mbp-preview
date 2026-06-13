@@ -1,22 +1,58 @@
 ---
-// Pagina de inicio - Doctora Maria Bernarlda Pacheco Martelo
-// Contenido pendiente de aprobacion medica
+/**
+ * index.astro — Página de inicio
+ * Contenido pendiente de aprobación médica de la Dra. Pacheco.
+ * Estructura base con BaseLayout (Header + Footer incluidos).
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PlaceholderNotice from '../components/PlaceholderNotice.astro';
 ---
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dra. Maria Bernarlda Pacheco Martelo - Pediatra</title>
-    <meta name="description" content="Especialista en Medicina Pediatrica con mas de 15 anos de experiencia." />
-    <meta name="robots" content="noindex" />
-  </head>
-  <body>
-    <main>
-      <h1>Dra. Maria Bernarlda Pacheco Martelo</h1>
-      <p>Especialista en Medicina Pediatrica</p>
-      <p>Mas de 15 anos de experiencia regional.</p>
-    </main>
-  </body>
-</html>
+<BaseLayout
+  title="Dra. María Bernarda Pacheco Martelo — Pediatra"
+  description="Sitio profesional de medicina pediátrica. Información en proceso de verificación."
+  robots="noindex, nofollow"
+  currentPath="/"
+>
+  <!-- HERO placeholder — será reemplazado en plan 01-05 (Hero Section) -->
+  <section class="hero-placeholder" aria-labelledby="hero-heading">
+    <div class="container">
+      <PlaceholderNotice
+        message="Contenido del sitio en preparación. Disponible próximamente."
+        placeholderId="PH-HERO"
+      />
+      <h1 id="hero-heading">MARÍA BERNARDA PACHECO</h1>
+      <p class="hero-role">Pediatra</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-placeholder {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    background-color: var(--color-lavender);
+    padding-block: var(--space-3xl);
+  }
+
+  .hero-placeholder .container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  h1 {
+    color: var(--color-primary);
+  }
+
+  .hero-role {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+</style>

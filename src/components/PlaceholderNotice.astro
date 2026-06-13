@@ -1,0 +1,89 @@
+---
+/**
+ * PlaceholderNotice.astro — Banner de información pendiente
+ *
+ * Usado para indicar datos que están en proceso de confirmación.
+ * Icono SVG inline con aria-hidden="true" (decorativo).
+ * Texto accesible en --color-text sobre fondo crema/lavanda claro.
+ */
+
+export interface Props {
+  /** Texto que se muestra en el banner */
+  message?: string;
+  /** Variante visual */
+  variant?: 'default' | 'compact';
+  /** ID del placeholder correspondiente (para trazabilidad con PLACEHOLDER-REGISTER.md) */
+  placeholderId?: string;
+}
+
+const {
+  message = 'Información disponible próximamente.',
+  variant = 'default',
+  placeholderId,
+} = Astro.props;
+---
+
+<div
+  class:list={['placeholder-notice', `placeholder-notice--${variant}`]}
+  role="status"
+  aria-live="polite"
+  data-placeholder-id={placeholderId}
+>
+  <!--
+    Icono de reloj/espera — SVG decorativo
+    aria-hidden="true" porque el texto es el contenido real
+  -->
+  <svg
+    class="placeholder-icon"
+    width="18"
+    height="18"
+    viewBox="0 0 18 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/>
+    <path
+      d="M9 5.5v4l2.5 2"
+      stroke="currentColor"
+      stroke-width="1.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+
+  <p class="placeholder-message">{message}</p>
+</div>
+
+<style>
+  .placeholder-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background-color: var(--color-lavender-light, #EBE6FF);
+    border: 1px solid rgb(220 205 255 / 0.6);
+    border-radius: var(--radius-card);
+    color: var(--color-text);
+  }
+
+  .placeholder-notice--compact {
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .placeholder-icon {
+    flex-shrink: 0;
+    color: var(--color-teal);
+    margin-top: 2px; /* alineación visual con la primera línea */
+  }
+
+  .placeholder-message {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: 0.05em;
+    line-height: var(--leading-card);
+    color: var(--color-text);
+    /* Nunca text-align: justify */
+  }
+</style>
