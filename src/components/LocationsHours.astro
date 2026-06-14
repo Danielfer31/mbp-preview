@@ -1,0 +1,182 @@
+---
+/**
+ * LocationsHours.astro — Renderiza sedes y horarios desde el contenido estructurado
+ *
+ * Lee desde:
+ *   - src/content/site/locations.json (PH-ADDRESS, PH-CITY)
+ *   - src/content/site/hours.json (PH-PUBLIC-HOURS)
+ *
+ * Si los valores están en placeholder, muestra "Información disponible próximamente"
+ * en lugar de inventar dirección/horario (WEB-01).
+ *
+ * Cierra MEDIUM concern WEB-01: sedes y horarios renderizados con su componente.
+ */
+
+import { getCollection } from 'astro:content';
+import { BLOCKING_PLACEHOLDER_IDS } from '../lib/placeholders';
+
+/** Obtener datos de sedes y horarios desde las colecciones */
+const locationsEntries = await getCollection('locations');
+const hoursEntries = await getCollection('hours');
+
+/** Aplanar los arrays de entradas (cada archivo JSON es un array) */
+const locationFields = locationsEntries.flatMap((e) => e.data);
+const hoursFields = hoursEntries.flatMap((e) => e.data);
+
+/** Función auxiliar: obtener valor seguro de un campo */
+function getSafeValue(
+  fields: { id: string; value: string | null; status: string }[],
+  id: string
+): { value: string; isPlaceholder: boolean } {
+  const field = fields.find((f) => f.id === id);
+  const isBlockingId = BLOCKING_PLACEHOLDER_IDS.includes(id as any);
+
+  if (!field || !field.value || isBlockingId) {
+    return { value: 'Información disponible próximamente', isPlaceholder: true };
+  }
+
+  // Si el status no es 'aprobado', también es placeholder
+  const PLACEHOLDER_VALUES = [
+    'Informacion disponible proximamente',
+    'Información disponible próximamente',
+    'Barranquilla, pendiente de confirmacion final',
+    'Horario pendiente de confirmacion',
+  ];
+
+  if (PLACEHOLDER_VALUES.some((pv) => field.value?.includes(pv.split(',')[0]!))) {
+    return { value: 'Información disponible próximamente', isPlaceholder: true };
+  }
+
+  return { value: field.value, isPlaceholder: false };
+}
+
+const address = getSafeValue(locationFields, 'PH-ADDRESS');
+const city = getSafeValue(locationFields, 'PH-CITY');
+const hours = getSafeValue(hoursFields, 'PH-PUBLIC-HOURS');
+
+const locationAvailable = !address.isPlaceholder || !city.isPlaceholder;
+---
+
+<section class="locations-hours" aria-label="Sedes y horarios de atención">
+  <div class="locations-hours__grid">
+
+    <!-- SEDE -->
+    <div class="locations-hours__block">
+      <h3 class="locations-hours__heading">SEDE</h3>
+
+      {locationAvailable ? (
+        <address class="locations-hours__address">
+          {!address.isPlaceholder && (
+            <span class="locations-hours__address-line">{address.value}</span>
+          )}
+          {!city.isPlaceholder && (
+            <span class="locations-hours__address-line">{city.value}</span>
+          )}
+          {address.isPlaceholder && city.isPlaceholder && (
+            <span class="locations-hours__pending">Información disponible próximamente</span>
+          )}
+        </address>
+      ) : (
+        <p class="locations-hours__pending">Información disponible próximamente</p>
+      )}
+    </div>
+
+    <!-- HORARIOS -->
+    <div class="locations-hours__block">
+      <h3 class="locations-hours__heading">HORARIOS DE ATENCIÓN</h3>
+
+      {!hours.isPlaceholder ? (
+        <p class="locations-hours__hours-value">{hours.value}</p>
+      ) : (
+        <p class="locations-hours__pending">Información disponible próximamente</p>
+      )}
+    </div>
+
+  </div>
+
+  <!-- Nota informativa si algún dato está pendiente -->
+  {(address.isPlaceholder || hours.isPlaceholder) && (
+    <p class="locations-hours__note" role="status">
+      La información de contacto y horarios se publicará cuando sea verificada por la doctora.
+    </p>
+  )}
+</section>
+
+<style>
+  .locations-hours {
+    background-color: var(--color-cream);
+    border-radius: var(--radius-container);
+    padding: var(--space-2xl);
+  }
+
+  .locations-hours__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 768px) {
+    .locations-hours__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .locations-hours__block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .locations-hours__heading {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .locations-hours__address {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .locations-hours__address-line {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-text);
+  }
+
+  .locations-hours__hours-value {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .locations-hours__pending {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    font-style: italic;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .locations-hours__note {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 0.8125rem; /* 13px */
+    color: var(--color-text-muted);
+    margin: var(--space-lg) 0 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+  }
+</style>

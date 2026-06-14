@@ -1,0 +1,252 @@
+---
+/**
+ * SafeContactCard.astro — CTA de contacto seguro con estados habilitado/deshabilitado
+ *
+ * REGLA WEB-10: Cuando el canal principal no está disponible, mostrar el canal
+ * alternativo cuando PH-ALTERNATE-CHANNEL esté resuelto. Si tampoco está
+ * disponible, mostrar texto seguro sin enlaces ficticios.
+ *
+ * REGLA T-01-11: CTA deshabilitado con aria-disabled="true" cuando placeholder bloquea.
+ *   - NUNCA emite href ficticio.
+ *   - Incluye title exacto y texto "Información de contacto próximamente".
+ *
+ * REGLA T-01-12: Disclaimer corto junto a cada CTA de contacto.
+ *   - Texto exacto: "No envíe información clínica por este canal."
+ *   - Color: --color-destructive
+ */
+
+import { BLOCKING_PLACEHOLDER_IDS } from '../lib/placeholders';
+
+type ChannelType = 'phone' | 'email' | 'whatsapp';
+
+export interface Props {
+  /** Tipo de canal de contacto */
+  channelType: ChannelType;
+  /** Valor del canal (número, email, etc.) */
+  channelValue?: string;
+  /** ID del placeholder del canal para determinar si está bloqueado */
+  placeholderId: string;
+  /** Valor del canal alternativo si el principal está bloqueado */
+  alternateChannelValue?: string;
+  /** Status del canal alternativo */
+  alternateChannelStatus?: string;
+  /** Etiqueta para mostrar al usuario */
+  label: string;
+}
+
+const {
+  channelType,
+  channelValue,
+  placeholderId,
+  alternateChannelValue,
+  alternateChannelStatus,
+  label,
+} = Astro.props;
+
+/** Determinar si el canal principal está bloqueado por un placeholder bloqueante */
+const isBlocking = BLOCKING_PLACEHOLDER_IDS.includes(placeholderId as any);
+
+/**
+ * El canal está disponible si:
+ * 1. No está en la lista de placeholders bloqueantes, Y
+ * 2. El valor existe y no es texto de placeholder
+ */
+const PLACEHOLDER_VALUES = [
+  'CTA deshabilitado',
+  'Informacion disponible proximamente',
+  'Información disponible próximamente',
+];
+
+const isChannelAvailable =
+  !isBlocking &&
+  !!channelValue &&
+  !PLACEHOLDER_VALUES.includes(channelValue);
+
+/** Construir el href real según el tipo de canal (solo si está disponible) */
+function buildHref(type: ChannelType, value: string): string {
+  switch (type) {
+    case 'phone':
+      return `tel:${value.replace(/\s+/g, '')}`;
+    case 'email':
+      return `mailto:${value}`;
+    case 'whatsapp':
+      // Esquema wa.me — solo dígitos, sin +
+      return `https://wa.me/${value.replace(/[^\d]/g, '')}`;
+    default:
+      return '#';
+  }
+}
+
+/** Determinar si el canal alternativo está disponible (WEB-10) */
+const isAlternateBlocking = BLOCKING_PLACEHOLDER_IDS.includes('PH-ALTERNATE-CHANNEL' as any);
+const isAlternateAvailable =
+  !isAlternateBlocking &&
+  !!alternateChannelValue &&
+  !PLACEHOLDER_VALUES.includes(alternateChannelValue) &&
+  alternateChannelStatus === 'aprobado';
+
+const href = isChannelAvailable ? buildHref(channelType, channelValue!) : undefined;
+
+/** Etiquetas por tipo de canal */
+const channelLabels: Record<ChannelType, string> = {
+  phone: 'Teléfono',
+  email: 'Correo electrónico',
+  whatsapp: 'WhatsApp',
+};
+---
+
+<div class="safe-contact-card">
+  <span class="safe-contact-card__channel-label">
+    {channelLabels[channelType]}
+  </span>
+
+  {isChannelAvailable && href ? (
+    <!-- Canal disponible: enlace real con esquema validado -->
+    <a
+      href={href}
+      class="safe-contact-card__cta safe-contact-card__cta--enabled"
+      rel={channelType === 'whatsapp' ? 'noopener noreferrer' : undefined}
+      target={channelType === 'whatsapp' ? '_blank' : undefined}
+    >
+      {label}
+    </a>
+  ) : (
+    <!-- Canal bloqueado: botón deshabilitado, sin href, con aria-disabled -->
+    <span
+      role="link"
+      aria-disabled="true"
+      title="Este enlace estará disponible cuando se confirme la información de contacto."
+      class="safe-contact-card__cta safe-contact-card__cta--disabled"
+    >
+      Información de contacto próximamente
+    </span>
+  )}
+
+  <!-- Disclaimer obligatorio junto a cada CTA (T-01-12) -->
+  <p class="safe-contact-card__disclaimer">
+    No envíe información clínica por este canal.
+  </p>
+
+  {/* Canal alternativo (WEB-10): visible cuando el principal no está disponible */}
+  {!isChannelAvailable && (
+    <div class="safe-contact-card__alternate">
+      <span class="safe-contact-card__alternate-label">Canal alternativo:</span>
+      {isAlternateAvailable ? (
+        <span class="safe-contact-card__alternate-value">{alternateChannelValue}</span>
+      ) : (
+        <span class="safe-contact-card__alternate-value safe-contact-card__alternate-value--pending">
+          Información disponible próximamente
+        </span>
+      )}
+    </div>
+  )}
+</div>
+
+<style>
+  .safe-contact-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+    background-color: var(--color-white);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border);
+  }
+
+  .safe-contact-card__channel-label {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* CTA habilitado */
+  .safe-contact-card__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--btn-min-height);
+    padding: var(--btn-padding);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-button);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color var(--transition-btn), color var(--transition-btn);
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .safe-contact-card__cta--enabled {
+    background-color: var(--color-primary);
+    color: var(--color-cream);
+    cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .safe-contact-card__cta--enabled:hover {
+      background-color: #3D4420;
+    }
+  }
+
+  .safe-contact-card__cta--enabled:focus-visible {
+    outline: 3px solid var(--color-sage);
+    outline-offset: 2px;
+  }
+
+  /* CTA deshabilitado */
+  .safe-contact-card__cta--disabled {
+    background-color: var(--color-cream);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+    opacity: 0.65;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Disclaimer clínico (T-01-12) */
+  .safe-contact-card__disclaimer {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--color-destructive);
+    margin: 0;
+  }
+
+  /* Canal alternativo (WEB-10) */
+  .safe-contact-card__alternate {
+    display: flex;
+    gap: var(--space-xs);
+    align-items: baseline;
+    margin-top: var(--space-xs);
+    padding-top: var(--space-xs);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .safe-contact-card__alternate-label {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .safe-contact-card__alternate-value {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 0.875rem;
+    color: var(--color-text);
+  }
+
+  .safe-contact-card__alternate-value--pending {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+</style>

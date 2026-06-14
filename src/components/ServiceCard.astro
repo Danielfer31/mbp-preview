@@ -1,0 +1,148 @@
+---
+/**
+ * ServiceCard.astro — Tarjeta de servicio médico
+ *
+ * Muestra el nombre confirmado del servicio. Cuando la descripción está en
+ * placeholder (PH-SERVICE-DESCRIPTIONS bloqueante), solo muestra el nombre
+ * sin descripción no aprobada.
+ *
+ * Requiere: tokens.css via global.css
+ * Estilo: MBP-BRAND-ANALYSIS.md — sección "Cards de Servicios"
+ *   - Fondo: #FFFFFF, border-radius 14px, padding 20-24px
+ *   - Título: 16-18px, Regular/400, capitalizado (no all caps)
+ *   - Descripción: 14px, Light/300, interlineado 1.6
+ */
+
+import { BLOCKING_PLACEHOLDER_IDS } from '../lib/placeholders';
+
+export interface Props {
+  /** Nombre del servicio (confirmado, de content collection) */
+  name: string;
+  /** Descripción del servicio — puede ser undefined si está en placeholder */
+  description?: string;
+  /** ID del placeholder de descripción para verificar si está bloqueante */
+  descriptionPlaceholderId?: string;
+  /** Ícono SVG decorativo opcional */
+  icon?: string;
+}
+
+const {
+  name,
+  description,
+  descriptionPlaceholderId = 'PH-SERVICE-DESCRIPTIONS',
+  icon,
+} = Astro.props;
+
+/** Determinar si la descripción está en placeholder bloqueante */
+const isDescriptionBlocked =
+  BLOCKING_PLACEHOLDER_IDS.includes(descriptionPlaceholderId as any) &&
+  (!description || description === 'Mostrar solo nombres confirmados');
+---
+
+<article class="service-card">
+  {icon && (
+    <div class="service-card__icon" aria-hidden="true">
+      <Fragment set:html={icon} />
+    </div>
+  )}
+
+  {!icon && (
+    <div class="service-card__icon-placeholder" aria-hidden="true">
+      <!-- Ícono genérico de servicio pediátrico -->
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"
+          fill="currentColor"
+        />
+      </svg>
+    </div>
+  )}
+
+  <h3 class="service-card__title">{name}</h3>
+
+  {!isDescriptionBlocked && description && (
+    <p class="service-card__description">{description}</p>
+  )}
+
+  {isDescriptionBlocked && (
+    <p class="service-card__description service-card__description--pending">
+      Información disponible proximamente.
+    </p>
+  )}
+</article>
+
+<style>
+  .service-card {
+    background-color: var(--color-white);
+    border-radius: var(--radius-card);
+    padding: var(--space-lg) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    transition: transform var(--transition-card), box-shadow var(--transition-card);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .service-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(45, 50, 15, 0.1);
+    }
+  }
+
+  .service-card__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: var(--color-lavender);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .service-card__icon-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: var(--color-lavender);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .service-card__icon svg,
+  .service-card__icon-placeholder svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .service-card__title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-regular);
+    font-size: var(--text-card);
+    letter-spacing: 0.02em;
+    line-height: var(--leading-heading);
+    color: var(--color-text);
+    margin: 0;
+    /* Capitalizado (no all caps) — MBP-BRAND-ANALYSIS.md Card title */
+    text-transform: capitalize;
+  }
+
+  .service-card__description {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 0.875rem; /* 14px */
+    line-height: var(--leading-card);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .service-card__description--pending {
+    font-style: italic;
+    color: var(--color-text-muted);
+    opacity: 0.75;
+  }
+</style>
