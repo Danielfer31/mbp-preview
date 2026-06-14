@@ -15,12 +15,21 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "audit": "npm audit --audit-level=high",
-    "verify": "npm run audit && npm test && npm run build"
+    "validate:preview": "node scripts/validate-content.mjs preview",
+    "validate:production": "node scripts/validate-content.mjs production",
+    "check:hardcoded": "node scripts/check-hardcoded-content.mjs",
+    "build:preview": "npm run validate:preview && astro build",
+    "build:production": "npm run validate:production && npm run check:hardcoded && astro build",
+    "lhci": "lhci autorun",
+    "verify": "npm run audit && npm run validate:preview && npm run check:hardcoded && npm test && npm run test:e2e && npm run build:preview",
+    "_dep-update-policy": "OPS-04: revisar y actualizar dependencias cada trimestre (enero/abril/julio/octubre). Ejecutar: npm outdated, npm audit, y npm update con pruebas completas antes de merge."
   },
   "dependencies": {
     "astro": "6.4.6"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.60.0",
     "typescript": "5.8.3",
     "vitest": "4.1.8"

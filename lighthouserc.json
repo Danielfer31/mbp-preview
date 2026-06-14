@@ -1,0 +1,37 @@
+{
+  "_comment": [
+    "Presupuestos de rendimiento de laboratorio para el sitio MBP.",
+    "LCP y CLS son mediciones directas en entorno de laboratorio.",
+    "TBT (Total Blocking Time) se usa como PROXY de laboratorio para INP.",
+    "INP real (Interaction to Next Paint) requiere medicion de campo con usuarios reales;",
+    "se difiere a instrumentacion privada futura (concern MEDIUM Codex — no se afirma medicion de campo).",
+    "Objetivo de contrato UI: LCP<2.5s, INP<200ms proxy, CLS<0.1 (01-UI-SPEC.md Performance Contract)."
+  ],
+  "ci": {
+    "collect": {
+      "url": ["http://localhost:4321/"],
+      "numberOfRuns": 1,
+      "settings": {
+        "preset": "desktop",
+        "chromeFlags": "--no-sandbox --disable-dev-shm-usage"
+      }
+    },
+    "assert": {
+      "preset": "lighthouse:no-pwa",
+      "assertions": {
+        "largest-contentful-paint": ["warn", { "maxNumericValue": 2500 }],
+        "cumulative-layout-shift": ["warn", { "maxNumericValue": 0.1 }],
+        "total-blocking-time": ["warn", { "maxNumericValue": 300 }],
+        "first-contentful-paint": ["warn", { "maxNumericValue": 1800 }],
+        "interactive": ["warn", { "maxNumericValue": 3800 }],
+        "categories:performance": ["warn", { "minScore": 0.8 }],
+        "categories:accessibility": ["warn", { "minScore": 0.9 }],
+        "categories:best-practices": ["warn", { "minScore": 0.9 }],
+        "categories:seo": ["warn", { "minScore": 0.9 }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}
