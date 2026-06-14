@@ -85,25 +85,25 @@ const professionalTitle =
   <!-- PILARES: valores confirmados del branding MBP -->
   <section class="pillars" aria-labelledby="pillars-heading">
     <div class="pillars__container">
-      <p class="pillars__eyebrow">PEDIATRÍA CON EXPERIENCIA</p>
-      <h2 id="pillars-heading" class="pillars__statement">
+      <p class="pillars__eyebrow reveal">PEDIATRÍA CON EXPERIENCIA</p>
+      <h2 id="pillars-heading" class="pillars__statement reveal" style="--reveal-delay: 100ms">
         CUIDADO INTEGRAL CENTRADO EN EL BIENESTAR DEL NIÑO Y SU FAMILIA
       </h2>
 
       <ul class="pillars__list" role="list">
-        <li class="pillars__item">
+        <li class="pillars__item reveal" style="--reveal-delay: 0ms">
           <div class="pillars__circle" aria-hidden="true"></div>
           <span class="pillars__label">PREVENCIÓN Y PROMOCIÓN DE LA SALUD</span>
         </li>
-        <li class="pillars__item">
+        <li class="pillars__item reveal" style="--reveal-delay: 120ms">
           <div class="pillars__circle" aria-hidden="true"></div>
           <span class="pillars__label">NEURODESARROLLO Y CRIANZA RESPETUOSA</span>
         </li>
-        <li class="pillars__item">
+        <li class="pillars__item reveal" style="--reveal-delay: 240ms">
           <div class="pillars__circle" aria-hidden="true"></div>
           <span class="pillars__label">ACOMPAÑAMIENTO INTEGRAL DE LA FAMILIA</span>
         </li>
-        <li class="pillars__item">
+        <li class="pillars__item reveal" style="--reveal-delay: 360ms">
           <div class="pillars__circle" aria-hidden="true"></div>
           <span class="pillars__label">NUTRICIÓN Y MICROBIOTA INFANTIL</span>
         </li>
@@ -114,11 +114,11 @@ const professionalTitle =
   <!-- CTA FINAL -->
   <section class="cta-final" aria-labelledby="cta-final-heading">
     <div class="cta-final__content">
-      <h2 id="cta-final-heading" class="cta-final__title">¿TIENES DUDAS SOBRE LA SALUD DE TU BEBÉ?</h2>
-      <p class="cta-final__body">
+      <h2 id="cta-final-heading" class="cta-final__title reveal">¿TIENES DUDAS SOBRE LA SALUD DE TU BEBÉ?</h2>
+      <p class="cta-final__body reveal" style="--reveal-delay: 150ms">
         Cuando estés lista, estaremos disponibles para acompañarte.
       </p>
-      <a href="/contacto" class="btn btn--outline-light">
+      <a href="/contacto" class="btn btn--outline-light reveal" style="--reveal-delay: 300ms">
         VER FORMAS DE CONTACTO
       </a>
     </div>
@@ -405,8 +405,15 @@ const professionalTitle =
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background-color: var(--color-primary);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-sage) 100%);
     flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pillars__item.revealed .pillars__circle {
+      animation: circle-pop 550ms var(--ease-spring) both;
+      animation-delay: var(--reveal-delay, 0ms);
+    }
   }
 
   .pillars__label {
