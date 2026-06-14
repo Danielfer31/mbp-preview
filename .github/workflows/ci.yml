@@ -6,18 +6,19 @@ on:
   pull_request:
     branches: ['**']
 
-# Minimo privilegio: solo lectura del repositorio.
+# Minimo privilegio: solo lectura del repositorio (T-01-20).
 # Sin acceso de escritura a contenidos, paquetes, deployments ni secretos.
+# pull-requests: read es suficiente para comentar resultados si se agrega en el futuro.
 permissions:
   contents: read
 
 jobs:
   verify:
-    name: Audit, Test & Build
+    name: Audit, Validate, Test & Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        # actions/checkout@v4.2.2 — SHA fijo para integridad
+        # actions/checkout@v4.2.2 — SHA fijo para integridad de la cadena de suministro (T-01-SC)
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Setup Node.js from .nvmrc
@@ -33,11 +34,47 @@ jobs:
       - name: Audit dependencies (high/critical)
         run: npm run audit
 
-      - name: Run tests
+      - name: Validate content (preview — permite placeholders)
+        # Gate 1: Verifica integridad del sistema de contenido estructurado.
+        # Modo preview: los placeholders bloqueantes se permiten (son el estado normal pre-produccion).
+        # Modo production: bloqueara automaticamente si se ejecuta build:production (T-01-19).
+        run: npm run validate:preview
+
+      - name: Check hardcoded content
+        # Gate 2: Impide que contacto/afirmaciones-medico/JSON-LD se hardcodeen en .astro (H2, T-01-14).
+        run: npm run check:hardcoded
+
+      - name: Run unit tests
         run: npm test
 
-      - name: Build static site
-        run: npm run build
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests (layout + public pages + privacy + a11y)
+        # Levanta el servidor Astro dev y ejecuta todos los specs en tests/e2e/
+        run: npm run test:e2e
+
+      - name: Build static site (preview mode)
+        # build:preview = validate:preview && astro build
+        # Confirma que el site compila correctamente con placeholders activos.
+        # NO se ejecuta build:production aqui — bloquea por diseno hasta que 01-09 lo active.
+        run: npm run build:preview
 
       - name: Verify dist/ was generated
         run: test -f dist/index.html
+
+      - name: Upload Playwright report
+        # Artefacto sin datos personales: solo resultados de tests E2E (screenshots de error)
+        if: failure()
+        # actions/upload-artifact@v4.6.2 — SHA fijo para integridad
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      # NOTE: Lighthouse CI (npm run lhci) se ejecuta localmente o en un job separado
+      # con servidor de preview activo. En este job no se incluye porque requiere
+      # un servidor HTTP levantado apuntando al dist/ generado, y el tiempo de CI
+      # se optimiza ejecutandolo como pipeline separado post-build en 01-09.
+      # El comando 'npm run lhci' esta disponible para ejecucion manual y pre-deploy.
