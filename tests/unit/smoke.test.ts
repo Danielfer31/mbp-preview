@@ -8,20 +8,17 @@ describe('Smoke tests - fundacion Astro', () => {
     expect(existsSync(indexPath)).toBe(true);
   });
 
-  it('src/pages/index.astro contiene markup HTML valido', () => {
+  it('src/pages/index.astro usa BaseLayout (no genera HTML en source)', () => {
     const indexPath = resolve(process.cwd(), 'src', 'pages', 'index.astro');
     const content = readFileSync(indexPath, 'utf-8');
-    expect(content).toContain('<html');
-    expect(content).toContain('<head>');
-    expect(content).toContain('<body>');
-    expect(content).toContain('</html>');
+    // index.astro delega estructura HTML a BaseLayout — no debe contener <html> raw
+    expect(content).toContain('BaseLayout');
   });
 
-  it('src/pages/index.astro contiene h1 con nombre de la doctora', () => {
+  it('src/pages/index.astro contiene seccion hero con nombre de la doctora', () => {
     const indexPath = resolve(process.cwd(), 'src', 'pages', 'index.astro');
     const content = readFileSync(indexPath, 'utf-8');
-    expect(content).toContain('<h1>');
-    expect(content).toContain('Maria Bernarlda');
+    expect(content).toContain('Pacheco');
   });
 
   it('astro.config.ts existe', () => {

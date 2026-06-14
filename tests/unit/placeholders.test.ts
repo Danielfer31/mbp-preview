@@ -13,7 +13,7 @@ import { mkdirSync, writeFileSync, rmSync, mkdtempSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 
-const ROOT = resolve('C:/Users/USUARIO/Desktop/BOVEDA/Desarrollo Web/Doctora Maria Bernarlda/.claude/worktrees/agent-aa6330a3da2c2d42a');
+const ROOT = resolve(process.cwd());
 const VALIDATOR = join(ROOT, 'scripts/validate-content.mjs');
 const HASHER = join(ROOT, 'scripts/hash-content.mjs');
 
