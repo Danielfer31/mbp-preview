@@ -59,8 +59,8 @@ const servicesToShow = CONFIRMED_SERVICE_NAMES;
   <!-- ENCABEZADO -->
   <section class="services-hero" aria-labelledby="services-heading">
     <div class="page-container">
-      <p class="page-eyebrow">ESPECIALIDADES</p>
-      <h1 id="services-heading" class="page-title">SERVICIOS</h1>
+      <p class="page-eyebrow page-eyebrow--enter">ESPECIALIDADES</p>
+      <h1 id="services-heading" class="page-title page-title--enter">SERVICIOS</h1>
     </div>
   </section>
 
@@ -78,8 +78,8 @@ const servicesToShow = CONFIRMED_SERVICE_NAMES;
 
       {servicesToShow.length > 0 ? (
         <ul class="services-grid" role="list">
-          {servicesToShow.map((name) => (
-            <li>
+          {servicesToShow.map((name, i) => (
+            <li class="reveal" style={`--reveal-delay: ${i * 80}ms`}>
               <ServiceCard
                 name={name}
                 descriptionPlaceholderId="PH-SERVICE-DESCRIPTIONS"
@@ -101,10 +101,10 @@ const servicesToShow = CONFIRMED_SERVICE_NAMES;
   <!-- CTA -->
   <section class="services-cta">
     <div class="page-container">
-      <p class="services-cta__text">
+      <p class="services-cta__text reveal">
         Para consultas sobre disponibilidad de servicios, use los canales de contacto disponibles.
       </p>
-      <a href="/contacto" class="btn btn--primary">VER CONTACTO</a>
+      <a href="/contacto" class="btn btn--primary reveal" style="--reveal-delay: 120ms">VER CONTACTO</a>
     </div>
   </section>
 </BaseLayout>
@@ -166,6 +166,19 @@ const servicesToShow = CONFIRMED_SERVICE_NAMES;
   @media (min-width: 768px) {
     .page-title {
       font-size: var(--text-display);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .page-eyebrow--enter {
+      --enter-y: 16px;
+      animation: hero-enter 550ms var(--ease-expo-out) both;
+      animation-delay: 0ms;
+    }
+    .page-title--enter {
+      --enter-y: 32px;
+      animation: hero-enter 750ms var(--ease-expo-out) both;
+      animation-delay: 120ms;
     }
   }
 

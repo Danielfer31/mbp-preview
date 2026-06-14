@@ -38,8 +38,8 @@ const emergencyField = getField('PH-EMERGENCY-PROCEDURE');
   <!-- ENCABEZADO -->
   <section class="contact-hero" aria-labelledby="contact-heading">
     <div class="page-container">
-      <p class="page-eyebrow">COMUNICACIÓN</p>
-      <h1 id="contact-heading" class="page-title">CONTACTO</h1>
+      <p class="page-eyebrow page-eyebrow--enter">COMUNICACIÓN</p>
+      <h1 id="contact-heading" class="page-title page-title--enter">CONTACTO</h1>
     </div>
   </section>
 
@@ -56,7 +56,7 @@ const emergencyField = getField('PH-EMERGENCY-PROCEDURE');
   <!-- CANALES DE CONTACTO -->
   <section class="channels" aria-labelledby="channels-heading">
     <div class="page-container">
-      <h2 id="channels-heading" class="section-heading">CANALES DE ATENCIÓN</h2>
+      <h2 id="channels-heading" class="section-heading reveal">CANALES DE ATENCIÓN</h2>
 
       <div class="channels__grid">
         <!-- Teléfono -->
@@ -95,7 +95,7 @@ const emergencyField = getField('PH-EMERGENCY-PROCEDURE');
   <!-- SEDES Y HORARIOS (WEB-01) -->
   <section class="locations-section" aria-labelledby="locations-heading">
     <div class="page-container">
-      <h2 id="locations-heading" class="section-heading">DÓNDE ENCONTRARNOS</h2>
+      <h2 id="locations-heading" class="section-heading reveal">DÓNDE ENCONTRARNOS</h2>
       <LocationsHours />
     </div>
   </section>
@@ -103,10 +103,10 @@ const emergencyField = getField('PH-EMERGENCY-PROCEDURE');
   <!-- PROCEDIMIENTO ANTE MENSAJES CLÍNICOS (PRV-01, PRV-02) -->
   <section class="clinical-notice" aria-labelledby="clinical-notice-heading">
     <div class="page-container">
-      <h2 id="clinical-notice-heading" class="section-heading">AVISO IMPORTANTE</h2>
+      <h2 id="clinical-notice-heading" class="section-heading reveal">AVISO IMPORTANTE</h2>
 
       <div class="clinical-notice__content">
-        <p class="clinical-notice__text">
+        <p class="clinical-notice__text reveal" style="--reveal-delay: 100ms">
           <strong>No envíe síntomas, diagnósticos ni información médica personal por ninguno de estos canales.</strong>
           Estos medios de contacto son exclusivamente para consultas de agenda y preguntas administrativas.
         </p>
@@ -175,6 +175,19 @@ const emergencyField = getField('PH-EMERGENCY-PROCEDURE');
   @media (min-width: 768px) {
     .page-title {
       font-size: var(--text-display);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .page-eyebrow--enter {
+      --enter-y: 16px;
+      animation: hero-enter 550ms var(--ease-expo-out) both;
+      animation-delay: 0ms;
+    }
+    .page-title--enter {
+      --enter-y: 32px;
+      animation: hero-enter 750ms var(--ease-expo-out) both;
+      animation-delay: 120ms;
     }
   }
 

@@ -52,15 +52,15 @@ const hasAnyCredential = !!(titleApproved || registryApproved || ageRangeApprove
   <!-- ENCABEZADO DE PERFIL -->
   <section class="profile-hero" aria-labelledby="profile-heading">
     <div class="page-container">
-      <p class="page-eyebrow">PERFIL PROFESIONAL</p>
-      <h1 id="profile-heading" class="page-title">{doctorName}</h1>
+      <p class="page-eyebrow page-eyebrow--enter">PERFIL PROFESIONAL</p>
+      <h1 id="profile-heading" class="page-title page-title--enter">{doctorName}</h1>
     </div>
   </section>
 
   <!-- CREDENCIALES -->
   <section class="credentials" aria-labelledby="credentials-heading">
     <div class="page-container">
-      <h2 id="credentials-heading" class="section-heading">FORMACIÓN Y CREDENCIALES</h2>
+      <h2 id="credentials-heading" class="section-heading reveal">FORMACIÓN Y CREDENCIALES</h2>
 
       {hasAnyCredential ? (
         <dl class="credentials__list">
@@ -107,15 +107,15 @@ const hasAnyCredential = !!(titleApproved || registryApproved || ageRangeApprove
   <!-- VALORES PROFESIONALES (confirmados del branding — no son afirmaciones médicas) -->
   <section class="values" aria-labelledby="values-heading">
     <div class="page-container">
-      <h2 id="values-heading" class="section-heading">ENFOQUE DE ATENCIÓN</h2>
-      <p class="values__intro">
+      <h2 id="values-heading" class="section-heading reveal">ENFOQUE DE ATENCIÓN</h2>
+      <p class="values__intro reveal" style="--reveal-delay: 100ms">
         El enfoque profesional se basa en pilares confirmados por el branding del consultorio:
       </p>
       <ul class="values__list">
-        <li class="values__item">Prevención y promoción de la salud</li>
-        <li class="values__item">Neurodesarrollo y crianza respetuosa</li>
-        <li class="values__item">Acompañamiento integral de la familia</li>
-        <li class="values__item">Nutrición y microbiota infantil</li>
+        <li class="values__item reveal" style="--reveal-delay: 0ms">Prevención y promoción de la salud</li>
+        <li class="values__item reveal" style="--reveal-delay: 100ms">Neurodesarrollo y crianza respetuosa</li>
+        <li class="values__item reveal" style="--reveal-delay: 200ms">Acompañamiento integral de la familia</li>
+        <li class="values__item reveal" style="--reveal-delay: 300ms">Nutrición y microbiota infantil</li>
       </ul>
     </div>
   </section>
@@ -123,10 +123,10 @@ const hasAnyCredential = !!(titleApproved || registryApproved || ageRangeApprove
   <!-- CTA DE CONTACTO -->
   <section class="profile-cta" aria-labelledby="profile-cta-heading">
     <div class="page-container">
-      <h2 id="profile-cta-heading" class="section-heading section-heading--light">
+      <h2 id="profile-cta-heading" class="section-heading section-heading--light reveal">
         ¿DESEAS AGENDAR UNA CITA?
       </h2>
-      <a href="/contacto" class="btn btn--outline-light">VER FORMAS DE CONTACTO</a>
+      <a href="/contacto" class="btn btn--outline-light reveal" style="--reveal-delay: 150ms">VER FORMAS DE CONTACTO</a>
     </div>
   </section>
 </BaseLayout>
@@ -174,6 +174,19 @@ const hasAnyCredential = !!(titleApproved || registryApproved || ageRangeApprove
   @media (min-width: 768px) {
     .page-title {
       font-size: var(--text-display);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .page-eyebrow--enter {
+      --enter-y: 16px;
+      animation: hero-enter 550ms var(--ease-expo-out) both;
+      animation-delay: 0ms;
+    }
+    .page-title--enter {
+      --enter-y: 32px;
+      animation: hero-enter 750ms var(--ease-expo-out) both;
+      animation-delay: 120ms;
     }
   }
 
