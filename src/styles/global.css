@@ -230,6 +230,13 @@ ul, ol {
     transform: translateX(100%);
   }
 
+  /* Compensar overflow:hidden que clipea outline en Chromium/WebKit */
+  .btn-primary:focus-visible,
+  .btn--primary:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-cream), 0 0 0 5px var(--color-primary);
+  }
+
   /* Cards */
   .card {
     transition: transform var(--transition-card),
