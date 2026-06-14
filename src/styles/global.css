@@ -192,7 +192,42 @@ ul, ol {
   [role="button"] {
     transition: background-color var(--transition-btn),
                 color var(--transition-btn),
-                border-color var(--transition-btn);
+                border-color var(--transition-btn),
+                transform 100ms ease;
+  }
+
+  .btn:active,
+  button:active,
+  [role="button"]:active {
+    transform: scale(0.97);
+  }
+
+  /* Shimmer en botón primario */
+  .btn-primary,
+  .btn--primary {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::after,
+  .btn--primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.12) 50%,
+      transparent 60%
+    );
+    transform: translateX(-100%);
+    transition: transform 500ms ease;
+    pointer-events: none;
+  }
+
+  .btn-primary:hover::after,
+  .btn--primary:hover::after {
+    transform: translateX(100%);
   }
 
   /* Cards */
@@ -205,11 +240,45 @@ ul, ol {
     transform: translateY(-3px);
   }
 
-  /* Scroll reveal — se activa via JS con class .reveal */
+  /* Scroll reveal — JS añade .revealed cuando el elemento entra al viewport */
   .reveal {
-    transition: opacity var(--transition-scroll),
-                transform var(--transition-scroll);
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity  700ms var(--ease-expo-out),
+      transform 700ms var(--ease-expo-out);
+    transition-delay: var(--reveal-delay, 0ms);
   }
+
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   KEYFRAMES — Solo declaración; uso dentro de @media (prefers-reduced-motion)
+   -------------------------------------------------------------------------- */
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--enter-y, 28px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes orb-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-4%, 3%) scale(1.06); }
+}
+
+@keyframes circle-pop {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
 }
 
 /* --------------------------------------------------------------------------
