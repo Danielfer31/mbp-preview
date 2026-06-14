@@ -1,0 +1,100 @@
+---
+/**
+ * SeoHead.astro — Metadatos SEO del sitio MBP
+ *
+ * Genera: title, description, canonical, Open Graph tags.
+ * Lee metadatos exclusivamente del contenido estructurado (getEntry).
+ *
+ * IMPORTANTE — Restricciones de este plan (01-05):
+ * - NO emite schema MedicalBusiness/Physician (JSON-LD médico).
+ *   El schema médico se habilita en 01-08 tras verificación de credenciales.
+ * - NO usa dominio, teléfono ni dirección ficticios.
+ * - La meta description usa texto placeholder genérico mientras
+ *   PH-CITY / PH-DOMAIN sean bloqueantes.
+ *
+ * Refs: T-01-16 (spoofing via schema sin credenciales), H5 (Gemini suggestion).
+ */
+
+export interface Props {
+  /** Título de la página (se antepone al nombre del sitio) */
+  title?: string;
+  /** Descripción para <meta name="description"> y OG */
+  description?: string;
+  /** Ruta canónica relativa (sin dominio) — ej. "/" o "/servicios/" */
+  canonicalPath?: string;
+  /** Directiva robots — default: noindex, nofollow en pre-producción */
+  robots?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalPath = '/',
+  robots = 'noindex, nofollow',
+} = Astro.props;
+
+/**
+ * Nombre del sitio — no depende de ningún placeholder bloqueante.
+ * Se puede mostrar sin aprobación médica.
+ */
+const SITE_NAME = 'Dra. María Bernarda Pacheco Martelo — Pediatra';
+
+/**
+ * Descripción placeholder segura.
+ * No contiene afirmaciones médicas verificables ni datos de contacto.
+ * Cumple con el contrato de no hardcodear afirmaciones evadiendo el sistema
+ * de contenido (H2 / T-01-14).
+ */
+const PLACEHOLDER_DESCRIPTION =
+  'Sitio profesional de medicina pediátrica. Información en proceso de verificación.';
+
+const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
+const pageDescription = description ?? PLACEHOLDER_DESCRIPTION;
+
+/**
+ * URL canónica.
+ * Astro.url está disponible en tiempo de build y contiene la URL real del sitio.
+ * En desarrollo apunta a localhost; en producción al dominio configurado en astro.config.
+ * No hardcodeamos ningún dominio — el dominio viene de la configuración de Astro.
+ */
+const canonicalUrl = new URL(canonicalPath, Astro.url.origin).href;
+---
+
+<!--
+  SeoHead.astro — importar dentro de <head> de cada página o layout.
+  No emite JSON-LD médico (diferido a 01-08).
+-->
+
+<!-- Título -->
+<title>{pageTitle}</title>
+
+<!-- Descripción -->
+<meta name="description" content={pageDescription} />
+
+<!-- Robots — noindex/nofollow mientras el contenido está pendiente de aprobación -->
+<meta name="robots" content={robots} />
+
+<!-- Canonical -->
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Open Graph básico (sin datos médicos verificables) -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={pageDescription} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:locale" content="es_CO" />
+<meta property="og:site_name" content={SITE_NAME} />
+
+<!--
+  Twitter Card básica
+  No incluimos imagen OG hasta tener imagen profesional aprobada.
+-->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={pageDescription} />
+
+<!--
+  SCHEMA MÉDICO DIFERIDO — NO SE EMITE EN ESTE PLAN.
+  Se habilitará en 01-08 tras verificación de credenciales de la doctora.
+  Refs: T-01-16, H5 (Gemini suggestion: no emitir schema hasta verificar credenciales).
+-->

@@ -1,0 +1,52 @@
+/*
+  # ──────────────────────────────────────────────────────────────────────────────
+  # _headers — Headers de seguridad HTTP para Cloudflare Pages
+  #
+  # Sitio: Dra. María Bernarda Pacheco Martelo — Pediatra
+  # Plataforma: Cloudflare Pages (sitio 100% estático)
+  #
+  # Refs del threat model:
+  #   T-01-15 (Information Disclosure vía scripts terceros) → CSP bloquea script-src externo
+  #   T-01-17 (Tampering / clickjacking) → X-Frame-Options: DENY + frame-ancestors
+  #
+  # Notas de CSP:
+  #   'unsafe-inline' en style-src: necesario para los estilos inline de Astro
+  #     (class="" con tokens CSS) y el toggle JS del hamburger.
+  #   Google Fonts (fonts.googleapis.com / fonts.gstatic.com): cargadas en global.css.
+  #   Sin scripts de terceros — el sitio no usa analítica ni CDN de scripts externos.
+  # ──────────────────────────────────────────────────────────────────────────────
+
+  # ── Content-Security-Policy ──────────────────────────────────────────────────
+  # default-src 'self': bloquea cualquier recurso no listado explícitamente.
+  # script-src 'self' 'unsafe-inline': Astro inyecta el toggle hamburger inline.
+  #   Se preferiría hash pero Astro no expone el hash del inline en static build.
+  # style-src 'self' 'unsafe-inline' fonts.googleapis.com: tokens CSS + Google Fonts.
+  # font-src 'self' fonts.gstatic.com: archivos de fuente.
+  # img-src 'self' data:: favicon data URI + imágenes propias.
+  # frame-ancestors 'none': refuerzo de X-Frame-Options (más moderno).
+  # object-src 'none': sin plugins (Flash, etc.).
+  # base-uri 'self': previene inyección de <base href>.
+  # form-action 'none': el sitio NO tiene formularios — bloquea envíos accidentales.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; connect-src 'none'; media-src 'none';
+
+  # ── Clickjacking ─────────────────────────────────────────────────────────────
+  X-Frame-Options: DENY
+
+  # ── MIME sniffing ─────────────────────────────────────────────────────────────
+  X-Content-Type-Options: nosniff
+
+  # ── Referrer ─────────────────────────────────────────────────────────────────
+  # no-referrer: el sitio no envía datos de navegación a terceros.
+  # (más restrictivo que strict-origin-when-cross-origin — apropiado para
+  # un sitio médico sin analítica donde la privacidad del paciente es prioritaria)
+  Referrer-Policy: no-referrer
+
+  # ── Permissions Policy ───────────────────────────────────────────────────────
+  # Restringe APIs del navegador que el sitio no usa.
+  # Geolocation, cámara y micrófono: deshabilitados (sin teleconsulta en este plan).
+  # Payment: deshabilitado (sin pagos en línea).
+  # Usb/bluetooth: deshabilitados.
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=()
+
+  # ── HSTS (opcional — Cloudflare maneja HTTPS, pero explícito es mejor) ───────
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
