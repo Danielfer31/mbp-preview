@@ -1,0 +1,274 @@
+---
+/**
+ * servicios.astro — Página de servicios pediátricos
+ *
+ * Grid de ServiceCard con nombres confirmados del branding MBP.
+ * Cuando PH-SERVICE-DESCRIPTIONS está bloqueante, solo muestra los nombres.
+ * Empty state si no hay servicios confirmados.
+ * Lee de src/content/site/services.json via getCollection.
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import PlaceholderNotice from '../components/PlaceholderNotice.astro';
+import { getCollection } from 'astro:content';
+import { BLOCKING_PLACEHOLDER_IDS } from '../lib/placeholders';
+
+const servicesEntries = await getCollection('services');
+const servicesFields = servicesEntries.flatMap((e) => e.data);
+
+/**
+ * Determinar si las descripciones están bloqueadas
+ * PH-SERVICE-DESCRIPTIONS es bloqueante en BLOCKING_PLACEHOLDER_IDS
+ */
+const areDescriptionsBlocked = BLOCKING_PLACEHOLDER_IDS.includes('PH-SERVICE-DESCRIPTIONS' as any);
+
+/**
+ * Los nombres de servicios están confirmados en el branding MBP (MBP-BRAND-ANALYSIS.md)
+ * y los pilares son conocidos. Se usan los nombres del PDF de branding.
+ * Las descripciones médicas NO se hardcodean — esperan aprobación de la doctora.
+ */
+const CONFIRMED_SERVICE_NAMES = [
+  'Consulta Pediátrica General',
+  'Patología Respiratoria',
+  'Conducta y Desarrollo',
+  'Nutrición Pediátrica',
+  'Atención al Recién Nacido',
+  'Control de Crecimiento',
+];
+
+/**
+ * Verificar si hay servicios en content collection con estado aprobado.
+ * Si el campo services.json solo tiene placeholders, usar los nombres confirmados del branding.
+ */
+const hasApprovedServices = servicesFields.some((f) => f.status === 'aprobado' && !BLOCKING_PLACEHOLDER_IDS.includes(f.id as any));
+
+/**
+ * Mostrar los servicios confirmados del branding cuando las descripciones están bloqueadas
+ * (es correcto mostrar los nombres — están en el PDF de branding oficial)
+ */
+const servicesToShow = CONFIRMED_SERVICE_NAMES;
+---
+
+<BaseLayout
+  title="Servicios — Dra. María Bernarda Pacheco Martelo"
+  description="Servicios de medicina pediátrica. Información en proceso de verificación."
+  robots="noindex, nofollow"
+  currentPath="/servicios"
+>
+  <!-- ENCABEZADO -->
+  <section class="services-hero" aria-labelledby="services-heading">
+    <div class="page-container">
+      <p class="page-eyebrow">ESPECIALIDADES</p>
+      <h1 id="services-heading" class="page-title">SERVICIOS</h1>
+    </div>
+  </section>
+
+  <!-- GRID DE SERVICIOS -->
+  <section class="services-grid-section" aria-labelledby="services-grid-heading">
+    <div class="page-container">
+      <h2 id="services-grid-heading" class="sr-only">Lista de servicios pediátricos</h2>
+
+      {areDescriptionsBlocked && (
+        <PlaceholderNotice
+          message="Las descripciones detalladas de servicios se publicarán cuando sean verificadas por la doctora."
+          placeholderId="PH-SERVICE-DESCRIPTIONS"
+        />
+      )}
+
+      {servicesToShow.length > 0 ? (
+        <ul class="services-grid" role="list">
+          {servicesToShow.map((name) => (
+            <li>
+              <ServiceCard
+                name={name}
+                descriptionPlaceholderId="PH-SERVICE-DESCRIPTIONS"
+              />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <!-- Empty state -->
+        <div class="empty-state" role="status">
+          <p class="empty-state__text">
+            Los servicios disponibles se publicarán cuando estén confirmados.
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="services-cta">
+    <div class="page-container">
+      <p class="services-cta__text">
+        Para consultas sobre disponibilidad de servicios, use los canales de contacto disponibles.
+      </p>
+      <a href="/contacto" class="btn btn--primary">VER CONTACTO</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Accesibilidad — clase oculta visualmente */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* HERO */
+  .services-hero {
+    background-color: var(--color-sage);
+    padding-block: var(--space-3xl);
+  }
+
+  .page-container {
+    max-width: var(--max-content);
+    margin-inline: auto;
+    padding-inline: var(--page-padding-mob);
+  }
+
+  @media (min-width: 768px) {
+    .page-container {
+      padding-inline: var(--page-padding-desk);
+    }
+  }
+
+  .page-eyebrow {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-sm);
+    opacity: 0.75;
+  }
+
+  .page-title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-thin);
+    font-size: var(--text-h1);
+    letter-spacing: var(--tracking-heading);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    line-height: var(--leading-heading);
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .page-title {
+      font-size: var(--text-display);
+    }
+  }
+
+  /* GRID */
+  .services-grid-section {
+    background-color: var(--color-cream);
+    padding-block: var(--space-3xl);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    list-style: none;
+    padding: 0;
+    margin: var(--space-xl) 0 0;
+  }
+
+  @media (min-width: 640px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .services-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Empty state */
+  .empty-state {
+    padding: var(--space-2xl);
+    background-color: var(--color-white);
+    border-radius: var(--radius-card);
+    text-align: center;
+    margin-top: var(--space-xl);
+  }
+
+  .empty-state__text {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* CTA */
+  .services-cta {
+    background-color: var(--color-white);
+    padding-block: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .services-cta .page-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .services-cta__text {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-text);
+    margin: 0;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--btn-min-height);
+    padding: var(--btn-padding);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-button);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color var(--transition-btn), color var(--transition-btn);
+    white-space: nowrap;
+  }
+
+  .btn--primary {
+    background-color: var(--color-primary);
+    color: var(--color-cream);
+    border: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn--primary:hover {
+      background-color: #3D4420;
+    }
+  }
+
+  .btn--primary:focus-visible {
+    outline: 3px solid var(--color-sage);
+    outline-offset: 2px;
+  }
+</style>

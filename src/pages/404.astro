@@ -1,0 +1,156 @@
+---
+/**
+ * 404.astro — Página de error 404 personalizada
+ *
+ * Texto exacto requerido por el plan: "Esta pagina no existe. Puede regresar al inicio o contactar directamente."
+ * Enlace al home en href="/".
+ *
+ * Ref: 01-04-PLAN.md Task 2 — acceptance criteria
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Página no encontrada — Dra. María Bernarda Pacheco Martelo"
+  description="La página que buscas no existe."
+  robots="noindex, nofollow"
+>
+  <section class="not-found" aria-labelledby="not-found-heading">
+    <div class="not-found__container">
+      <p class="not-found__code" aria-hidden="true">404</p>
+      <h1 id="not-found-heading" class="not-found__title">PÁGINA NO ENCONTRADA</h1>
+      <p class="not-found__message">
+        Esta pagina no existe. Puede regresar al inicio o contactar directamente.
+      </p>
+      <div class="not-found__actions">
+        <a href="/" class="btn btn--primary">VOLVER AL INICIO</a>
+        <a href="/contacto" class="btn btn--outline">CONTACTO</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    background-color: var(--color-lavender);
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    padding-block: var(--space-3xl);
+  }
+
+  .not-found__container {
+    max-width: var(--max-content);
+    margin-inline: auto;
+    padding-inline: var(--page-padding-mob);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .not-found__container {
+      padding-inline: var(--page-padding-desk);
+    }
+  }
+
+  .not-found__code {
+    font-family: var(--font-sans);
+    font-weight: var(--font-thin);
+    font-size: 6rem;
+    letter-spacing: 0.2em;
+    color: var(--color-primary);
+    opacity: 0.2;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .not-found__title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-thin);
+    font-size: var(--text-h1);
+    letter-spacing: var(--tracking-heading);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    line-height: var(--leading-heading);
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .not-found__title {
+      font-size: var(--text-h2);
+    }
+  }
+
+  .not-found__message {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-text);
+    line-height: var(--leading-body);
+    margin: 0;
+    max-width: 480px;
+  }
+
+  .not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-top: var(--space-sm);
+  }
+
+  /* Botones */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--btn-min-height);
+    padding: var(--btn-padding);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-button);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color var(--transition-btn), color var(--transition-btn);
+    white-space: nowrap;
+  }
+
+  .btn--primary {
+    background-color: var(--color-primary);
+    color: var(--color-cream);
+    border: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn--primary:hover {
+      background-color: #3D4420;
+    }
+  }
+
+  .btn--primary:focus-visible {
+    outline: 3px solid var(--color-sage);
+    outline-offset: 2px;
+  }
+
+  .btn--outline {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn--outline:hover {
+      background-color: var(--color-primary);
+      color: var(--color-cream);
+    }
+  }
+
+  .btn--outline:focus-visible {
+    outline: 3px solid var(--color-sage);
+    outline-offset: 2px;
+  }
+</style>

@@ -1,0 +1,340 @@
+---
+/**
+ * privacidad.astro — Política de privacidad y condiciones de contacto
+ *
+ * Incluye:
+ * - Condiciones de uso del sitio y canales de contacto
+ * - Advertencia clínica (PRV-01)
+ * - Responsable de privacidad (placeholder si pendiente) (PRV-02)
+ * - Procedimiento ante mensajes clínicos/urgencias (texto preventivo)
+ * - Cumplimiento Ley 23/1981 Colombia
+ *
+ * No hardcodea información médica — todo viene del contenido estructurado.
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PlaceholderNotice from '../components/PlaceholderNotice.astro';
+import { getCollection } from 'astro:content';
+import { BLOCKING_PLACEHOLDER_IDS } from '../lib/placeholders';
+
+const profileEntries = await getCollection('profile');
+const contactEntries = await getCollection('contact');
+
+const profileFields = profileEntries.flatMap((e) => e.data);
+const contactFields = contactEntries.flatMap((e) => e.data);
+
+function getProfileField(id: string) {
+  return profileFields.find((f) => f.id === id);
+}
+function getContactField(id: string) {
+  return contactFields.find((f) => f.id === id);
+}
+
+const privacyOwnerField = getProfileField('PH-PRIVACY-OWNER') ?? getContactField('PH-PRIVACY-OWNER');
+const clinicalProcedureField = getContactField('PH-CLINICAL-MESSAGE-PROCEDURE');
+const emergencyField = getContactField('PH-EMERGENCY-PROCEDURE');
+const domainField = getProfileField('PH-DOMAIN') ?? { value: null, status: 'pendiente' };
+
+const isPrivacyOwnerBlocking = BLOCKING_PLACEHOLDER_IDS.includes('PH-PRIVACY-OWNER' as any);
+const privacyOwner = !isPrivacyOwnerBlocking && privacyOwnerField?.status === 'aprobado'
+  ? privacyOwnerField.value
+  : null;
+---
+
+<BaseLayout
+  title="Privacidad — Dra. María Bernarda Pacheco Martelo"
+  description="Política de privacidad y condiciones de contacto del consultorio pediátrico."
+  robots="noindex, nofollow"
+  currentPath="/privacidad"
+>
+  <!-- ENCABEZADO -->
+  <section class="privacy-hero" aria-labelledby="privacy-heading">
+    <div class="page-container">
+      <p class="page-eyebrow">LEGAL</p>
+      <h1 id="privacy-heading" class="page-title">PRIVACIDAD Y CONDICIONES</h1>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <article class="privacy-content" aria-label="Política de privacidad">
+    <div class="page-container">
+
+      <!-- 1. CONDICIONES DE USO DEL SITIO -->
+      <section class="privacy-section" aria-labelledby="conditions-heading">
+        <h2 id="conditions-heading" class="privacy-section__heading">
+          1. CONDICIONES DE USO DEL SITIO
+        </h2>
+        <p>
+          Este sitio web tiene carácter exclusivamente informativo. La información publicada no constituye
+          consejo médico, diagnóstico, tratamiento ni prescripción de ningún tipo.
+        </p>
+        <p>
+          Los contenidos están sujetos a proceso de verificación y aprobación profesional.
+          Mientras se indica "pendiente de verificación", los datos no deben tomarse como información médica confirmada.
+        </p>
+        <p>
+          El uso de este sitio no establece una relación médico-paciente.
+        </p>
+      </section>
+
+      <!-- 2. ADVERTENCIA CLÍNICA (PRV-01) -->
+      <section class="privacy-section privacy-section--warning" aria-labelledby="clinical-warning-heading">
+        <h2 id="clinical-warning-heading" class="privacy-section__heading">
+          2. ADVERTENCIA SOBRE INFORMACIÓN CLÍNICA
+        </h2>
+        <p class="privacy-warning">
+          <strong>No envíe síntomas, diagnósticos, resultados de exámenes, información personal de salud
+          ni datos sensibles de ningún tipo a través de los canales de contacto de este sitio</strong>
+          (teléfono, correo electrónico, WhatsApp u otros medios de mensajería).
+        </p>
+        <p>
+          Estos canales no son seguros para la transmisión de información clínica y no están habilitados
+          para la gestión de situaciones médicas. Los mensajes con contenido clínico no recibirán
+          respuesta médica y serán eliminados para proteger la privacidad del remitente.
+        </p>
+        <p>
+          Esta restricción existe en cumplimiento de la <strong>Ley 23 de 1981 (Ética Médica, Colombia)</strong>
+          y para proteger la confidencialidad de la información de salud.
+        </p>
+      </section>
+
+      <!-- 3. RESPONSABLE DE PRIVACIDAD (PRV-02) -->
+      <section class="privacy-section" aria-labelledby="responsible-heading">
+        <h2 id="responsible-heading" class="privacy-section__heading">
+          3. RESPONSABLE DEL TRATAMIENTO DE DATOS
+        </h2>
+
+        {privacyOwner ? (
+          <p>
+            Responsable del tratamiento de datos personales: <strong>{privacyOwner}</strong>
+          </p>
+        ) : (
+          <>
+            <PlaceholderNotice
+              message="La información del responsable de privacidad está pendiente de verificación."
+              placeholderId="PH-PRIVACY-OWNER"
+            />
+            <p class="privacy-pending">
+              El nombre del responsable del tratamiento de datos personales se publicará cuando sea verificado.
+            </p>
+          </>
+        )}
+
+        <p>
+          Los datos proporcionados a través de los formularios o canales de contacto serán utilizados
+          únicamente para responder solicitudes de información y agendar citas médicas.
+          No serán compartidos con terceros salvo obligación legal.
+        </p>
+      </section>
+
+      <!-- 4. PROCEDIMIENTO ANTE MENSAJES CLÍNICOS -->
+      <section class="privacy-section" aria-labelledby="procedure-heading">
+        <h2 id="procedure-heading" class="privacy-section__heading">
+          4. PROCEDIMIENTO ANTE MENSAJES CON CONTENIDO CLÍNICO
+        </h2>
+
+        {clinicalProcedureField?.status === 'aprobado' && clinicalProcedureField.value ? (
+          <p>{clinicalProcedureField.value}</p>
+        ) : (
+          <p>
+            Si a través de los canales de contacto se recibe un mensaje con información clínica,
+            síntomas o solicitud de diagnóstico:
+          </p>
+        )}
+
+        <ul class="privacy-list">
+          <li>El mensaje no recibirá atención médica.</li>
+          <li>Se informará al remitente que ese canal no es el adecuado para consultas clínicas.</li>
+          <li>Se orientará hacia los canales apropiados de atención médica.</li>
+          <li>El mensaje será eliminado para proteger la privacidad del remitente.</li>
+        </ul>
+      </section>
+
+      <!-- 5. URGENCIAS -->
+      <section class="privacy-section privacy-section--emergency" aria-labelledby="emergency-heading">
+        <h2 id="emergency-heading" class="privacy-section__heading">
+          5. SITUACIONES DE URGENCIA MÉDICA
+        </h2>
+
+        {emergencyField?.status === 'aprobado' && emergencyField.value ? (
+          <p>{emergencyField.value}</p>
+        ) : (
+          <>
+            <p class="privacy-warning">
+              <strong>En caso de urgencia o emergencia médica, NO use este sitio ni sus canales de contacto.</strong>
+            </p>
+            <p>
+              Acuda inmediatamente al servicio de urgencias más cercano o llame a los servicios
+              de emergencia locales. No espere respuesta por canales de mensajería en situaciones de urgencia.
+            </p>
+          </>
+        )}
+      </section>
+
+      <!-- 6. ACTUALIZACIÓN -->
+      <section class="privacy-section" aria-labelledby="updates-heading">
+        <h2 id="updates-heading" class="privacy-section__heading">
+          6. ACTUALIZACIÓN DE ESTA POLÍTICA
+        </h2>
+        <p>
+          Esta política puede actualizarse conforme el sitio complete su proceso de verificación de contenidos.
+          Se recomienda revisar esta página periódicamente.
+        </p>
+        <p>
+          Última revisión: Esta política está en proceso de revisión y aprobación formal.
+        </p>
+      </section>
+
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  /* HERO */
+  .privacy-hero {
+    background-color: var(--color-cream);
+    padding-block: var(--space-3xl);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-container {
+    max-width: 800px;
+    margin-inline: auto;
+    padding-inline: var(--page-padding-mob);
+  }
+
+  @media (min-width: 768px) {
+    .page-container {
+      padding-inline: var(--page-padding-desk);
+    }
+  }
+
+  .page-eyebrow {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .page-title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-thin);
+    font-size: var(--text-h1);
+    letter-spacing: var(--tracking-heading);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    line-height: var(--leading-heading);
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .page-title {
+      font-size: var(--text-h2);
+    }
+  }
+
+  /* CONTENIDO */
+  .privacy-content {
+    background-color: var(--color-cream);
+    padding-block: var(--space-3xl);
+  }
+
+  .privacy-section {
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .privacy-section:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .privacy-section--warning {
+    background-color: var(--color-lavender);
+    border-radius: var(--radius-card);
+    padding: var(--space-xl);
+    margin-block: var(--space-sm);
+    border-top: none;
+  }
+
+  .privacy-section--emergency {
+    background-color: var(--color-primary);
+    border-radius: var(--radius-card);
+    padding: var(--space-xl);
+    margin-block: var(--space-sm);
+    border-top: none;
+  }
+
+  .privacy-section--emergency .privacy-section__heading {
+    color: var(--color-cream);
+  }
+
+  .privacy-section--emergency p {
+    color: var(--color-cream);
+    opacity: 0.9;
+  }
+
+  .privacy-section__heading {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-h3-mob);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .privacy-section__heading {
+      font-size: var(--text-h3);
+    }
+  }
+
+  /* Texto */
+  .privacy-content p {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-text);
+    line-height: var(--leading-body);
+    margin: 0;
+  }
+
+  .privacy-warning {
+    color: var(--color-text) !important;
+  }
+
+  .privacy-pending {
+    color: var(--color-text-muted) !important;
+    font-style: italic;
+  }
+
+  .privacy-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .privacy-list li {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-text);
+    line-height: var(--leading-body);
+    padding-left: var(--space-md);
+    border-left: 2px solid var(--color-sage);
+  }
+
+  strong {
+    font-weight: var(--font-regular);
+  }
+</style>

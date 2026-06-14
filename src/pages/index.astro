@@ -1,58 +1,420 @@
 ---
 /**
  * index.astro — Página de inicio
- * Contenido pendiente de aprobación médica de la Dra. Pacheco.
- * Estructura base con BaseLayout (Header + Footer incluidos).
+ *
+ * Hero con nombre/propuesta aprobada y CTA.
+ * Lee datos del contenido estructurado via getCollection.
+ * NO hardcodea afirmaciones médicas.
  */
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PlaceholderNotice from '../components/PlaceholderNotice.astro';
+import { getCollection } from 'astro:content';
+import { BLOCKING_PLACEHOLDER_IDS } from '../lib/placeholders';
+
+const profileEntries = await getCollection('profile');
+const profileFields = profileEntries.flatMap((e) => e.data);
+
+function getField(id: string) {
+  return profileFields.find((f) => f.id === id);
+}
+
+const nameField = getField('PH-PUBLIC-NAME');
+const titleField = getField('PH-PROFESSIONAL-TITLE');
+
+/** El nombre público no es bloqueante — se puede mostrar con la advertencia de pendiente */
+const doctorName = nameField?.value ?? 'Dra. María Bernarda Pacheco Martelo';
+const isNamePending = nameField?.status !== 'aprobado';
+
+/** El título profesional es bloqueante */
+const isTitleBlocking = BLOCKING_PLACEHOLDER_IDS.includes('PH-PROFESSIONAL-TITLE' as any);
+const professionalTitle =
+  !isTitleBlocking && titleField?.status === 'aprobado' ? titleField.value : null;
 ---
 
 <BaseLayout
   title="Dra. María Bernarda Pacheco Martelo — Pediatra"
-  description="Sitio profesional de medicina pediátrica. Información en proceso de verificación."
+  description="Sitio profesional de medicina pediátrica en Barranquilla. Información en proceso de verificación."
   robots="noindex, nofollow"
   currentPath="/"
 >
-  <!-- HERO placeholder — será reemplazado en plan 01-05 (Hero Section) -->
-  <section class="hero-placeholder" aria-labelledby="hero-heading">
-    <div class="container">
-      <PlaceholderNotice
-        message="Contenido del sitio en preparación. Disponible próximamente."
-        placeholderId="PH-HERO"
-      />
-      <h1 id="hero-heading">MARÍA BERNARDA PACHECO</h1>
-      <p class="hero-role">Pediatra</p>
+  <!-- HERO: fondo lavanda, nombre y propuesta aprobada -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="hero__content">
+      {isNamePending && (
+        <PlaceholderNotice
+          message="El nombre profesional está pendiente de verificación final."
+          placeholderId="PH-PUBLIC-NAME"
+        />
+      )}
+
+      <p class="hero__eyebrow">PEDIATRÍA</p>
+
+      <h1 id="hero-heading" class="hero__title">{doctorName}</h1>
+
+      {professionalTitle ? (
+        <p class="hero__subtitle">{professionalTitle}</p>
+      ) : (
+        <p class="hero__subtitle hero__subtitle--pending">
+          Especialista en pediatría
+        </p>
+      )}
+
+      <div class="hero__cta-group">
+        <!-- CTA principal: deshabilitado hasta verificar contacto (WEB-10) -->
+        <span
+          role="link"
+          aria-disabled="true"
+          title="Este enlace estará disponible cuando se confirme la información de contacto."
+          class="btn btn--primary btn--disabled"
+        >
+          AGENDAR CITA
+        </span>
+
+        <a href="/perfil" class="btn btn--outline">
+          CONOCER MÁS
+        </a>
+      </div>
+
+      <p class="hero__disclaimer">
+        No envíe información clínica por este canal.
+      </p>
+    </div>
+  </section>
+
+  <!-- PILARES: valores confirmados del branding MBP -->
+  <section class="pillars" aria-labelledby="pillars-heading">
+    <div class="pillars__container">
+      <p class="pillars__eyebrow">PEDIATRÍA CON EXPERIENCIA</p>
+      <h2 id="pillars-heading" class="pillars__statement">
+        CUIDADO INTEGRAL CENTRADO EN EL BIENESTAR DEL NIÑO Y SU FAMILIA
+      </h2>
+
+      <ul class="pillars__list" role="list">
+        <li class="pillars__item">
+          <div class="pillars__circle" aria-hidden="true"></div>
+          <span class="pillars__label">PREVENCIÓN Y PROMOCIÓN DE LA SALUD</span>
+        </li>
+        <li class="pillars__item">
+          <div class="pillars__circle" aria-hidden="true"></div>
+          <span class="pillars__label">NEURODESARROLLO Y CRIANZA RESPETUOSA</span>
+        </li>
+        <li class="pillars__item">
+          <div class="pillars__circle" aria-hidden="true"></div>
+          <span class="pillars__label">ACOMPAÑAMIENTO INTEGRAL DE LA FAMILIA</span>
+        </li>
+        <li class="pillars__item">
+          <div class="pillars__circle" aria-hidden="true"></div>
+          <span class="pillars__label">NUTRICIÓN Y MICROBIOTA INFANTIL</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final" aria-labelledby="cta-final-heading">
+    <div class="cta-final__content">
+      <h2 id="cta-final-heading" class="cta-final__title">¿TIENES DUDAS SOBRE LA SALUD DE TU BEBÉ?</h2>
+      <p class="cta-final__body">
+        Cuando estés lista, estaremos disponibles para acompañarte.
+      </p>
+      <a href="/contacto" class="btn btn--outline-light">
+        VER FORMAS DE CONTACTO
+      </a>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .hero-placeholder {
-    min-height: 60vh;
-    display: flex;
-    align-items: center;
+  /* --- HERO --- */
+  .hero {
     background-color: var(--color-lavender);
     padding-block: var(--space-3xl);
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
   }
 
-  .hero-placeholder .container {
+  .hero__content {
+    max-width: var(--max-content);
+    margin-inline: auto;
+    padding-inline: var(--page-padding-mob);
     display: flex;
     flex-direction: column;
-    gap: var(--space-xl);
+    gap: var(--space-md);
   }
 
-  h1 {
+  @media (min-width: 768px) {
+    .hero__content {
+      padding-inline: var(--page-padding-desk);
+      max-width: 680px;
+    }
+  }
+
+  .hero__eyebrow {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .hero__title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-thin);
+    font-size: var(--text-h1);
+    letter-spacing: var(--tracking-heading);
+    text-transform: uppercase;
     color: var(--color-primary);
+    line-height: var(--leading-heading);
+    margin: 0;
   }
 
-  .hero-role {
+  @media (min-width: 768px) {
+    .hero__title {
+      font-size: var(--text-display);
+    }
+  }
+
+  .hero__subtitle {
     font-family: var(--font-sans);
     font-weight: var(--font-light);
     font-size: var(--text-body);
-    letter-spacing: 0.35em;
+    letter-spacing: var(--tracking-body);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .hero__subtitle--pending {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .hero__cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-top: var(--space-sm);
+  }
+
+  .hero__disclaimer {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 0.75rem;
+    color: var(--color-destructive);
+    margin: 0;
+  }
+
+  /* --- BOTONES --- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--btn-min-height);
+    padding: var(--btn-padding);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-button);
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--transition-btn), color var(--transition-btn);
+    white-space: nowrap;
+  }
+
+  .btn--primary {
+    background-color: var(--color-primary);
+    color: var(--color-cream);
+    border: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn--primary:hover:not(.btn--disabled) {
+      background-color: #3D4420;
+    }
+  }
+
+  .btn--disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .btn--outline {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn--outline:hover {
+      background-color: var(--color-primary);
+      color: var(--color-cream);
+    }
+  }
+
+  .btn--outline:focus-visible {
+    outline: 3px solid var(--color-sage);
+    outline-offset: 2px;
+  }
+
+  .btn--outline-light {
+    background-color: transparent;
+    color: var(--color-cream);
+    border: 1.5px solid var(--color-cream);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn--outline-light:hover {
+      background-color: var(--color-cream);
+      color: var(--color-primary);
+    }
+  }
+
+  .btn--outline-light:focus-visible {
+    outline: 3px solid var(--color-lavender);
+    outline-offset: 2px;
+  }
+
+  /* --- PILARES --- */
+  .pillars {
+    background-color: var(--color-white);
+    padding-block: var(--space-3xl);
+  }
+
+  .pillars__container {
+    max-width: var(--max-content);
+    margin-inline: auto;
+    padding-inline: var(--page-padding-mob);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 768px) {
+    .pillars__container {
+      padding-inline: var(--page-padding-desk);
+    }
+  }
+
+  .pillars__eyebrow {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 0.6875rem; /* 11px */
+    letter-spacing: var(--tracking-label);
     text-transform: uppercase;
     color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .pillars__statement {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 1.25rem; /* 20px */
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    max-width: 680px;
+    line-height: var(--leading-heading);
+    margin: 0;
+  }
+
+  .pillars__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xl);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 680px;
+  }
+
+  @media (min-width: 768px) {
+    .pillars__list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .pillars__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .pillars__circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .pillars__label {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: 0.625rem; /* 10px */
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* --- CTA FINAL --- */
+  .cta-final {
+    background-color: var(--color-primary);
+    padding-block: var(--space-3xl);
+  }
+
+  .cta-final__content {
+    max-width: var(--max-content);
+    margin-inline: auto;
+    padding-inline: var(--page-padding-mob);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .cta-final__content {
+      padding-inline: var(--page-padding-desk);
+      max-width: 560px;
+    }
+  }
+
+  .cta-final__title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-thin);
+    font-size: var(--text-h2-mob);
+    letter-spacing: var(--tracking-heading);
+    text-transform: uppercase;
+    color: var(--color-cream);
+    margin: 0;
+    line-height: var(--leading-heading);
+  }
+
+  @media (min-width: 768px) {
+    .cta-final__title {
+      font-size: var(--text-h2);
+    }
+  }
+
+  .cta-final__body {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-cream);
+    opacity: 0.85;
+    margin: 0;
+    line-height: var(--leading-body);
   }
 </style>

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "PH-PUBLIC-NAME",
+    "value": "Dra. Maria Bernarlda Pacheco Martelo",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md / CNT-I02 declaracion humana 2026-06-13"
+  },
+  {
+    "id": "PH-PROFESSIONAL-TITLE",
+    "value": "Especialidad en Medicina Pediatrica",
+    "status": "verificar",
+    "source": "PLACEHOLDER-REGISTER.md / CNT-C03 declaracion humana 2026-06-13"
+  },
+  {
+    "id": "PH-PROFESSIONAL-REGISTRY",
+    "value": "Credencial pendiente de verificacion",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md"
+  },
+  {
+    "id": "PH-AGE-RANGE",
+    "value": "Informacion disponible proximamente",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md"
+  },
+  {
+    "id": "PH-CARE-MODALITY",
+    "value": "Informacion disponible proximamente",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "PH-SERVICE-DESCRIPTIONS",
+    "value": "Mostrar solo nombres confirmados",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md"
+  },
+  {
+    "id": "PH-SPECIAL-PROGRAM-NAMES",
+    "value": "Programas pediatricos especiales",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md / CNT-S07 declaracion humana 2026-06-13"
+  }
+]

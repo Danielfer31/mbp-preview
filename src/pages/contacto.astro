@@ -1,0 +1,269 @@
+---
+/**
+ * contacto.astro — Página de contacto
+ *
+ * Usa SafeContactCard + LocationsHours.
+ * Muestra sedes, horarios, canales y canal alternativo.
+ * Canal principal deshabilitado mientras sea placeholder bloqueante (WEB-10).
+ * Disclaimer "No envíe información clínica" junto a cada CTA (WEB-07).
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SafeContactCard from '../components/SafeContactCard.astro';
+import LocationsHours from '../components/LocationsHours.astro';
+import PlaceholderNotice from '../components/PlaceholderNotice.astro';
+import { getCollection } from 'astro:content';
+
+const contactEntries = await getCollection('contact');
+const contactFields = contactEntries.flatMap((e) => e.data);
+
+function getField(id: string) {
+  return contactFields.find((f) => f.id === id);
+}
+
+const phoneField = getField('PH-PHONE');
+const emailField = getField('PH-EMAIL');
+const whatsappField = getField('PH-WHATSAPP');
+const alternateField = getField('PH-ALTERNATE-CHANNEL');
+const clinicalProcedureField = getField('PH-CLINICAL-MESSAGE-PROCEDURE');
+const emergencyField = getField('PH-EMERGENCY-PROCEDURE');
+---
+
+<BaseLayout
+  title="Contacto — Dra. María Bernarda Pacheco Martelo"
+  description="Información de contacto de la Dra. María Bernarda Pacheco Martelo, pediatra. Información en proceso de verificación."
+  robots="noindex, nofollow"
+  currentPath="/contacto"
+>
+  <!-- ENCABEZADO -->
+  <section class="contact-hero" aria-labelledby="contact-heading">
+    <div class="page-container">
+      <p class="page-eyebrow">COMUNICACIÓN</p>
+      <h1 id="contact-heading" class="page-title">CONTACTO</h1>
+    </div>
+  </section>
+
+  <!-- AVISO GENERAL DE CONTACTO -->
+  <section class="contact-notice" aria-label="Aviso sobre canales de contacto">
+    <div class="page-container">
+      <PlaceholderNotice
+        message="Los datos de contacto están pendientes de verificación. Se publicarán cuando sean confirmados por la doctora."
+        placeholderId="PH-PHONE"
+      />
+    </div>
+  </section>
+
+  <!-- CANALES DE CONTACTO -->
+  <section class="channels" aria-labelledby="channels-heading">
+    <div class="page-container">
+      <h2 id="channels-heading" class="section-heading">CANALES DE ATENCIÓN</h2>
+
+      <div class="channels__grid">
+        <!-- Teléfono -->
+        <SafeContactCard
+          channelType="phone"
+          channelValue={phoneField?.value ?? undefined}
+          placeholderId="PH-PHONE"
+          alternateChannelValue={alternateField?.value ?? undefined}
+          alternateChannelStatus={alternateField?.status}
+          label="LLAMAR AHORA"
+        />
+
+        <!-- Email -->
+        <SafeContactCard
+          channelType="email"
+          channelValue={emailField?.value ?? undefined}
+          placeholderId="PH-EMAIL"
+          alternateChannelValue={alternateField?.value ?? undefined}
+          alternateChannelStatus={alternateField?.status}
+          label="ENVIAR CORREO"
+        />
+
+        <!-- WhatsApp -->
+        <SafeContactCard
+          channelType="whatsapp"
+          channelValue={whatsappField?.value ?? undefined}
+          placeholderId="PH-WHATSAPP"
+          alternateChannelValue={alternateField?.value ?? undefined}
+          alternateChannelStatus={alternateField?.status}
+          label="WHATSAPP"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- SEDES Y HORARIOS (WEB-01) -->
+  <section class="locations-section" aria-labelledby="locations-heading">
+    <div class="page-container">
+      <h2 id="locations-heading" class="section-heading">DÓNDE ENCONTRARNOS</h2>
+      <LocationsHours />
+    </div>
+  </section>
+
+  <!-- PROCEDIMIENTO ANTE MENSAJES CLÍNICOS (PRV-01, PRV-02) -->
+  <section class="clinical-notice" aria-labelledby="clinical-notice-heading">
+    <div class="page-container">
+      <h2 id="clinical-notice-heading" class="section-heading">AVISO IMPORTANTE</h2>
+
+      <div class="clinical-notice__content">
+        <p class="clinical-notice__text">
+          <strong>No envíe síntomas, diagnósticos ni información médica personal por ninguno de estos canales.</strong>
+          Estos medios de contacto son exclusivamente para consultas de agenda y preguntas administrativas.
+        </p>
+
+        {clinicalProcedureField?.status === 'aprobado' && clinicalProcedureField.value ? (
+          <p class="clinical-notice__text">{clinicalProcedureField.value}</p>
+        ) : (
+          <p class="clinical-notice__text">
+            Si necesita orientación médica urgente, diríjase al servicio de urgencias más cercano o llame a los servicios de emergencia locales.
+          </p>
+        )}
+
+        {emergencyField?.status === 'aprobado' && emergencyField.value ? (
+          <p class="clinical-notice__text">{emergencyField.value}</p>
+        ) : (
+          <p class="clinical-notice__text clinical-notice__text--emergency">
+            <strong>En caso de emergencia médica:</strong> Acuda al servicio de urgencias más cercano o llame a los servicios de emergencia locales. No espere respuesta por canales de mensajería.
+          </p>
+        )}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* HERO */
+  .contact-hero {
+    background-color: var(--color-teal);
+    padding-block: var(--space-3xl);
+  }
+
+  .page-container {
+    max-width: var(--max-content);
+    margin-inline: auto;
+    padding-inline: var(--page-padding-mob);
+  }
+
+  @media (min-width: 768px) {
+    .page-container {
+      padding-inline: var(--page-padding-desk);
+    }
+  }
+
+  .page-eyebrow {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-sm);
+    opacity: 0.75;
+  }
+
+  .page-title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-thin);
+    font-size: var(--text-h1);
+    letter-spacing: var(--tracking-heading);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    line-height: var(--leading-heading);
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .page-title {
+      font-size: var(--text-display);
+    }
+  }
+
+  /* NOTICE */
+  .contact-notice {
+    background-color: var(--color-cream);
+    padding-block: var(--space-lg);
+  }
+
+  /* CANALES */
+  .channels {
+    background-color: var(--color-cream);
+    padding-block: var(--space-3xl);
+  }
+
+  .section-heading {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-h3-mob);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    margin: 0 0 var(--space-xl);
+  }
+
+  @media (min-width: 768px) {
+    .section-heading {
+      font-size: var(--text-h3);
+    }
+  }
+
+  .channels__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 640px) {
+    .channels__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .channels__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* SEDES */
+  .locations-section {
+    background-color: var(--color-white);
+    padding-block: var(--space-3xl);
+  }
+
+  /* AVISO CLÍNICO */
+  .clinical-notice {
+    background-color: var(--color-primary);
+    padding-block: var(--space-3xl);
+  }
+
+  .clinical-notice .section-heading {
+    color: var(--color-cream);
+  }
+
+  .clinical-notice__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    max-width: 680px;
+  }
+
+  .clinical-notice__text {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-cream);
+    line-height: var(--leading-body);
+    margin: 0;
+    opacity: 0.9;
+  }
+
+  .clinical-notice__text strong {
+    font-weight: var(--font-regular);
+    opacity: 1;
+  }
+
+  .clinical-notice__text--emergency {
+    border-left: 3px solid var(--color-lavender);
+    padding-left: var(--space-md);
+  }
+</style>

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "PH-ADDRESS",
+    "value": "Informacion disponible proximamente",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md / CNT-I05 verificar"
+  },
+  {
+    "id": "PH-CITY",
+    "value": "Barranquilla, pendiente de confirmacion final",
+    "status": "pendiente",
+    "source": "PLACEHOLDER-REGISTER.md / CNT-I04 pendiente doctora"
+  }
+]

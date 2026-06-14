@@ -1,0 +1,338 @@
+---
+/**
+ * perfil.astro — Página de perfil profesional
+ *
+ * Muestra experiencia y credenciales solo si están aprobadas.
+ * Empty state cuando credenciales están pendientes (CNT-01).
+ * Lee exclusivamente de src/content/site/profile.json.
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PlaceholderNotice from '../components/PlaceholderNotice.astro';
+import { getCollection } from 'astro:content';
+import { BLOCKING_PLACEHOLDER_IDS } from '../lib/placeholders';
+
+const profileEntries = await getCollection('profile');
+const profileFields = profileEntries.flatMap((e) => e.data);
+
+function getField(id: string) {
+  return profileFields.find((f) => f.id === id);
+}
+
+const nameField = getField('PH-PUBLIC-NAME');
+const titleField = getField('PH-PROFESSIONAL-TITLE');
+const registryField = getField('PH-PROFESSIONAL-REGISTRY');
+const ageRangeField = getField('PH-AGE-RANGE');
+const careModalityField = getField('PH-CARE-MODALITY');
+
+/** El nombre público no es bloqueante — se puede mostrar */
+const doctorName = nameField?.value ?? 'Dra. María Bernarda Pacheco Martelo';
+
+/** Credenciales — todas son bloqueantes hasta verificar */
+const isTitleBlocking = BLOCKING_PLACEHOLDER_IDS.includes('PH-PROFESSIONAL-TITLE' as any);
+const isRegistryBlocking = BLOCKING_PLACEHOLDER_IDS.includes('PH-PROFESSIONAL-REGISTRY' as any);
+const isAgeRangeBlocking = BLOCKING_PLACEHOLDER_IDS.includes('PH-AGE-RANGE' as any);
+const isCareModalityBlocking = BLOCKING_PLACEHOLDER_IDS.includes('PH-CARE-MODALITY' as any);
+
+const titleApproved = !isTitleBlocking && titleField?.status === 'aprobado' ? titleField.value : null;
+const registryApproved = !isRegistryBlocking && registryField?.status === 'aprobado' ? registryField.value : null;
+const ageRangeApproved = !isAgeRangeBlocking && ageRangeField?.status === 'aprobado' ? ageRangeField.value : null;
+const careModalityApproved = !isCareModalityBlocking && careModalityField?.status === 'aprobado' ? careModalityField.value : null;
+
+/** Verificar si hay alguna credencial aprobada para mostrar la sección */
+const hasAnyCredential = !!(titleApproved || registryApproved || ageRangeApproved || careModalityApproved);
+---
+
+<BaseLayout
+  title="Perfil — Dra. María Bernarda Pacheco Martelo"
+  description="Perfil profesional de la Dra. María Bernarda Pacheco Martelo, pediatra."
+  robots="noindex, nofollow"
+  currentPath="/perfil"
+>
+  <!-- ENCABEZADO DE PERFIL -->
+  <section class="profile-hero" aria-labelledby="profile-heading">
+    <div class="page-container">
+      <p class="page-eyebrow">PERFIL PROFESIONAL</p>
+      <h1 id="profile-heading" class="page-title">{doctorName}</h1>
+    </div>
+  </section>
+
+  <!-- CREDENCIALES -->
+  <section class="credentials" aria-labelledby="credentials-heading">
+    <div class="page-container">
+      <h2 id="credentials-heading" class="section-heading">FORMACIÓN Y CREDENCIALES</h2>
+
+      {hasAnyCredential ? (
+        <dl class="credentials__list">
+          {titleApproved && (
+            <>
+              <dt class="credentials__term">Especialidad</dt>
+              <dd class="credentials__def">{titleApproved}</dd>
+            </>
+          )}
+          {registryApproved && (
+            <>
+              <dt class="credentials__term">Registro profesional</dt>
+              <dd class="credentials__def">{registryApproved}</dd>
+            </>
+          )}
+          {ageRangeApproved && (
+            <>
+              <dt class="credentials__term">Rango de edad atendido</dt>
+              <dd class="credentials__def">{ageRangeApproved}</dd>
+            </>
+          )}
+          {careModalityApproved && (
+            <>
+              <dt class="credentials__term">Modalidad de atención</dt>
+              <dd class="credentials__def">{careModalityApproved}</dd>
+            </>
+          )}
+        </dl>
+      ) : (
+        <!-- Empty state cuando credenciales están pendientes -->
+        <div class="empty-state" role="status">
+          <PlaceholderNotice
+            message="Las credenciales verificadas se publicarán próximamente."
+            placeholderId="PH-PROFESSIONAL-REGISTRY"
+          />
+          <p class="empty-state__text">
+            Las credenciales verificadas se publicarán próximamente.
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- VALORES PROFESIONALES (confirmados del branding — no son afirmaciones médicas) -->
+  <section class="values" aria-labelledby="values-heading">
+    <div class="page-container">
+      <h2 id="values-heading" class="section-heading">ENFOQUE DE ATENCIÓN</h2>
+      <p class="values__intro">
+        El enfoque profesional se basa en pilares confirmados por el branding del consultorio:
+      </p>
+      <ul class="values__list">
+        <li class="values__item">Prevención y promoción de la salud</li>
+        <li class="values__item">Neurodesarrollo y crianza respetuosa</li>
+        <li class="values__item">Acompañamiento integral de la familia</li>
+        <li class="values__item">Nutrición y microbiota infantil</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA DE CONTACTO -->
+  <section class="profile-cta" aria-labelledby="profile-cta-heading">
+    <div class="page-container">
+      <h2 id="profile-cta-heading" class="section-heading section-heading--light">
+        ¿DESEAS AGENDAR UNA CITA?
+      </h2>
+      <a href="/contacto" class="btn btn--outline-light">VER FORMAS DE CONTACTO</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* --- PÁGINA HERO --- */
+  .profile-hero {
+    background-color: var(--color-lavender);
+    padding-block: var(--space-3xl);
+  }
+
+  .page-container {
+    max-width: var(--max-content);
+    margin-inline: auto;
+    padding-inline: var(--page-padding-mob);
+  }
+
+  @media (min-width: 768px) {
+    .page-container {
+      padding-inline: var(--page-padding-desk);
+    }
+  }
+
+  .page-eyebrow {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .page-title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-thin);
+    font-size: var(--text-h1);
+    letter-spacing: var(--tracking-heading);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    line-height: var(--leading-heading);
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .page-title {
+      font-size: var(--text-display);
+    }
+  }
+
+  /* --- CREDENCIALES --- */
+  .credentials {
+    background-color: var(--color-cream);
+    padding-block: var(--space-3xl);
+  }
+
+  .section-heading {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-h3-mob);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    margin: 0 0 var(--space-xl);
+  }
+
+  @media (min-width: 768px) {
+    .section-heading {
+      font-size: var(--text-h3);
+    }
+  }
+
+  .section-heading--light {
+    color: var(--color-cream);
+  }
+
+  .credentials__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm) var(--space-xl);
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .credentials__list {
+      grid-template-columns: auto 1fr;
+    }
+  }
+
+  .credentials__term {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-top: var(--space-sm);
+  }
+
+  .credentials__def {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-text);
+    line-height: var(--leading-body);
+    margin: 0;
+    padding-top: var(--space-sm);
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .empty-state__text {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* --- VALORES --- */
+  .values {
+    background-color: var(--color-white);
+    padding-block: var(--space-3xl);
+  }
+
+  .values__intro {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-text);
+    line-height: var(--leading-body);
+    margin: 0 0 var(--space-lg);
+    max-width: 640px;
+  }
+
+  .values__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .values__item {
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-body);
+    color: var(--color-text);
+    padding-left: var(--space-md);
+    border-left: 3px solid var(--color-sage);
+    line-height: var(--leading-body);
+  }
+
+  /* --- CTA FINAL --- */
+  .profile-cta {
+    background-color: var(--color-primary);
+    padding-block: var(--space-3xl);
+  }
+
+  .profile-cta .page-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    align-items: flex-start;
+  }
+
+  /* Botones */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--btn-min-height);
+    padding: var(--btn-padding);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-weight: var(--font-light);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-button);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color var(--transition-btn), color var(--transition-btn);
+  }
+
+  .btn--outline-light {
+    background-color: transparent;
+    color: var(--color-cream);
+    border: 1.5px solid var(--color-cream);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn--outline-light:hover {
+      background-color: var(--color-cream);
+      color: var(--color-primary);
+    }
+  }
+
+  .btn--outline-light:focus-visible {
+    outline: 3px solid var(--color-lavender);
+    outline-offset: 2px;
+  }
+</style>
