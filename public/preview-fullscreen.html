@@ -893,10 +893,71 @@ function toggleFaq(id) {
         tl.from(disclaim, { opacity: 0, duration: 0.5, ease: 'power2.out' }, 0.9);
       }
     },
-    enter_servicios:   function() { /* Task 4 */ },
-    enter_perfil:      function() { /* Task 4 */ },
-    enter_contacto:    function() { /* Task 4 */ },
-    enter_avisos:      function() { /* Task 4 */ },
+    enter_servicios: function() {
+      var h1      = document.querySelector('#page-servicios h1');
+      var badge   = document.querySelector('#page-servicios div[style*="display:inline-block"]');
+      var divider = document.querySelector('#page-servicios div[style*="width:40px;height:2px"]');
+      var body    = document.querySelector('#page-servicios p[style*="font-size:15px"]');
+
+      var words = wordSplit(h1, 'wd');
+      var tl = gsap.timeline();
+
+      if (badge)   { tl.from(badge,   { scale:0, opacity:0, duration:0.4, ease:'back.out(1.7)' }, 0); }
+      if (words.length) { tl.from(words, { opacity:0, y:24, duration:0.6, ease:'power3.out', stagger:0.06 }, 0.15); }
+      if (divider) { tl.from(divider, { width:0, duration:0.5, ease:'power3.out' }, 0.4); }
+      if (body)    { tl.from(body,    { opacity:0, y:12, duration:0.5, ease:'power2.out' }, 0.5); }
+    },
+    enter_perfil: function() {
+      var h1      = document.querySelector('#page-perfil h1');
+      var badge   = document.querySelector('#page-perfil div[style*="display:inline-block"]');
+      var divider = document.querySelector('#page-perfil div[style*="width:40px;height:2px"]');
+      var body    = document.querySelector('#page-perfil p[style*="font-size:14px"]');
+      var cards   = document.querySelectorAll('#page-perfil div[style*="flex:1 1 220px"] > div');
+
+      var words = wordSplit(h1, 'wd');
+      var tl = gsap.timeline();
+
+      if (badge)   { tl.from(badge, { scale:0, opacity:0, duration:0.4, ease:'back.out(1.7)' }, 0); }
+      if (words.length) {
+        tl.from(words, {
+          opacity:0, y:28, rotateX:25, duration:0.75, ease:'power3.out',
+          stagger:0.06, transformOrigin:'center bottom'
+        }, 0.15);
+      }
+      if (divider) { tl.from(divider, { width:0, duration:0.5, ease:'power3.out' }, 0.4); }
+      if (body)    { tl.from(body,    { opacity:0, y:12, duration:0.5, ease:'power2.out' }, 0.5); }
+      if (cards.length) {
+        tl.from(Array.from(cards), { opacity:0, x:20, duration:0.55, ease:'power2.out', stagger:0.08 }, 0.5);
+      }
+    },
+    enter_contacto: function() {
+      var h1      = document.querySelector('#page-contacto h1');
+      var badge   = document.querySelector('#page-contacto div[style*="display:inline-block"]');
+      var divider = document.querySelector('#page-contacto div[style*="width:40px;height:2px"]');
+      var body    = document.querySelector('#page-contacto p[style*="font-size:15px"]');
+
+      var words = wordSplit(h1, 'wd');
+      var tl = gsap.timeline();
+
+      if (badge)   { tl.from(badge,   { scale:0, opacity:0, duration:0.4, ease:'back.out(1.7)' }, 0); }
+      if (words.length) { tl.from(words, { opacity:0, y:24, duration:0.6, ease:'power3.out', stagger:0.06 }, 0.15); }
+      if (divider) { tl.from(divider, { width:0, duration:0.5, ease:'power3.out' }, 0.4); }
+      if (body)    { tl.from(body,    { opacity:0, y:12, duration:0.5, ease:'power2.out' }, 0.5); }
+    },
+    enter_avisos: function() {
+      var eyebrow = document.querySelector('#page-avisos p[style*="letter-spacing:.25em"]');
+      var h1      = document.querySelector('#page-avisos h1');
+      var divider = document.querySelector('#page-avisos div[style*="width:40px;height:2px"]');
+      var body    = document.querySelector('#page-avisos p[style*="font-size:15px"]');
+
+      var words = wordSplit(h1, 'wd');
+      var tl = gsap.timeline();
+
+      if (eyebrow) { tl.from(eyebrow, { opacity:0, y:8, duration:0.4, ease:'power2.out' }, 0); }
+      if (words.length) { tl.from(words, { opacity:0, y:20, duration:0.55, ease:'power3.out', stagger:0.05 }, 0.15); }
+      if (divider) { tl.from(divider, { width:0, duration:0.45, ease:'power3.out' }, 0.35); }
+      if (body)    { tl.from(body,    { opacity:0, y:12, duration:0.5, ease:'power2.out' }, 0.45); }
+    },
     initScrollReveals: function(page) { /* Task 5 */ },
     initMicro:         function() { /* Task 6 */ },
     initDecorative:    function() { /* Task 7 */ }
