@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maria Bernarda Pacheco — Pediatría</title>
+<meta name="description" content="Pediatría con confianza, tranquilidad y profesionalismo. Maria Bernarda Pacheco, especialista en pediatría.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Jost',sans-serif;background:#f0ebe0;min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
+button{font-family:'Jost',sans-serif}
+.page{position:fixed;top:72px;left:0;right:0;bottom:0;height:calc(100vh - 72px);overflow:hidden;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .4s ease;z-index:1}
+.page.active{opacity:1;pointer-events:auto;z-index:2}
+.sec{padding:56px 80px;max-width:1440px;margin:0 auto;width:100%}
+.sec-lg{padding:72px 80px;max-width:1440px;margin:0 auto;width:100%}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;transition:background .3s,box-shadow .3s}
+header.dark{background:#3d4728}
+header.light{background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.h-inner{display:flex;align-items:center;justify-content:space-between;height:100%;padding:0 80px;max-width:1440px;margin:0 auto;width:100%;gap:16px}
+.logo-btn{display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:0;flex-shrink:0}
+.logo-name{font-size:11.5px;font-weight:600;line-height:1.25;letter-spacing:.1em;font-family:'Jost',sans-serif;transition:color .3s}
+header.dark .logo-name{color:#f0ebe0}
+header.light .logo-name{color:#2c2c2c}
+.logo-ped{font-size:9px;font-weight:400;letter-spacing:.22em;font-family:'Jost',sans-serif;transition:color .3s}
+header.dark .logo-ped{color:#8aaa68}
+header.light .logo-ped{color:#7a9960}
+nav.dnav{display:flex;gap:28px;align-items:center}
+.nb{background:none;border:none;cursor:pointer;font-size:11.5px;font-weight:500;letter-spacing:.1em;padding:4px 0;border-bottom:2px solid transparent;font-family:'Jost',sans-serif;white-space:nowrap;transition:color .2s,border-color .2s}
+header.dark .nb{color:#e8f0d8}
+header.light .nb{color:#3d4728}
+header.dark .nb.active{border-bottom-color:#c4b0e8}
+header.light .nb.active{border-bottom-color:#3d4728}
+.h-cta{border-radius:20px;padding:9px 18px;font-size:11px;font-weight:600;letter-spacing:.12em;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:'Jost',sans-serif;white-space:nowrap;transition:background .3s,color .3s,border-color .3s}
+header.dark .h-cta{background:transparent;color:#d8e8c0;border:1.5px solid #7aa060}
+header.light .h-cta{background:#3d4728;color:#fff;border:1.5px solid #3d4728}
+.hamb{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;transition:color .3s}
+header.dark .hamb{color:#e0ebe0}
+header.light .hamb{color:#3d4728}
+.hamb span{display:block;width:22px;height:2px;background:currentColor;border-radius:2px}
+
+/* MOBILE MENU */
+.mob-menu{position:fixed;inset:0;background:#3d4728;z-index:200;display:none;flex-direction:column;padding:20px 24px 40px;overflow-y:auto}
+.mob-menu.open{display:flex}
+.mob-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px}
+.mob-close{background:none;border:none;cursor:pointer;color:#e0ebe0;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.mob-nav{display:flex;flex-direction:column;gap:0;flex:1}
+.mob-nb{background:none;border:none;border-bottom:1px solid rgba(255,255,255,.12);cursor:pointer;color:#f0ebe0;font-size:17px;font-weight:400;letter-spacing:.1em;padding:20px 0;text-align:left;font-family:'Jost',sans-serif}
+.mob-cta{width:100%;background:transparent;color:#d8e8c0;border:1.5px solid #7aa060;border-radius:28px;padding:15px 24px;font-size:11.5px;font-weight:600;letter-spacing:.15em;cursor:pointer;font-family:'Jost',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px}
+
+/* FAQ */
+.faq-chev{transition:transform .2s;flex-shrink:0}
+.faq-chev.open{transform:rotate(180deg)}
+.faq-body{overflow:hidden;max-height:0;transition:max-height .25s ease}
+.faq-body.open{max-height:400px}
+.faq-inner{padding:0 0 16px;font-size:13.5px;color:#5a5858;line-height:1.6;font-weight:300}
+.faq-inner.sm{font-size:13px;padding:0 0 14px}
+
+/* FOOTER */
+footer{background:#3d4728;color:#f0ebe0;margin-top:auto}
+.ft{padding:56px 80px;max-width:1440px;margin:0 auto;width:100%}
+.ft-top{display:flex;flex-wrap:wrap;gap:40px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:24px}
+.ft-bot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px}
+.ft-copy{font-size:11.5px;color:rgba(240,235,224,.45);font-weight:300}
+.ft-lbl{font-size:10px;font-weight:600;letter-spacing:.2em;color:#8aaa68;margin-bottom:16px}
+.ft-nb{background:none;border:none;cursor:pointer;color:rgba(240,235,224,.75);font-size:13px;font-weight:300;text-align:left;padding:0;font-family:'Jost',sans-serif}
+.soc-a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;color:rgba(240,235,224,.7);text-decoration:none}
+
+/* RESPONSIVE */
+@media(max-width:800px){
+  .sec{padding:40px 20px}
+  .sec-lg{padding:52px 20px}
+  .h-inner{padding:0 20px}
+  nav.dnav{display:none!important}
+  .hamb{display:flex}
+  .ft{padding:40px 20px}
+  .vs-border{border-left:none!important;border-right:none!important}
+  .priv-border{border-left:none!important;padding-left:0!important}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="hdr" class="dark" role="banner">
+  <div class="h-inner">
+    <button class="logo-btn" onclick="goTo('inicio')" aria-label="Maria Bernarda Pacheco Pediatría — Inicio">
+      <svg width="42" height="42" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+        <path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z" fill="#c4b0e8"/>
+        <path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z" fill="#8aaa68"/>
+        <path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z" fill="#3d4728"/>
+        <path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z" fill="#4d8282"/>
+      </svg>
+      <div>
+        <div class="logo-name">MARIA BERNARDA</div>
+        <div class="logo-name">PACHECO</div>
+        <div class="logo-ped">PEDIATRÍA</div>
+      </div>
+    </button>
+    <nav class="dnav" aria-label="Menú principal">
+      <button class="nb active" data-p="inicio" onclick="goTo('inicio')">INICIO</button>
+      <button class="nb" data-p="servicios" onclick="goTo('servicios')">SERVICIOS</button>
+      <button class="nb" data-p="perfil" onclick="goTo('perfil')">PERFIL</button>
+      <button class="nb" data-p="contacto" onclick="goTo('contacto')">CONTACTO</button>
+      <button class="nb" data-p="avisos" onclick="goTo('avisos')">AVISOS IMPORTANTES</button>
+      <button class="h-cta" onclick="goTo('contacto')" aria-label="Agendar cita">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        AGENDAR CITA
+      </button>
+    </nav>
+    <button class="hamb" id="hamb" onclick="openMenu()" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mob-menu" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="mob-top">
+    <svg width="38" height="38" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+      <path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z" fill="#c4b0e8"/>
+      <path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z" fill="#8aaa68"/>
+      <path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z" fill="rgba(255,255,255,.55)"/>
+      <path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z" fill="#4d8282"/>
+    </svg>
+    <button class="mob-close" onclick="closeMenu()" aria-label="Cerrar menú">✕</button>
+  </div>
+  <nav class="mob-nav" aria-label="Menú móvil">
+    <button class="mob-nb" onclick="goTo('inicio')">INICIO</button>
+    <button class="mob-nb" onclick="goTo('servicios')">SERVICIOS</button>
+    <button class="mob-nb" onclick="goTo('perfil')">PERFIL</button>
+    <button class="mob-nb" onclick="goTo('contacto')">CONTACTO</button>
+    <button class="mob-nb" onclick="goTo('avisos')">AVISOS IMPORTANTES</button>
+  </nav>
+  <button class="mob-cta" onclick="goTo('contacto')" aria-label="Agendar cita">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    AGENDAR CITA
+  </button>
+</div>
+
+
+<!-- ═══ INICIO PAGE ═══ -->
+<main class="page active" id="page-inicio" role="main" style="flex:1;display:flex;flex-direction:column;">
+
+  <!-- Hero -->
+  <section aria-label="Presentación principal" style="background:#3d4728;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:0;top:0;bottom:0;width:38%;background:#ede8f5;z-index:0;" aria-hidden="true"></div>
+    <div style="position:absolute;left:-28px;bottom:-28px;opacity:.1;z-index:0;pointer-events:none;" aria-hidden="true">
+      <svg width="240" height="240" viewBox="0 0 44 44" fill="none" stroke="#e0e8d0" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div style="position:absolute;right:16px;top:16px;opacity:.18;z-index:1;pointer-events:none;" aria-hidden="true">
+      <svg width="160" height="160" viewBox="0 0 44 44" fill="none" stroke="#9878cc" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div style="position:relative;z-index:1;">
+      <div class="sec-lg">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:48px;">
+          <div style="flex:1 1 340px;min-width:0;">
+            <p style="font-size:10.5px;font-weight:500;letter-spacing:.3em;color:#a8c080;margin-bottom:16px;">PEDIATRÍA</p>
+            <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,66px);font-weight:300;color:#f0ebe0;line-height:1.02;margin-bottom:18px;letter-spacing:.02em;">MARIA BERNARDA<br>PACHECO</h1>
+            <div style="width:44px;height:2px;background:#8aaa68;margin-bottom:22px;" aria-hidden="true"></div>
+            <p style="font-size:17px;font-weight:300;color:#bfd3a0;margin-bottom:40px;line-height:1.6;max-width:380px;">Pediatría con confianza,<br>tranquilidad y profesionalismo.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;">
+              <button onclick="goTo('contacto')" aria-label="Agendar cita" style="display:flex;align-items:center;gap:8px;background:#8aaa68;color:#1e2a14;border:none;border-radius:24px;padding:12px 22px;font-size:11px;font-weight:600;letter-spacing:.12em;cursor:pointer;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                AGENDAR CITA
+              </button>
+              <button onclick="goTo('servicios')" aria-label="Conocer servicios" style="background:transparent;color:#e0ebe0;border:1.5px solid #6a8050;border-radius:24px;padding:12px 22px;font-size:11px;font-weight:600;letter-spacing:.12em;cursor:pointer;">
+                CONOCER SERVICIOS
+              </button>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8aaa68" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              <p style="font-size:11.5px;color:#8aa070;">No envíe información clínica por este medio.</p>
+            </div>
+            <p style="font-size:10px;color:#6a8050;margin-top:16px;letter-spacing:.08em;">© 2026 Dra. Maria Bernarda Pacheco. Todos los derechos reservados.</p>
+          </div>
+          <div style="flex:1 1 280px;min-width:0;position:relative;z-index:2;">
+            <div style="background:linear-gradient(145deg,#f8f3e8 0%,#ede5d5 55%,#e0d8c8 100%);border-radius:16px;height:360px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,.1);" role="img" aria-label="Fotografía del ambiente de consulta (pendiente de publicación)">
+              <div style="text-align:center;">
+                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#c0b090" stroke-width=".8" style="display:block;margin:0 auto 10px;opacity:.4;" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <p style="color:#a89878;font-size:10px;letter-spacing:.15em;opacity:.7;">FOTOGRAFÍA PENDIENTE</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ SERVICIOS PAGE ═══ -->
+<main class="page" id="page-servicios" role="main" style="flex:1;display:flex;flex-direction:column;">
+
+  <!-- Hero -->
+  <section aria-label="Servicios — encabezado" style="background:#d4dfc8;position:relative;overflow:hidden;">
+    <div style="position:absolute;left:-20px;top:20px;opacity:.15;pointer-events:none;" aria-hidden="true">
+      <svg width="200" height="200" viewBox="0 0 44 44" fill="none" stroke="#3d4728" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:48px;">
+        <div style="flex:1 1 340px;min-width:0;">
+          <div style="display:inline-block;background:white;border-radius:20px;padding:5px 14px;margin-bottom:16px;">
+            <span style="font-size:10px;font-weight:600;letter-spacing:.22em;color:#3d4728;">SERVICIOS</span>
+          </div>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4.5vw,60px);font-weight:300;color:#2c2c2c;line-height:1.08;margin-bottom:18px;">Acompañamiento pediátrico para cada etapa</h1>
+          <div style="width:40px;height:2px;background:#6a8c50;margin-bottom:20px;" aria-hidden="true"></div>
+          <p style="font-size:15px;font-weight:300;color:#4a5858;line-height:1.65;max-width:420px;">Atención integral, humana y respetuosa para el bienestar de tu hijo en cada momento de su desarrollo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services grid -->
+  <section aria-label="Lista de servicios" style="background:#fff;">
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;gap:16px;">
+
+        <article style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="5.5" r="1.8"/><circle cx="16" cy="5.5" r="1.8"/><path d="M8 7.3C8 10 16 10 16 7.3"/><path d="M12 10v4.5"/><circle cx="15" cy="17" r="2.5"/><path d="M12 14.5C12 16 13.3 17 15 17"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Consulta pediátrica general</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Evaluación integral del niño sano y enfermo. Seguimiento del desarrollo y orientación en cada etapa.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+        <article style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.4" stroke-linecap="round"><path d="M12 4V20"/><path d="M12 7C10 7 6 9 6 14C6 17.5 8 19.5 10 19.5H12V7"/><path d="M12 7C14 7 18 9 18 14C18 17.5 16 19.5 14 19.5H12V7"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Patología respiratoria</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Atención de asma, bronquitis, alergias respiratorias y otras condiciones del sistema respiratorio.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+        <article style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.4" stroke-linecap="round"><path d="M12 4C8 4 4 7 4 11C4 14 6 16 8.5 16.5V20H15.5V16.5C18 16 20 14 20 11C20 7 16 4 12 4Z"/><path d="M9 10C9 8 10.5 7.5 12 7.5"/><path d="M15 10C15 8 13.5 7.5 12 7.5"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Conducta y desarrollo</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Acompañamiento del desarrollo, aprendizaje, atención del TDAH y orientación a familias con enfoque integral.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+        <article style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#fce8d8;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c07850" stroke-width="1.4" stroke-linecap="round"><path d="M12 5C9 5 6 8 6 12C6 16 8 20 12 20C16 20 18 16 18 12C18 8 15 5 12 5Z"/><path d="M12 5V3.5"/><path d="M10.5 3.5C10.5 3.5 12 2.2 13.5 3"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Nutrición pediátrica</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Planes nutricionales personalizados y orientación para promover hábitos saludables desde la infancia.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c07850" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+        <article style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.4" stroke-linecap="round"><circle cx="12" cy="10" r="5.5"/><circle cx="9.5" cy="9" r=".8" fill="#9878cc"/><circle cx="14.5" cy="9" r=".8" fill="#9878cc"/><path d="M9.5 12.5C9.5 12.5 10.5 14 12 14C13.5 14 14.5 12.5 14.5 12.5"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Atención al recién nacido</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Cuidado integral en los primeros días de vida. Orientación a padres primerizos y seguimiento neonatal.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+        <article style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.4" stroke-linecap="round"><path d="M3 20H21"/><path d="M3 20V3"/><rect x="6" y="13" width="3" height="7" rx="1"/><rect x="11" y="9" width="3" height="11" rx="1"/><rect x="16" y="5" width="3" height="15" rx="1"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Control de crecimiento</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Monitoreo del crecimiento físico, cognitivo y emocional para asegurar un desarrollo saludable en cada etapa.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ PERFIL PAGE ═══ -->
+<main class="page" id="page-perfil" role="main" style="flex:1;display:flex;flex-direction:column;">
+
+  <!-- Hero -->
+  <section aria-label="Perfil profesional — encabezado" style="background:#ede8f5;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-10px;top:-10px;opacity:.12;pointer-events:none;" aria-hidden="true">
+      <svg width="220" height="220" viewBox="0 0 44 44" fill="none" stroke="#9878cc" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div class="sec-lg">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:40px;">
+        <div style="flex:1 1 280px;min-width:0;">
+          <div style="display:inline-block;background:rgba(152,120,204,.15);border:1px solid rgba(152,120,204,.3);border-radius:20px;padding:5px 14px;margin-bottom:16px;">
+            <span style="font-size:10px;font-weight:600;letter-spacing:.22em;color:#7858a8;">PERFIL PROFESIONAL</span>
+          </div>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.8vw,52px);font-weight:300;color:#2c2c2c;line-height:1.1;margin-bottom:18px;">Una atención cercana, clara y respetuosa</h1>
+          <div style="width:40px;height:2px;background:#9878cc;margin-bottom:20px;" aria-hidden="true"></div>
+          <p style="font-size:14px;color:#5a5858;line-height:1.7;font-weight:300;margin-bottom:28px;max-width:400px;">Creo en una pediatría basada en la escucha, el respeto y la información clara. Acompaño a cada niño y su familia en cada etapa del crecimiento, con compromiso y humanidad.</p>
+          <p style="font-size:12px;font-weight:600;letter-spacing:.14em;color:#2c2c2c;margin-bottom:2px;">MARIA BERNARDA PACHECO</p>
+          <p style="font-size:13px;color:#9878cc;font-weight:400;">Pediatría</p>
+        </div>
+        <div style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:14px;">
+          <div style="background:white;border:1px solid #e0d8cc;border-radius:12px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 2.5 2.7 4 6 4s6-1.5 6-4v-5"/></svg>
+              </div>
+              <div>
+                <p style="font-size:13px;font-weight:500;color:#2c2c2c;">Especialidad</p>
+                <p style="font-size:12px;color:#888;font-weight:300;">Pediatría</p>
+              </div>
+            </div>
+            <span style="background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#7a7060;">INFORMACIÓN PENDIENTE DE VALIDACIÓN</span>
+          </div>
+          <div style="background:white;border:1px solid #e0d8cc;border-radius:12px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><circle cx="8" cy="10" r="2.5"/><path d="M4 20c0-2 2-3 4-3s4 1 4 3"/><line x1="14" y1="9" x2="20" y2="9"/><line x1="14" y1="13" x2="20" y2="13"/></svg>
+              </div>
+              <div>
+                <p style="font-size:13px;font-weight:500;color:#2c2c2c;">Registro profesional</p>
+                <p style="font-size:12px;color:#888;font-weight:300;">Cédula profesional</p>
+              </div>
+            </div>
+            <span style="background:#e8edd8;border:1px solid #c8d4b0;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#4a6030;">INFORMACIÓN PENDIENTE DE VALIDACIÓN</span>
+          </div>
+          <div style="background:white;border:1px solid #e0d8cc;border-radius:12px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              </div>
+              <div>
+                <p style="font-size:13px;font-weight:500;color:#2c2c2c;">Experiencia</p>
+                <p style="font-size:12px;color:#888;font-weight:300;">Trayectoria profesional</p>
+              </div>
+            </div>
+            <span style="background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#7a7060;">INFORMACIÓN PENDIENTE DE VALIDACIÓN</span>
+          </div>
+          <div style="background:white;border:1px solid #e0d8cc;border-radius:12px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="7" r="3"/><path d="M3 22v-2a5 5 0 0110 0v2"/><circle cx="17" cy="8" r="2"/><path d="M14 22v-1a4 4 0 018 0v1"/></svg>
+              </div>
+              <div>
+                <p style="font-size:13px;font-weight:500;color:#2c2c2c;">Modalidad de atención</p>
+                <p style="font-size:12px;color:#888;font-weight:300;">Consulta presencial</p>
+              </div>
+            </div>
+            <span style="background:#e8edd8;border:1px solid #c8d4b0;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#4a6030;">INFORMACIÓN PENDIENTE DE VALIDACIÓN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+</main>
+
+<!-- ═══ CONTACTO PAGE ═══ -->
+<main class="page" id="page-contacto" role="main" style="flex:1;display:flex;flex-direction:column;">
+
+  <!-- Hero -->
+  <section aria-label="Contacto — encabezado" style="background:#f0ebe0;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-10px;top:10px;opacity:.12;pointer-events:none;" aria-hidden="true">
+      <svg width="200" height="200" viewBox="0 0 44 44" fill="none" stroke="#8aaa68" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:48px;">
+        <div style="flex:1 1 320px;min-width:0;">
+          <div style="display:inline-block;background:white;border:1px solid #e0d8cc;border-radius:20px;padding:5px 14px;margin-bottom:16px;">
+            <span style="font-size:10px;font-weight:600;letter-spacing:.22em;color:#4d8282;">CONTACTO</span>
+          </div>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,52px);font-weight:300;color:#2c2c2c;line-height:1.1;margin-bottom:16px;">Canales seguros para información administrativa</h1>
+          <div style="width:40px;height:2px;background:#9878cc;margin-bottom:18px;" aria-hidden="true"></div>
+          <p style="font-size:15px;font-weight:300;color:#5a5858;line-height:1.65;max-width:380px;">Use estos canales solo para agenda y dudas administrativas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact channels -->
+  <section aria-label="Canales de contacto" style="background:#fff;">
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;gap:16px;">
+        <div style="flex:1 1 200px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px;min-width:180px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:52px;height:52px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.07 9.5 2 2 0 013.18 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 9.91a16 16 0 006 6z"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:3px;">Teléfono</h2>
+              <p style="font-size:12.5px;color:#888;font-weight:300;">Información pendiente</p>
+            </div>
+          </div>
+          <span style="align-self:flex-start;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#7a7060;">PRÓXIMAMENTE DISPONIBLE</span>
+        </div>
+        <div style="flex:1 1 200px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px;min-width:180px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:52px;height:52px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.5" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:3px;">WhatsApp</h2>
+              <p style="font-size:12.5px;color:#888;font-weight:300;">Información pendiente</p>
+            </div>
+          </div>
+          <span style="align-self:flex-start;background:#e8edd8;border:1px solid #c8d4b0;border-radius:20px;padding:5px 12px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#4a6030;">PRÓXIMAMENTE DISPONIBLE</span>
+        </div>
+        <div style="flex:1 1 200px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px;min-width:180px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:52px;height:52px;border-radius:50%;background:#d8ecec;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4d8282" stroke-width="1.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:3px;">Correo electrónico</h2>
+              <p style="font-size:12.5px;color:#888;font-weight:300;">Información pendiente</p>
+            </div>
+          </div>
+          <span style="align-self:flex-start;background:#ddeaed;border:1px solid #b0d0d4;border-radius:20px;padding:5px 12px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#2d6068;">PRÓXIMAMENTE DISPONIBLE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy warning -->
+  <section aria-label="Aviso de privacidad y seguridad" style="background:#4d8282;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:40px;bottom:-20px;opacity:.1;pointer-events:none;" aria-hidden="true">
+      <svg width="160" height="160" viewBox="0 0 44 44" fill="none" stroke="white" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:center;">
+        <div style="display:flex;align-items:flex-start;gap:16px;flex:1 1 280px;min-width:260px;">
+          <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <div>
+            <h2 style="font-size:17px;font-weight:500;color:white;margin-bottom:8px;">No envíe información clínica por estos canales</h2>
+            <p style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;font-weight:300;">Por tu privacidad y seguridad, no compartas síntomas, resultados de estudios ni documentos médicos por teléfono, WhatsApp o correo.</p>
+          </div>
+        </div>
+        <div class="priv-border" style="display:flex;align-items:flex-start;gap:16px;flex:1 1 280px;min-width:260px;border-left:1px solid rgba(255,255,255,.2);padding-left:40px;">
+          <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><path d="M12 22V12"/><path d="M12 12C10 10 6 8 6 4c0-2 2-3 4-2 1 .5 2 2 2 3 0-1 1-2.5 2-3 2-1 4 0 4 2 0 4-4 6-6 8z"/></svg>
+          </div>
+          <div>
+            <h2 style="font-size:17px;font-weight:500;color:white;margin-bottom:8px;">Protegemos tu privacidad</h2>
+            <p style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;font-weight:300;">Estos canales son exclusivamente para agenda y asuntos administrativos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Locations & Hours + FAQ -->
+  <section aria-label="Sedes, horarios y preguntas frecuentes" style="background:#f0ebe0;">
+    <div class="sec">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.8vw,32px);font-weight:400;color:#2c2c2c;margin-bottom:8px;">Sedes y horarios</h2>
+      <div style="width:32px;height:2px;background:#9878cc;margin-bottom:28px;" aria-hidden="true"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;">
+        <div style="flex:2 1 400px;min-width:0;display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;flex-wrap:wrap;gap:14px;">
+            <div style="flex:1 1 200px;background:white;border:1px solid #e8e0d4;border-radius:12px;padding:20px;min-width:180px;">
+              <div style="display:flex;align-items:flex-start;gap:12px;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <p style="font-size:13px;font-weight:500;color:#2c2c2c;margin-bottom:4px;">Sede Principal</p>
+                  <p style="font-size:12px;color:#888;font-weight:300;line-height:1.5;">Dirección pendiente de publicación.<br>Ciudad pendiente de publicación.</p>
+                </div>
+              </div>
+              <div style="margin-top:14px;">
+                <span style="background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#7a7060;">INFORMACIÓN PENDIENTE</span>
+              </div>
+            </div>
+            <div style="flex:1 1 200px;background:white;border:1px solid #e8e0d4;border-radius:12px;padding:20px;min-width:180px;">
+              <div style="display:flex;align-items:flex-start;gap:12px;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                  <p style="font-size:13px;font-weight:500;color:#2c2c2c;margin-bottom:4px;">Horario de atención</p>
+                  <p style="font-size:12px;color:#888;font-weight:300;line-height:1.7;">Lunes a Viernes<br>Horario pendiente de publicación<br><br>Sábado<br>Horario pendiente de publicación</p>
+                </div>
+              </div>
+              <div style="margin-top:14px;">
+                <span style="background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#7a7060;">INFORMACIÓN PENDIENTE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:16px;">
+          <div style="background:#ede8f5;border:1px solid #d4c8e8;border-radius:12px;padding:20px;display:flex;align-items:flex-start;gap:12px;" role="alert">
+            <div style="width:36px;height:36px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div>
+              <p style="font-size:14px;font-weight:500;color:#2c2c2c;margin-bottom:4px;">En caso de urgencia,</p>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">acuda al servicio de emergencias más cercano.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+
+<!-- ═══ AVISOS PAGE ═══ -->
+<main class="page" id="page-avisos" role="main" style="flex:1;display:flex;flex-direction:column;">
+
+  <!-- Hero -->
+  <section aria-label="Avisos importantes — encabezado" style="background:#f0ebe0;border-bottom:1px solid #e0d8cc;">
+    <div class="sec-lg">
+      <p style="font-size:10px;font-weight:600;letter-spacing:.25em;color:#9878cc;margin-bottom:12px;">AVISOS IMPORTANTES</p>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.8vw,50px);font-weight:300;color:#2c2c2c;line-height:1.1;margin-bottom:16px;">Información importante<br>para el uso de este sitio</h1>
+      <div style="width:40px;height:2px;background:#9878cc;margin-bottom:18px;" aria-hidden="true"></div>
+      <p style="font-size:15px;font-weight:300;color:#5a5858;line-height:1.65;max-width:560px;">Lea con atención los siguientes avisos antes de utilizar los canales de comunicación o los servicios de información de este sitio web.</p>
+    </div>
+  </section>
+
+  <!-- Notices -->
+  <section aria-label="Lista de avisos importantes" style="background:#fff;">
+    <div class="sec">
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:800px;overflow-y:auto;max-height:calc(100vh - 220px);padding-right:8px;">
+
+        <div style="background:#fafaf8;border:1px solid #e8e0d4;border-left:3px solid #9878cc;border-radius:0 12px 12px 0;padding:28px;" role="article">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Este sitio no sustituye la consulta médica</h2>
+              <p style="font-size:13.5px;color:#5a5858;line-height:1.65;font-weight:300;">La información contenida en este sitio web es de carácter informativo y orientativo únicamente. No reemplaza la evaluación, diagnóstico ni tratamiento médico profesional. Ante cualquier duda sobre la salud de su hijo, consulte directamente con su médico.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fafaf8;border:1px solid #e8e0d4;border-left:3px solid #4d8282;border-radius:0 12px 12px 0;padding:28px;" role="article">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#d8ecec;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4d8282" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">No se recibe información clínica por canales de contacto</h2>
+              <p style="font-size:13.5px;color:#5a5858;line-height:1.65;font-weight:300;">No se reciben síntomas, estudios, fotografías, documentos médicos ni información clínica de ningún tipo a través de teléfono, WhatsApp, correo electrónico ni ningún otro canal de contacto de este consultorio. Los canales son exclusivamente para agenda y asuntos administrativos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fafaf8;border:1px solid #e8e0d4;border-left:3px solid #6a8c50;border-radius:0 12px 12px 0;padding:28px;" role="article">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Los canales son solo para agenda y asuntos administrativos</h2>
+              <p style="font-size:13.5px;color:#5a5858;line-height:1.65;font-weight:300;">Los canales de comunicación disponibles son para: agendar, cancelar o reprogramar citas; resolver dudas sobre horarios, sedes y requisitos; y trámites administrativos generales. No se atienden consultas médicas por estos medios.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fce8e8;border:1px solid #f0c8c8;border-left:3px solid #c87070;border-radius:0 12px 12px 0;padding:28px;" role="article">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c07070" stroke-width="1.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">En caso de urgencia médica</h2>
+              <p style="font-size:13.5px;color:#5a5858;line-height:1.65;font-weight:300;">En caso de emergencia médica, no intente comunicarse a través de los canales de este consultorio. Acuda de inmediato al servicio de urgencias más cercano o llame a los servicios de emergencia de su localidad. Este consultorio no presta servicios de urgencias.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fafaf8;border:1px solid #e8e0d4;border-left:3px solid #b8a870;border-radius:0 12px 12px 0;padding:28px;" role="article">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#f5f0e0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b8a870" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Información pendiente de actualización</h2>
+              <p style="font-size:13.5px;color:#5a5858;line-height:1.65;font-weight:300;">Parte de la información profesional o administrativa de este sitio puede estar pendiente de validación o actualización. Los datos de contacto, sedes y horarios se publicarán en cuanto estén disponibles y verificados.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ── Navigation ──
+let currentPage = 'inicio';
+
+function goTo(page) {
+  if (page === currentPage) return;
+  const cur = document.getElementById('page-' + currentPage);
+  if (cur) cur.classList.remove('active');
+
+  // Update active state
+  currentPage = page;
+
+  // Show new
+  const next = document.getElementById('page-' + page);
+  if (next) next.classList.add('active');
+
+  // Update header style
+  const hdr = document.getElementById('hdr');
+  if (page === 'inicio') {
+    hdr.className = 'dark';
+  } else {
+    hdr.className = 'light';
+  }
+
+  // Update nav active states
+  document.querySelectorAll('.nb[data-p]').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-p') === page);
+  });
+
+  // Close mobile menu and scroll to top
+  closeMenu();
+  window.scrollTo(0, 0);
+}
+
+// ── Mobile menu ──
+function openMenu() {
+  document.getElementById('mob-menu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  document.getElementById('mob-menu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close menu on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeMenu();
+});
+
+// ── FAQ Accordions ──
+function toggleFaq(id) {
+  const body = document.getElementById('faq-body-' + id);
+  const chev = document.getElementById('faq-chev-' + id);
+  const btn  = document.getElementById('faq-btn-'  + id);
+
+  const isOpen = body.classList.toggle('open');
+  chev.classList.toggle('open', isOpen);
+  btn.setAttribute('aria-expanded', String(isOpen));
+}
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════
+   MBP GSAP ANIMATION SYSTEM — v1.0
+   All layers: 0 Setup · 1 Entrances · 2 Transitions
+               3 Scroll reveals · 4 Micro · 5 Decorative
+   Depends on: goTo, openMenu, closeMenu, toggleFaq (above)
+═══════════════════════════════════════════════════════ */
+
+(function() {
+  'use strict';
+
+  // ── Layer 0: Kill switch — reduced motion ──────────────
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // ── Helper: word split ─────────────────────────────────
+  function wordSplit(el, cssClass) {
+    if (!el) return [];
+    var original = el.textContent;
+    el.setAttribute('aria-label', original);
+    el.innerHTML = original.trim().split(/\s+/).map(function(word) {
+      return '<span class="' + cssClass + '" aria-hidden="true">' + word + '</span>';
+    }).join(' ');
+    return el.querySelectorAll('.' + cssClass);
+  }
+
+  // ── MBPAnimations namespace ────────────────────────────
+  window.MBPAnimations = {
+    ready: false,
+
+    init: function() {
+      gsap.registerPlugin(ScrollTrigger);
+      this.ready = true;
+      this.patchFunctions();
+      this.enterPage(currentPage);
+      this.initMicro();
+      this.initDecorative();
+    },
+
+    enterPage: function(page) {
+      ScrollTrigger.getAll().forEach(function(t) { t.kill(); });
+      var fn = this['enter_' + page];
+      if (fn) fn.call(this);
+      this.initScrollReveals(page);
+    },
+
+    patchFunctions:    function() { /* Task 2 */ },
+    enter_inicio:      function() { /* Task 3 */ },
+    enter_servicios:   function() { /* Task 4 */ },
+    enter_perfil:      function() { /* Task 4 */ },
+    enter_contacto:    function() { /* Task 4 */ },
+    enter_avisos:      function() { /* Task 4 */ },
+    initScrollReveals: function(page) { /* Task 5 */ },
+    initMicro:         function() { /* Task 6 */ },
+    initDecorative:    function() { /* Task 7 */ }
+  };
+
+  // ── Conditional CDN load: GSAP → ScrollTrigger → init ─
+  var s1 = document.createElement('script');
+  s1.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js';
+  s1.onerror = function() {
+    console.warn('[MBP] GSAP failed to load — animations disabled');
+  };
+  s1.onload = function() {
+    var s2 = document.createElement('script');
+    s2.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js';
+    s2.onerror = function() {
+      console.warn('[MBP] ScrollTrigger failed — animations disabled');
+    };
+    s2.onload = function() { MBPAnimations.init(); };
+    document.head.appendChild(s2);
+  };
+  document.head.appendChild(s1);
+
+})();
+</script>
+</body>
+</html>
