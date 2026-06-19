@@ -958,7 +958,70 @@ function toggleFaq(id) {
       if (divider) { tl.from(divider, { width:0, duration:0.45, ease:'power3.out' }, 0.35); }
       if (body)    { tl.from(body,    { opacity:0, y:12, duration:0.5, ease:'power2.out' }, 0.45); }
     },
-    initScrollReveals: function(page) { /* Task 5 */ },
+    initScrollReveals: function(page) {
+      if (page === 'servicios') {
+        var cards = document.querySelectorAll('#page-servicios article');
+        if (!cards.length) return;
+        gsap.from(Array.from(cards), {
+          opacity: 0, y: 36, scale: 0.96,
+          duration: 0.65, ease: 'power3.out',
+          stagger: { each: 0.09, from: 'start' },
+          scrollTrigger: {
+            trigger: cards[0].closest('div'),
+            start: 'top 78%',
+            toggleActions: 'play none none none'
+          }
+        });
+      }
+
+      if (page === 'contacto') {
+        var channelCards = document.querySelectorAll(
+          '#page-contacto section[aria-label="Canales de contacto"] > div > div'
+        );
+        if (channelCards.length) {
+          gsap.from(Array.from(channelCards), {
+            opacity: 0, y: 24,
+            duration: 0.55, ease: 'power2.out',
+            stagger: 0.12,
+            scrollTrigger: {
+              trigger: channelCards[0].closest('div'),
+              start: 'top 80%',
+              toggleActions: 'play none none none'
+            }
+          });
+        }
+        var privacySection = document.querySelector(
+          '#page-contacto section[aria-label="Aviso de privacidad y seguridad"]'
+        );
+        if (privacySection) {
+          gsap.from(privacySection, {
+            opacity: 0, y: 20,
+            duration: 0.6, ease: 'power3.out',
+            scrollTrigger: {
+              trigger: privacySection,
+              start: 'top 82%',
+              toggleActions: 'play none none none'
+            }
+          });
+        }
+      }
+
+      if (page === 'avisos') {
+        var notices = document.querySelectorAll('#page-avisos article');
+        if (notices.length) {
+          gsap.from(Array.from(notices), {
+            opacity: 0, x: -16,
+            duration: 0.55, ease: 'power2.out',
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: notices[0].closest('div'),
+              start: 'top 80%',
+              toggleActions: 'play none none none'
+            }
+          });
+        }
+      }
+    },
     initMicro:         function() { /* Task 6 */ },
     initDecorative:    function() { /* Task 7 */ }
   };
