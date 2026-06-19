@@ -725,21 +725,19 @@ function toggleFaq(id) {
 (function() {
   'use strict';
 
-  // ── Layer 0: Kill switch — reduced motion ──────────────
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
   // ── Helper: word split ─────────────────────────────────
   function wordSplit(el, cssClass) {
     if (!el) return [];
     var original = el.textContent;
     el.setAttribute('aria-label', original);
     el.innerHTML = original.trim().split(/\s+/).map(function(word) {
-      return '<span class="' + cssClass + '" aria-hidden="true">' + word + '</span>';
+      var safe = word.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      return '<span class="' + cssClass + '" aria-hidden="true">' + safe + '</span>';
     }).join(' ');
     return el.querySelectorAll('.' + cssClass);
   }
 
-  // ── MBPAnimations namespace ────────────────────────────
+  // ── MBPAnimations namespace (always defined) ───────────
   window.MBPAnimations = {
     ready: false,
 
@@ -747,16 +745,17 @@ function toggleFaq(id) {
       gsap.registerPlugin(ScrollTrigger);
       this.ready = true;
       this.patchFunctions();
-      this.enterPage(currentPage);
+      this.enterPage(typeof currentPage !== 'undefined' ? currentPage : 'inicio');
       this.initMicro();
       this.initDecorative();
     },
 
     enterPage: function(page) {
       ScrollTrigger.getAll().forEach(function(t) { t.kill(); });
-      var fn = this['enter_' + page];
+      var safePage = (typeof page === 'string' && page) ? page : 'inicio';
+      var fn = this['enter_' + safePage];
       if (fn) fn.call(this);
-      this.initScrollReveals(page);
+      this.initScrollReveals(safePage);
     },
 
     patchFunctions:    function() { /* Task 2 */ },
@@ -769,6 +768,9 @@ function toggleFaq(id) {
     initMicro:         function() { /* Task 6 */ },
     initDecorative:    function() { /* Task 7 */ }
   };
+
+  // ── Layer 0: Kill switch — reduced motion ──────────────
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   // ── Conditional CDN load: GSAP → ScrollTrigger → init ─
   var s1 = document.createElement('script');
