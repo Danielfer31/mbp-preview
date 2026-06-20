@@ -431,13 +431,13 @@ footer{background:#3d4728;color:#f0ebe0;margin-top:auto}
 .stories-kicker{display:inline-block;background:#ede8f5;border:1px solid rgba(152,120,204,.28);border-radius:20px;padding:5px 14px;margin-bottom:14px;font-size:10px;font-weight:600;letter-spacing:.22em;color:#7858a8}
 .stories-head h2{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,52px);font-weight:300;color:#2c2c2c;line-height:1.05;margin-bottom:14px}
 .stories-head p{font-size:14px;color:#5a5858;line-height:1.7;font-weight:300}
-.stories-viewport{position:relative;z-index:1;overflow-x:auto;overflow-y:visible;margin-right:-80px;padding:18px 0 48px;scrollbar-width:none;overscroll-behavior-x:contain;cursor:grab}
-.stories-viewport:active{cursor:grabbing}
+.stories-viewport{position:relative;z-index:1;overflow:hidden;margin-right:-80px;padding:18px 0 48px}
 .stories-viewport::-webkit-scrollbar{display:none}
 .stories-viewport::before,.stories-viewport::after{content:"";position:absolute;top:18px;bottom:48px;width:72px;z-index:3;pointer-events:none}
 .stories-viewport::before{left:0;background:linear-gradient(90deg,#fafaf8,rgba(250,250,248,0))}
 .stories-viewport::after{right:0;background:linear-gradient(270deg,#fafaf8,rgba(250,250,248,0))}
-.stories-grid{position:relative;z-index:1;display:flex;gap:24px;align-items:stretch;width:max-content;padding-right:8vw}
+.stories-grid{--story-loop-distance:1900px;--story-loop-duration:48s;position:relative;z-index:1;display:flex;gap:24px;align-items:stretch;width:max-content;padding-right:0;will-change:transform;transform:translate3d(0,0,0);animation:storyMarquee var(--story-loop-duration) linear infinite}
+.stories-grid.stories-grid-paused{animation-play-state:paused}
 .story-card{--story-accent:#9878cc;--story-soft:#ede8f5;flex:0 0 clamp(270px,28vw,370px);background:#fff;border:1px solid #e8e0d4;border-radius:20px;padding:26px 24px 24px;min-height:clamp(420px,58vh,560px);text-align:left;cursor:pointer;font-family:'Jost',sans-serif;display:flex;flex-direction:column;justify-content:space-between;gap:26px;position:relative;overflow:hidden;box-shadow:0 24px 62px rgba(45,50,15,.11);transition:transform .34s cubic-bezier(.2,.8,.2,1),box-shadow .34s ease,border-color .34s ease;scroll-snap-align:center;animation:storyFloat 7.5s ease-in-out infinite}
 .story-card:nth-child(5n+2){animation-delay:-1.4s;transform:translateY(34px)}
 .story-card:nth-child(5n+3){animation-delay:-2.8s;transform:translateY(-14px)}
@@ -465,6 +465,10 @@ footer{background:#3d4728;color:#f0ebe0;margin-top:auto}
 @keyframes storyFloat{
   0%,100%{translate:0 0}
   50%{translate:0 -12px}
+}
+@keyframes storyMarquee{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(calc(var(--story-loop-distance) * -1),0,0)}
 }
 @media(max-width:1000px){
   .stories-viewport{margin-right:-20px}
@@ -1396,13 +1400,16 @@ function setupProfileStoriesAutoscroll() {
   if (!originals.length) return;
 
   if (grid.dataset.autoscrollCloned !== 'true') {
-    originals.forEach(card => {
-      const clone = card.cloneNode(true);
-      clone.classList.add('story-card-clone');
-      clone.setAttribute('aria-hidden', 'true');
-      clone.setAttribute('tabindex', '-1');
-      grid.appendChild(clone);
-    });
+    grid.querySelectorAll('.story-card-clone').forEach(clone => clone.remove());
+    for (let copy = 0; copy < 5; copy++) {
+      originals.forEach(card => {
+        const clone = card.cloneNode(true);
+        clone.classList.add('story-card-clone');
+        clone.setAttribute('aria-hidden', 'true');
+        clone.setAttribute('tabindex', '-1');
+        grid.appendChild(clone);
+      });
+    }
     grid.dataset.autoscrollCloned = 'true';
   }
 
@@ -1411,41 +1418,46 @@ function setupProfileStoriesAutoscroll() {
     const styles = window.getComputedStyle(grid);
     const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
     const distance = cards.reduce((total, card) => total + card.getBoundingClientRect().width, 0) + (gap * cards.length);
-    viewport.dataset.loopDistance = String(Math.max(distance, 1));
+    if (distance < 40) {
+      if (grid.dataset.measureRetry !== 'true') {
+        grid.dataset.measureRetry = 'true';
+        window.setTimeout(function() {
+          delete grid.dataset.measureRetry;
+          updateDistance();
+        }, 160);
+      }
+      return;
+    }
+    const loopDistance = Math.max(distance, 1);
+    const duration = Math.max(38, Math.min(68, loopDistance / 42));
+    const previousDistance = parseFloat(grid.dataset.loopDistance || '0') || 0;
+    const previousDuration = parseFloat(grid.dataset.loopDuration || '0') || 0;
+    if (
+      Math.abs(previousDistance - loopDistance) < 1 &&
+      Math.abs(previousDuration - duration) < 0.1
+    ) {
+      return;
+    }
+    grid.dataset.loopDistance = String(loopDistance);
+    grid.dataset.loopDuration = String(duration);
+    grid.style.setProperty('--story-loop-distance', loopDistance + 'px');
+    grid.style.setProperty('--story-loop-duration', duration + 's');
   }
 
   updateDistance();
+  requestAnimationFrame(updateDistance);
+  window.setTimeout(updateDistance, 350);
+  window.setTimeout(updateDistance, 900);
   if (viewport.dataset.autoscrollResizeBound !== 'true') {
     viewport.dataset.autoscrollResizeBound = 'true';
     window.addEventListener('resize', updateDistance);
   }
-
-  if (viewport.dataset.autoscrollReady === 'true') return;
-  viewport.dataset.autoscrollReady = 'true';
-
-  let lastTime = null;
-  let pauseUntil = 0;
-  const pauseBriefly = duration => { pauseUntil = performance.now() + duration; };
-  viewport.addEventListener('pointerdown', () => pauseBriefly(900));
-  viewport.addEventListener('wheel', () => pauseBriefly(900), { passive: true });
-
-  function tick(time) {
-    if (lastTime === null) lastTime = time;
-    const delta = Math.min(time - lastTime, 32);
-    lastTime = time;
-
-    const distance = parseFloat(viewport.dataset.loopDistance || '0') || 0;
-    if (distance > 0 && time > pauseUntil) {
-      viewport.scrollLeft += delta * 0.052;
-      if (viewport.scrollLeft >= distance) viewport.scrollLeft -= distance;
-    }
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
 }
 
+window.setupProfileStoriesAutoscroll = setupProfileStoriesAutoscroll;
 setupProfileStoriesAutoscroll();
 document.addEventListener('DOMContentLoaded', setupProfileStoriesAutoscroll);
+window.addEventListener('load', setupProfileStoriesAutoscroll);
 
 // ── Mobile menu ──
 function openMenu() {
@@ -1788,6 +1800,10 @@ function toggleFaq(id) {
       var safePage = (typeof page === 'string' && page) ? page : 'inicio';
       var fn = this['enter_' + safePage];
       if (fn) fn.call(this);
+      if (safePage === 'perfil' && typeof window.setupProfileStoriesAutoscroll === 'function') {
+        window.setTimeout(window.setupProfileStoriesAutoscroll, 80);
+        window.setTimeout(window.setupProfileStoriesAutoscroll, 420);
+      }
       this.initScrollReveals(safePage);
     },
 
@@ -2553,18 +2569,21 @@ function animateBee(el) {
     petalsAborted = true;
     if (mouseReg) document.removeEventListener('mousemove', dismiss);
     splashTimers.forEach(function(t) { t.kill(); });
-    var windPetals = splash.querySelectorAll('.sp-wind-petal');
+    var windPetals = Array.from(splash.querySelectorAll('.sp-wind-petal'));
     if (windPetals.length && window.gsap) {
       gsap.killTweensOf(windPetals);
-      gsap.to(windPetals, { opacity: 0, duration: 0.4, ease: 'power2.in' });
     }
+    // Remove petals from DOM immediately — prevents them showing over page during panel slide-out
+    windPetals.forEach(function(p) { p.parentNode && p.parentNode.removeChild(p); });
     splash.classList.add('sp-out');
     setTimeout(function() {
       splash.style.display = 'none';
       sessionStorage.setItem('splash-seen', '1');
-      // Signal ambient layer to start
+      // Extra buffer: wait 1.5s after splash hides before starting ambient — zero visual overlap
       window.__splashDone = true;
-      if (typeof window.__startAmbient === 'function') window.__startAmbient();
+      setTimeout(function() {
+        if (typeof window.__startAmbient === 'function') window.__startAmbient();
+      }, 1500);
     }, 900);
   }
 
