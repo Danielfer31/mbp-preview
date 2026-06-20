@@ -240,7 +240,7 @@
     }
 
     splash.classList.add('splash--animate');
-    splash.addEventListener('click', dismiss);
+    splash.addEventListener('click', dismiss, { once: true });
 
     const mousemoveDelay = reducedMotion ? 500 : 1800;
     setTimeout(function () {
