@@ -2350,7 +2350,7 @@ function animateBee(el) {
 (function(){
   var splash = document.getElementById('splash');
   if (!splash) return;
-  if (sessionStorage.getItem('splash-seen')) { splash.style.display='none'; return; }
+  sessionStorage.removeItem('splash-seen');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var dismissed = false;
   var mouseReg = false;
