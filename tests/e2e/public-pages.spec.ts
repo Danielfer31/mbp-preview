@@ -332,11 +332,14 @@ test.describe('Splash screen — comportamiento por sesión', () => {
     const splash = page.locator('#splash');
     await expect(splash).toBeAttached();
     await splash.click();
-    await page.waitForTimeout(800);
-    const isHidden = await splash.evaluate((el) =>
-      window.getComputedStyle(el).display === 'none'
+    // Poll until exit animation completes (CSS transition ~650ms)
+    await page.waitForFunction(
+      () => {
+        const el = document.getElementById('splash');
+        return el ? window.getComputedStyle(el).display === 'none' : true;
+      },
+      { timeout: 1500 }
     );
-    expect(isHidden).toBe(true);
   });
 
   test('splash no aparece si sessionStorage tiene la clave', async ({ page }) => {
