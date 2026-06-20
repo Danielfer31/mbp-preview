@@ -2811,10 +2811,11 @@ function animateBee(el) {
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startPageAmbient);
-  } else {
+  // Only start after splash finishes — never overlap
+  if (window.__splashDone) {
     startPageAmbient();
+  } else {
+    window.__startAmbient = startPageAmbient;
   }
 })();
 </script>
