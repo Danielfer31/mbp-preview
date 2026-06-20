@@ -2669,6 +2669,7 @@ function animateBee(el) {
 /* ── Ambient page nature animations (all sections) ── */
 (function(){
   function startPageAmbient() {
+    if (window.innerWidth <= 800) return;
     if (!window.gsap) { setTimeout(startPageAmbient, 200); return; }
 
     var overlay = document.createElement('div');
