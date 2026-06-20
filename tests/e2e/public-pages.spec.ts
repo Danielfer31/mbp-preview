@@ -186,6 +186,56 @@ test.describe('Canal alternativo (WEB-10)', () => {
 
 });
 
+test.describe('Navegacion y canales canonicos', () => {
+
+  test('/contacto — expone ancla estable para canales', async ({ page }) => {
+    await page.goto('/contacto');
+    const channels = page.locator('#canales[aria-labelledby="channels-heading"]');
+    await expect(channels).toBeVisible();
+  });
+
+  test('header y footer usan rutas dedicadas para paginas principales', async ({ page }) => {
+    await page.goto('/contacto');
+
+    const headerNav = page.locator('header nav');
+    const navToggle = page.locator('#nav-toggle');
+    if (await navToggle.isVisible()) {
+      await navToggle.click();
+    }
+
+    await expect(headerNav.locator('a[href="/servicios"]')).toBeVisible();
+    await expect(headerNav.locator('a[href="/perfil"]')).toBeVisible();
+    await expect(headerNav.locator('a[href="/contacto"]')).toBeVisible();
+    await expect(headerNav.locator('a[href="/#servicios"], a[href="/#perfil"], a[href="/#contacto"]')).toHaveCount(0);
+
+    const footerNav = page.locator('footer nav');
+    await expect(footerNav.locator('a[href="/servicios"]')).toBeVisible();
+    await expect(footerNav.locator('a[href="/perfil"]')).toBeVisible();
+    await expect(footerNav.locator('a[href="/contacto"]')).toBeVisible();
+    await expect(footerNav.locator('a[href="/#servicios"], a[href="/#perfil"], a[href="/#contacto"]')).toHaveCount(0);
+  });
+
+});
+
+test.describe('Mapa y redes pendientes', () => {
+
+  test('/contacto — mapa pendiente es estatico y no enlaza a proveedor externo', async ({ page }) => {
+    await page.goto('/contacto');
+
+    const mapPreview = page.locator('[aria-label="Vista previa de ubicacion pendiente"]');
+    await expect(mapPreview).toBeVisible();
+    await expect(mapPreview.locator('a')).toHaveCount(0);
+    await expect(mapPreview).toContainText('Informacion disponible proximamente');
+  });
+
+  test('/contacto — no publica enlaces sociales sin URL oficial', async ({ page }) => {
+    await page.goto('/contacto');
+
+    await expect(page.locator('a[href*="instagram.com"], a[href*="facebook.com"], a[href*="wa.me"]')).toHaveCount(0);
+  });
+
+});
+
 test.describe('Sedes y horarios (WEB-01)', () => {
 
   test('/contacto — sección de sedes y horarios está presente', async ({ page }) => {
@@ -236,7 +286,7 @@ test.describe('Página 404 personalizada', () => {
   test('/404 — tiene enlace visible para regresar', async ({ page }) => {
     await page.goto('/404');
     // Debe haber al menos un botón/enlace de navegación
-    const actionLinks = page.locator('a.btn, a[class*="btn"]');
+    const actionLinks = page.locator('main a.btn, main a[class*="btn"]');
     await expect(actionLinks.first()).toBeVisible();
   });
 
@@ -261,6 +311,44 @@ test.describe('Disclaimer clínico (WEB-07)', () => {
       body?.includes('No envie informacion clinica') ||
       body?.includes('No envíe síntomas');
     expect(hasDisclaimer).toBeTruthy();
+  });
+
+});
+
+test.describe('Splash screen — comportamiento por sesión', () => {
+
+  test('splash aparece en / al cargar sin sessionStorage', async ({ page }) => {
+    await page.goto('/');
+    const splash = page.locator('#splash');
+    await expect(splash).toBeAttached();
+    const isHidden = await splash.evaluate((el) =>
+      window.getComputedStyle(el).display === 'none'
+    );
+    expect(isHidden).toBe(false);
+  });
+
+  test('click en splash lo elimina visualmente', async ({ page }) => {
+    await page.goto('/');
+    const splash = page.locator('#splash');
+    await expect(splash).toBeAttached();
+    await splash.click();
+    await page.waitForTimeout(800);
+    const isHidden = await splash.evaluate((el) =>
+      window.getComputedStyle(el).display === 'none'
+    );
+    expect(isHidden).toBe(true);
+  });
+
+  test('splash no aparece si sessionStorage tiene la clave', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => sessionStorage.setItem('splash-seen', '1'));
+    await page.reload();
+    const splash = page.locator('#splash');
+    await expect(splash).toBeAttached();
+    const isHidden = await splash.evaluate((el) =>
+      window.getComputedStyle(el).display === 'none'
+    );
+    expect(isHidden).toBe(true);
   });
 
 });
