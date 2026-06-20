@@ -2409,5 +2409,149 @@ function animateBee(el) {
   setTimeout(dismiss, 9000);
 })();
 </script>
+
+<script>
+/* ── Ambient page nature animations (all sections) ── */
+(function(){
+  function startPageAmbient() {
+    if (!window.gsap) { setTimeout(startPageAmbient, 200); return; }
+
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden';
+    document.body.appendChild(overlay);
+
+    var svgNS = 'http://www.w3.org/2000/svg';
+
+    var petalConfigs = [
+      { vb:'0 0 12 12', path:'M6,1 C8,3 10,7 6,11 C2,7 4,3 6,1 Z', fill:'rgba(255,255,255,0.82)' },
+      { vb:'0 0 12 12', path:'M6,1 C8,3 10,7 6,11 C2,7 4,3 6,1 Z', fill:'rgba(196,176,232,0.88)' },
+      { vb:'0 0 12 12', path:'M6,1 C8,3 10,7 6,11 C2,7 4,3 6,1 Z', fill:'rgba(138,170,104,0.85)' },
+      { vb:'0 0 12 12', path:'M6,1 C8,3 10,7 6,11 C2,7 4,3 6,1 Z', fill:'rgba(196,216,168,0.85)' },
+      { vb:'0 0 12 12', path:'M6,0 C10,2 10,8 6,12 C2,8 2,2 6,0 Z', fill:'rgba(255,255,255,0.78)' },
+      { vb:'0 0 12 12', path:'M6,0 C10,2 10,8 6,12 C2,8 2,2 6,0 Z', fill:'rgba(152,120,204,0.88)' },
+      { vb:'0 0 12 12', path:'M6,0 C10,2 10,8 6,12 C2,8 2,2 6,0 Z', fill:'rgba(196,176,232,0.85)' },
+      { vb:'0 0 12 12', path:'M2,9 C1,5 4,1 9,2 C8,6 6,10 2,9 Z',  fill:'rgba(255,255,255,0.80)' },
+      { vb:'0 0 12 12', path:'M2,9 C1,5 4,1 9,2 C8,6 6,10 2,9 Z',  fill:'rgba(138,170,104,0.88)' },
+      { vb:'0 0 12 12', path:'M2,9 C1,5 4,1 9,2 C8,6 6,10 2,9 Z',  fill:'rgba(77,130,130,0.85)'  }
+    ];
+
+    var butterflyConfigs = [
+      { wings:['rgba(196,176,232,0.90)','rgba(196,216,168,0.90)'], body:'rgba(61,71,40,0.70)' },
+      { wings:['rgba(255,255,255,0.85)','rgba(196,216,168,0.85)'], body:'rgba(61,71,40,0.70)' },
+      { wings:['rgba(152,120,204,0.90)','rgba(196,176,232,0.90)'], body:'rgba(61,71,40,0.70)' },
+      { wings:['rgba(255,255,255,0.88)','rgba(138,170,104,0.88)'], body:'rgba(44,44,44,0.65)' }
+    ];
+
+    var beeConfigs = [
+      { body:'rgba(240,192,96,0.92)', stripe:'rgba(61,71,40,0.85)', wing:'rgba(196,216,168,0.70)' },
+      { body:'rgba(232,176,64,0.92)',  stripe:'rgba(37,45,16,0.85)', wing:'rgba(138,170,104,0.65)' }
+    ];
+
+    var petalSizes = [30, 38, 46, 54];
+
+    function makeSVG(w, h, vb) {
+      var s = document.createElementNS(svgNS, 'svg');
+      s.setAttribute('width', w); s.setAttribute('height', h);
+      s.setAttribute('viewBox', vb); s.setAttribute('fill', 'none');
+      s.setAttribute('aria-hidden','true');
+      s.style.position = 'absolute';
+      return s;
+    }
+    function makePath(d, fill) {
+      var p = document.createElementNS(svgNS, 'path');
+      p.setAttribute('d', d); p.setAttribute('fill', fill); return p;
+    }
+
+    /* ── Petals ── */
+    petalConfigs.forEach(function(cfg) {
+      var sz = petalSizes[Math.floor(Math.random() * petalSizes.length)];
+      var svg = makeSVG(sz, sz, cfg.vb);
+      svg.appendChild(makePath(cfg.path, cfg.fill));
+      overlay.appendChild(svg);
+
+      (function fall() {
+        var vw = window.innerWidth, vh = window.innerHeight;
+        var sx = Math.random() * vw;
+        gsap.set(svg, { x: sx, y: -sz - 10, rotation: Math.random() * 360, opacity: 0 });
+        gsap.to(svg, {
+          y: vh + sz + 20,
+          x: sx + (Math.random() - 0.5) * 260,
+          rotation: '+=' + (150 + Math.random() * 210),
+          opacity: 0.80 + Math.random() * 0.18,
+          duration: 7 + Math.random() * 7,
+          ease: 'none',
+          delay: Math.random() * 12,
+          onComplete: fall
+        });
+      })();
+    });
+
+    /* ── Butterflies ── */
+    butterflyConfigs.forEach(function(cfg) {
+      var sz = 52 + Math.floor(Math.random() * 24);
+      var svg = makeSVG(sz, sz, '0 0 16 16');
+      svg.appendChild(makePath('M8,8 C4,5 1,3 2,7 C3,10 6,10 8,8 Z',    cfg.wings[0]));
+      svg.appendChild(makePath('M8,8 C12,5 15,3 14,7 C13,10 10,10 8,8 Z', cfg.wings[0]));
+      svg.appendChild(makePath('M8,8 C4,9 2,13 5,13 C7,13 8,10 8,8 Z',   cfg.wings[1]));
+      svg.appendChild(makePath('M8,8 C12,9 14,13 11,13 C9,13 8,10 8,8 Z', cfg.wings[1]));
+      svg.appendChild(makePath('M7,5 C7,4 9,4 9,5 L9,11 C9,12 7,12 7,11 Z', cfg.body));
+      overlay.appendChild(svg);
+
+      (function flutter(cx, cy, phase) {
+        var vw = window.innerWidth, vh = window.innerHeight;
+        if (!cx) { cx = Math.random() * vw; cy = 60 + Math.random() * (vh * 0.8); }
+        var amp = 80 + Math.random() * 100;
+        var nx = cx + (phase % 2 === 0 ? amp : -amp) + (Math.random() - 0.5) * 40;
+        var ny = cy + (Math.random() - 0.5) * 100;
+        nx = Math.max(20, Math.min(vw - 20, nx));
+        ny = Math.max(-20, Math.min(vh + 20, ny));
+        gsap.set(svg, { x: cx, y: cy, opacity: 0.80 + Math.random() * 0.18 });
+        gsap.to(svg, {
+          x: nx, y: ny,
+          rotation: phase % 2 === 0 ? 15 : -15,
+          duration: 2.5 + Math.random() * 2,
+          delay: phase === 0 ? Math.random() * 10 : 0,
+          ease: 'sine.inOut',
+          onComplete: function() { flutter(nx, ny, phase + 1); }
+        });
+      })(0, 0, 0);
+    });
+
+    /* ── Bees ── */
+    beeConfigs.forEach(function(cfg) {
+      var sz = 40 + Math.floor(Math.random() * 16);
+      var svg = makeSVG(sz, sz, '0 0 14 14');
+      svg.appendChild(makePath('M4,5 C4,3 10,3 10,5 L10,10 C10,12 4,12 4,10 Z', cfg.body));
+      svg.appendChild(makePath('M4,7 C4,6.5 10,6.5 10,7 L10,8 C10,8.5 4,8.5 4,8 Z', cfg.stripe));
+      svg.appendChild(makePath('M7,5 C4,2 1,3 2,6 Z', cfg.wing));
+      svg.appendChild(makePath('M7,5 C10,2 13,3 12,6 Z', cfg.wing));
+      overlay.appendChild(svg);
+
+      (function buzz(cx, cy, steps) {
+        var vw = window.innerWidth, vh = window.innerHeight;
+        if (!cx) { cx = Math.random() * vw; cy = 80 + Math.random() * (vh * 0.7); }
+        if (steps <= 0) { buzz(Math.random() * vw, 80 + Math.random() * (vh * 0.7), 8 + Math.floor(Math.random() * 5)); return; }
+        var nx = Math.max(20, Math.min(vw - 20, cx + (Math.random() - 0.5) * 110));
+        var ny = Math.max(60, Math.min(vh - 60, cy + (Math.random() - 0.5) * 80));
+        gsap.set(svg, { x: cx, y: cy, opacity: 0.85 + Math.random() * 0.13 });
+        gsap.to(svg, {
+          x: nx, y: ny,
+          rotation: Math.random() * 50 - 25,
+          duration: 0.25 + Math.random() * 0.30,
+          delay: steps === (8 + 5) ? Math.random() * 14 : 0,
+          ease: 'power1.inOut',
+          onComplete: function() { buzz(nx, ny, steps - 1); }
+        });
+      })(0, 0, 0);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startPageAmbient);
+  } else {
+    startPageAmbient();
+  }
+})();
+</script>
 </body>
 </html>
