@@ -1,0 +1,251 @@
+---
+/**
+ * SplashScreen.astro — Intro overlay de primera visita por sesión
+ *
+ * Aparece en index.astro al cargar. Estado guardado en sessionStorage.
+ * Dismiss: click | mousemove (después de t=1.8s) | auto t=6s
+ * Exit: cortina — panel izquierdo sale a la izquierda, derecho a la derecha.
+ * Accesibilidad: aria-hidden, prefers-reduced-motion.
+ */
+---
+
+<div id="splash" aria-hidden="true">
+  <div id="splash-left"></div>
+  <div id="splash-right"></div>
+  <div id="splash-center">
+    <div class="splash-logo-wrap">
+      <svg
+        class="splash-logo"
+        width="88"
+        height="88"
+        viewBox="0 0 40 40"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <ellipse class="splash-petal" cx="20" cy="10" rx="6"  ry="10" fill="#DCCDFF" opacity="0.9"/>
+        <ellipse class="splash-petal" cx="30" cy="20" rx="10" ry="6"  fill="#C8CD91" opacity="0.9"/>
+        <ellipse class="splash-petal" cx="20" cy="30" rx="7"  ry="10" fill="#F0F0E6" opacity="0.75"/>
+        <ellipse class="splash-petal" cx="10" cy="20" rx="10" ry="6"  fill="#87AAAF" opacity="0.9"/>
+        <circle class="splash-petal-center" cx="20" cy="20" r="3" fill="#DCCDFF"/>
+      </svg>
+    </div>
+    <p class="splash-name">MARIA BERNARDA<br/>PACHECO</p>
+    <p class="splash-role">pediatra</p>
+  </div>
+</div>
+
+<style>
+  /* ── Layout ── */
+  #splash {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    overflow: hidden;
+  }
+
+  #splash-left,
+  #splash-right {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: var(--color-primary);
+    will-change: transform;
+  }
+
+  #splash-left  { left: 0; }
+  #splash-right { right: 0; }
+
+  #splash-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 501;
+    text-align: center;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* ── Text ── */
+  .splash-name {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: var(--font-regular);
+    letter-spacing: var(--tracking-heading);
+    color: var(--color-cream);
+    line-height: 1.45;
+    text-transform: uppercase;
+    margin-top: var(--space-lg);
+    margin-bottom: 0;
+    opacity: 0;
+  }
+
+  .splash-role {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: var(--font-light);
+    letter-spacing: var(--tracking-label);
+    color: var(--color-sage);
+    text-transform: lowercase;
+    margin-top: var(--space-xs);
+    opacity: 0;
+  }
+
+  /* ── Logo petals — hidden by default ── */
+  .splash-petal,
+  .splash-petal-center {
+    opacity: 0;
+    transform-box: view-box;
+    transform-origin: 50% 50%;
+  }
+
+  /* ── Keyframes ── */
+  @keyframes petalIn {
+    from {
+      opacity: 0;
+      transform: rotate(45deg) scale(0.6);
+    }
+    to {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+  }
+
+  @keyframes fadeSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes logoPulse {
+    from { transform: scale(1); }
+    to   { transform: scale(1.04); }
+  }
+
+  /* ── Entrance animations (active when .splash--animate on #splash) ── */
+  #splash.splash--animate .splash-petal:nth-child(1) {
+    animation: petalIn 0.5s var(--ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) 0.2s  both;
+  }
+  #splash.splash--animate .splash-petal:nth-child(2) {
+    animation: petalIn 0.5s var(--ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) 0.32s both;
+  }
+  #splash.splash--animate .splash-petal:nth-child(3) {
+    animation: petalIn 0.5s var(--ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) 0.44s both;
+  }
+  #splash.splash--animate .splash-petal:nth-child(4) {
+    animation: petalIn 0.5s var(--ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) 0.56s both;
+  }
+  #splash.splash--animate .splash-petal-center {
+    animation: petalIn 0.3s ease-out 0.68s both;
+  }
+  #splash.splash--animate .splash-name {
+    animation: fadeSlideUp 0.4s ease-out 1.0s both;
+  }
+  #splash.splash--animate .splash-role {
+    animation: fadeSlideUp 0.4s ease-out 1.35s both;
+  }
+  #splash.splash--animate .splash-logo-wrap {
+    animation: logoPulse 1.2s ease-in-out 1.8s infinite alternate;
+  }
+
+  /* ── Exit animation ── */
+  #splash-left,
+  #splash-right {
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #splash-center {
+    transition: opacity 0.25s ease-in, transform 0.25s ease-in;
+  }
+
+  #splash.is-exiting #splash-left  { transform: translateX(-100%); }
+  #splash.is-exiting #splash-right { transform: translateX(100%); }
+  #splash.is-exiting #splash-center {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% - 12px));
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 480px) {
+    .splash-logo {
+      width: 64px;
+      height: 64px;
+    }
+    .splash-name {
+      font-size: 11px;
+    }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    #splash.splash--animate .splash-petal,
+    #splash.splash--animate .splash-petal-center,
+    #splash.splash--animate .splash-name,
+    #splash.splash--animate .splash-role {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    #splash.splash--animate .splash-logo-wrap {
+      animation: none;
+    }
+
+    #splash-left,
+    #splash-right,
+    #splash-center {
+      transition: none;
+    }
+
+    #splash.is-exiting {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+  }
+</style>
+
+<script>
+  function initSplash() {
+    const splash = document.getElementById('splash');
+    if (!splash) return;
+
+    if (sessionStorage.getItem('splash-seen')) {
+      splash.style.display = 'none';
+      return;
+    }
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let dismissed = false;
+
+    function dismiss() {
+      if (dismissed) return;
+      dismissed = true;
+
+      splash.classList.add('is-exiting');
+
+      setTimeout(function () {
+        splash.style.display = 'none';
+        sessionStorage.setItem('splash-seen', '1');
+      }, 650);
+    }
+
+    splash.classList.add('splash--animate');
+    splash.addEventListener('click', dismiss);
+
+    const mousemoveDelay = reducedMotion ? 500 : 1800;
+    setTimeout(function () {
+      document.addEventListener('mousemove', dismiss, { once: true });
+    }, mousemoveDelay);
+
+    setTimeout(dismiss, 6000);
+  }
+
+  document.addEventListener('astro:page-load', initSplash);
+</script>
