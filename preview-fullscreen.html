@@ -2570,20 +2570,27 @@ function animateBee(el) {
     if (mouseReg) document.removeEventListener('mousemove', dismiss);
     splashTimers.forEach(function(t) { t.kill(); });
     var windPetals = Array.from(splash.querySelectorAll('.sp-wind-petal'));
-    if (windPetals.length && window.gsap) {
+    if (window.gsap && windPetals.length) {
       gsap.killTweensOf(windPetals);
+      // Soft fade-out — remove from DOM only after fade completes so exit feels organic
+      gsap.to(windPetals, {
+        opacity: 0, duration: 0.6, ease: 'power2.in',
+        onComplete: function() {
+          windPetals.forEach(function(p) { p.parentNode && p.parentNode.removeChild(p); });
+        }
+      });
+    } else {
+      windPetals.forEach(function(p) { p.parentNode && p.parentNode.removeChild(p); });
     }
-    // Remove petals from DOM immediately — prevents them showing over page during panel slide-out
-    windPetals.forEach(function(p) { p.parentNode && p.parentNode.removeChild(p); });
     splash.classList.add('sp-out');
     setTimeout(function() {
       splash.style.display = 'none';
       sessionStorage.setItem('splash-seen', '1');
-      // Extra buffer: wait 1.5s after splash hides before starting ambient — zero visual overlap
+      // 800ms calm pause after splash hides, then ambient fades in organically
       window.__splashDone = true;
       setTimeout(function() {
         if (typeof window.__startAmbient === 'function') window.__startAmbient();
-      }, 1500);
+      }, 800);
     }, 900);
   }
 
