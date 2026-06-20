@@ -2363,7 +2363,7 @@ function animateBee(el) {
   var splash = document.getElementById('splash');
   if (!splash) return;
   sessionStorage.removeItem('splash-seen');
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduced = false; // preview: show all animations regardless of OS setting
   var dismissed = false;
   var mouseReg = false;
   var petalsAborted = false;
