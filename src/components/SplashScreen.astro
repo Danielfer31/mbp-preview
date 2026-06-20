@@ -9,7 +9,7 @@
  */
 ---
 
-<div id="splash" aria-hidden="true">
+<div id="splash" aria-hidden="true" role="presentation">
   <div id="splash-left"></div>
   <div id="splash-right"></div>
   <div id="splash-center">
@@ -223,11 +223,14 @@
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let dismissed = false;
+    let mouseDismissRegistered = false;
 
     function dismiss() {
       if (dismissed) return;
       dismissed = true;
-
+      if (mouseDismissRegistered) {
+        document.removeEventListener('mousemove', dismiss);
+      }
       splash.classList.add('is-exiting');
 
       setTimeout(function () {
@@ -241,6 +244,8 @@
 
     const mousemoveDelay = reducedMotion ? 500 : 1800;
     setTimeout(function () {
+      if (dismissed) return;
+      mouseDismissRegistered = true;
       document.addEventListener('mousemove', dismiss, { once: true });
     }, mousemoveDelay);
 
