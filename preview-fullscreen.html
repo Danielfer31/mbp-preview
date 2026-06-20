@@ -431,7 +431,8 @@ footer{background:#3d4728;color:#f0ebe0;margin-top:auto}
 .stories-kicker{display:inline-block;background:#ede8f5;border:1px solid rgba(152,120,204,.28);border-radius:20px;padding:5px 14px;margin-bottom:14px;font-size:10px;font-weight:600;letter-spacing:.22em;color:#7858a8}
 .stories-head h2{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,52px);font-weight:300;color:#2c2c2c;line-height:1.05;margin-bottom:14px}
 .stories-head p{font-size:14px;color:#5a5858;line-height:1.7;font-weight:300}
-.stories-viewport{position:relative;z-index:1;overflow:hidden;margin-right:-80px;padding:18px 0 48px}
+.stories-viewport{position:relative;z-index:1;overflow-x:auto;overflow-y:visible;margin-right:-80px;padding:18px 0 48px;scrollbar-width:none;overscroll-behavior-x:contain;cursor:grab;touch-action:pan-x pan-y}
+.stories-viewport:active{cursor:grabbing}
 .stories-viewport::-webkit-scrollbar{display:none}
 .stories-viewport::before,.stories-viewport::after{content:"";position:absolute;top:18px;bottom:48px;width:72px;z-index:3;pointer-events:none}
 .stories-viewport::before{left:0;background:linear-gradient(90deg,#fafaf8,rgba(250,250,248,0))}
@@ -495,6 +496,8 @@ footer{background:#3d4728;color:#f0ebe0;margin-top:auto}
   .ft{padding:40px 20px}
   .vs-border{border-left:none!important;border-right:none!important}
   .priv-border{border-left:none!important;padding-left:0!important}
+  #service-detail-hero .sec{padding-top:80px}
+  .hero-bg-split{display:none!important}
 }
 /* ── SERVICE MODAL ─────────────────────────────────── */
 @media(prefers-reduced-motion:reduce){
@@ -708,7 +711,7 @@ footer{background:#3d4728;color:#f0ebe0;margin-top:auto}
 
   <!-- Hero -->
   <section aria-label="Presentación principal" style="background:#3d4728;position:relative;overflow:hidden;">
-    <div style="position:absolute;right:0;top:0;bottom:0;width:38%;background:#ede8f5;z-index:0;" aria-hidden="true"></div>
+    <div class="hero-bg-split" style="position:absolute;right:0;top:0;bottom:0;width:38%;background:#ede8f5;z-index:0;" aria-hidden="true"></div>
     <div style="position:absolute;left:-28px;bottom:-28px;opacity:.1;z-index:0;pointer-events:none;" aria-hidden="true">
       <svg width="240" height="240" viewBox="0 0 44 44" fill="none" stroke="#e0e8d0" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
     </div>
@@ -1348,6 +1351,18 @@ function navPageFor(page) {
   return page === 'servicio-detalle' ? 'servicios' : page;
 }
 
+function restorePageScroll() {
+  const menu = document.getElementById('mob-menu');
+  const serviceBackdrop = document.getElementById('svc-backdrop');
+  const modalOpen = serviceBackdrop && serviceBackdrop.classList.contains('open');
+  const menuOpen = menu && menu.classList.contains('open');
+  if (!menuOpen && !modalOpen) {
+    document.body.style.overflow = '';
+    document.documentElement.style.overflowY = 'auto';
+    document.body.style.overflowY = 'auto';
+  }
+}
+
 function goTo(page) {
   if (page === currentPage && document.getElementById('page-' + page)?.classList.contains('active')) return;
   const cur = document.querySelector('main.page.active') || document.getElementById('page-' + currentPage);
@@ -1372,6 +1387,7 @@ function goTo(page) {
 
   // Close mobile menu and scroll to top
   closeMenu();
+  restorePageScroll();
   window.scrollTo(0, 0);
   if (next) next.scrollTop = 0;
 }
@@ -1433,6 +1449,8 @@ function setupProfileStoriesAutoscroll() {
     const previousDistance = parseFloat(grid.dataset.loopDistance || '0') || 0;
     const previousDuration = parseFloat(grid.dataset.loopDuration || '0') || 0;
     if (
+      grid._storyLoopAnimation &&
+      grid._storyLoopAnimation.playState !== 'idle' &&
       Math.abs(previousDistance - loopDistance) < 1 &&
       Math.abs(previousDuration - duration) < 0.1
     ) {
@@ -1442,6 +1460,25 @@ function setupProfileStoriesAutoscroll() {
     grid.dataset.loopDuration = String(duration);
     grid.style.setProperty('--story-loop-distance', loopDistance + 'px');
     grid.style.setProperty('--story-loop-duration', duration + 's');
+    grid.style.animation = 'none';
+    if (grid._storyLoopAnimation) {
+      grid._storyLoopAnimation.cancel();
+    }
+    if (typeof grid.animate === 'function') {
+      grid._storyLoopAnimation = grid.animate(
+        [
+          { transform: 'translate3d(0,0,0)' },
+          { transform: 'translate3d(' + (-loopDistance) + 'px,0,0)' }
+        ],
+        {
+          duration: duration * 1000,
+          iterations: Infinity,
+          easing: 'linear'
+        }
+      );
+    } else {
+      grid.style.animation = 'storyMarquee var(--story-loop-duration) linear infinite';
+    }
   }
 
   updateDistance();
@@ -1458,6 +1495,8 @@ window.setupProfileStoriesAutoscroll = setupProfileStoriesAutoscroll;
 setupProfileStoriesAutoscroll();
 document.addEventListener('DOMContentLoaded', setupProfileStoriesAutoscroll);
 window.addEventListener('load', setupProfileStoriesAutoscroll);
+document.addEventListener('DOMContentLoaded', restorePageScroll);
+window.addEventListener('load', restorePageScroll);
 
 // ── Mobile menu ──
 function openMenu() {
@@ -1468,6 +1507,7 @@ function openMenu() {
 function closeMenu() {
   document.getElementById('mob-menu').classList.remove('open');
   document.body.style.overflow = '';
+  restorePageScroll();
 }
 
 // Close menu on Escape
@@ -1867,13 +1907,17 @@ function toggleFaq(id) {
       // ── Patch closeMenu ───────────────────────────────────
       window.closeMenu = function() {
         var menu = document.getElementById('mob-menu');
-        if (!menu.classList.contains('open')) return;
+        if (!menu.classList.contains('open')) {
+          restorePageScroll();
+          return;
+        }
         gsap.to(menu, {
           opacity: 0, x: 20, duration: 0.2, ease: 'power2.in',
           onComplete: function() {
             menu.classList.remove('open');
             gsap.set(menu, { opacity: 1, x: 0 });
             document.body.style.overflow = '';
+            restorePageScroll();
           }
         });
       };
