@@ -1,0 +1,2401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maria Bernarda Pacheco — Pediatría</title>
+<meta name="description" content="Pediatría con confianza, tranquilidad y profesionalismo. Maria Bernarda Pacheco, especialista en pediatría.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Jost',sans-serif;background:#f0ebe0;min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
+button{font-family:'Jost',sans-serif}
+.page{position:fixed;top:72px;left:0;right:0;bottom:0;height:calc(100vh - 72px);overflow-y:auto;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .4s ease;z-index:1}
+.page.active{opacity:1;pointer-events:auto;z-index:2}
+.sec{padding:56px 80px;max-width:1440px;margin:0 auto;width:100%}
+.sec-lg{padding:72px 80px;max-width:1440px;margin:0 auto;width:100%}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;overflow:hidden;transition:background .3s,box-shadow .3s,backdrop-filter .3s}
+header::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.12) 44%,transparent 62%);opacity:0;transform:translateX(-70%);transition:opacity .24s ease,transform .7s ease;pointer-events:none}
+header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(196,176,232,.55),rgba(138,170,104,.55),transparent);opacity:.55;pointer-events:none}
+header:hover::before{opacity:0;transform:translateX(-70%)}
+header.dark{background:rgba(61,71,40,.94);backdrop-filter:blur(10px)}
+header.light{background:rgba(255,255,255,.94);box-shadow:0 1px 6px rgba(0,0,0,.07);backdrop-filter:blur(10px)}
+header.hdr-servicios{background:rgba(212,223,200,.96);box-shadow:0 1px 8px rgba(61,71,40,.08);backdrop-filter:blur(10px)}
+header.hdr-perfil{background:rgba(237,232,245,.96);box-shadow:0 1px 8px rgba(120,88,168,.08);backdrop-filter:blur(10px)}
+header.hdr-contacto{background:rgba(216,236,236,.96);box-shadow:0 1px 8px rgba(77,130,130,.08);backdrop-filter:blur(10px)}
+header.hdr-avisos{background:rgba(245,240,232,.96);box-shadow:0 1px 8px rgba(152,120,204,.08);backdrop-filter:blur(10px)}
+.h-inner{display:flex;align-items:center;justify-content:space-between;height:100%;padding:0 80px;max-width:1440px;margin:0 auto;width:100%;gap:16px;transition:transform .24s ease}
+header:hover .h-inner{transform:none}
+.logo-btn{display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:6px 8px;margin-left:-8px;border-radius:999px;flex-shrink:0;position:relative;overflow:hidden;transition:transform .24s ease,background-color .24s ease}
+.logo-btn::before{content:"";position:absolute;inset:0;border-radius:inherit;background:rgba(255,255,255,.08);opacity:0;transition:opacity .24s ease}
+.logo-btn:hover,.logo-btn:focus-visible{transform:translateY(-2px)}
+.logo-btn:hover::before,.logo-btn:focus-visible::before{opacity:1}
+.logo-name{font-size:11.5px;font-weight:600;line-height:1.25;letter-spacing:.1em;font-family:'Jost',sans-serif;transition:color .3s}
+header.dark .logo-name{color:#f0ebe0}
+header.light .logo-name{color:#2c2c2c}
+header.hdr-servicios .logo-name,
+header.hdr-perfil .logo-name,
+header.hdr-contacto .logo-name,
+header.hdr-avisos .logo-name{color:#2c2c2c}
+.logo-ped{font-size:9px;font-weight:400;letter-spacing:.22em;font-family:'Jost',sans-serif;transition:color .3s}
+header.dark .logo-ped{color:#8aaa68}
+header.light .logo-ped{color:#7a9960}
+header.hdr-servicios .logo-ped{color:#6a8c50}
+header.hdr-perfil .logo-ped{color:#9878cc}
+header.hdr-contacto .logo-ped{color:#4d8282}
+header.hdr-avisos .logo-ped{color:#9878cc}
+nav.dnav{display:flex;gap:28px;align-items:center}
+.nb{--nav-line:#c4b0e8;background:none;border:none;cursor:pointer;font-size:11.5px;font-weight:500;letter-spacing:.1em;padding:9px 0;border-bottom:0;font-family:'Jost',sans-serif;white-space:nowrap;position:relative;transition:color .2s,transform .24s ease,text-shadow .24s ease}
+.nb::before{content:"";position:absolute;left:50%;right:50%;bottom:4px;height:2px;border-radius:999px;background:linear-gradient(90deg,var(--nav-line),#8aaa68);opacity:.85;transition:left .28s ease,right .28s ease,opacity .2s ease}
+.nb::after{content:"";position:absolute;left:12%;right:12%;bottom:4px;height:2px;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);opacity:0;transform:translateX(-60%);transition:opacity .18s ease,transform .45s ease}
+.nb:hover,.nb:focus-visible{transform:translateY(-2px) scale(1.035);text-shadow:0 4px 18px rgba(61,71,40,.14)}
+.nb.active{font-weight:600;text-shadow:none}
+.nb:hover::after,.nb:focus-visible::after{opacity:1;transform:translateX(60%)}
+.nb:hover::before,.nb:focus-visible::before,.nb.active::before{left:0;right:0}
+header.dark .nb{color:#e8f0d8}
+header.light .nb{color:#3d4728}
+header.hdr-servicios .nb,
+header.hdr-perfil .nb,
+header.hdr-contacto .nb,
+header.hdr-avisos .nb{color:#314020}
+header.dark .nb.active{color:#fff}
+header.light .nb.active{color:#2c2c2c}
+header.hdr-servicios .nb.active,
+header.hdr-perfil .nb.active,
+header.hdr-contacto .nb.active,
+header.hdr-avisos .nb.active{color:#2c2c2c}
+.nb[data-p="inicio"]{--nav-line:#8aaa68}
+.nb[data-p="servicios"]{--nav-line:#6a8c50}
+.nb[data-p="perfil"]{--nav-line:#9878cc}
+.nb[data-p="contacto"]{--nav-line:#4d8282}
+.nb[data-p="avisos"]{--nav-line:#9878cc}
+.h-cta{border-radius:20px;padding:9px 18px;font-size:11px;font-weight:600;letter-spacing:.12em;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:'Jost',sans-serif;white-space:nowrap;position:relative;isolation:isolate;overflow:hidden;transition:transform .24s ease,background .3s,color .3s,border-color .3s,box-shadow .24s ease}
+.h-cta::before{content:"";position:absolute;inset:-2px;z-index:-1;background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.34) 44%,transparent 62%);opacity:0;transform:translateX(-65%);transition:opacity .24s ease,transform .55s ease}
+.h-cta:hover,.h-cta:focus-visible{transform:translateY(-3px) scale(1.03)}
+.h-cta:hover::before,.h-cta:focus-visible::before{opacity:1;transform:translateX(58%)}
+.h-cta svg{transition:transform .24s ease}
+.h-cta:hover svg,.h-cta:focus-visible svg{transform:translateY(-1px) rotate(-5deg)}
+header.dark .h-cta{background:transparent;color:#d8e8c0;border:1.5px solid #7aa060}
+header.dark .h-cta:hover,header.dark .h-cta:focus-visible{box-shadow:0 14px 30px rgba(138,170,104,.2);border-color:#a8c080}
+header.light .h-cta{background:#3d4728;color:#fff;border:1.5px solid #3d4728}
+header.light .h-cta:hover,header.light .h-cta:focus-visible{box-shadow:0 14px 30px rgba(61,71,40,.18)}
+header.hdr-servicios .h-cta{background:#3d4728;color:#fff;border:1.5px solid #3d4728}
+header.hdr-perfil .h-cta{background:#3d4728;color:#fff;border:1.5px solid #3d4728}
+header.hdr-contacto .h-cta{background:#355f5f;color:#fff;border:1.5px solid #355f5f}
+header.hdr-avisos .h-cta{background:#3d4728;color:#fff;border:1.5px solid #3d4728}
+header.hdr-servicios .h-cta:hover,header.hdr-servicios .h-cta:focus-visible,
+header.hdr-perfil .h-cta:hover,header.hdr-perfil .h-cta:focus-visible,
+header.hdr-contacto .h-cta:hover,header.hdr-contacto .h-cta:focus-visible,
+header.hdr-avisos .h-cta:hover,header.hdr-avisos .h-cta:focus-visible{box-shadow:0 14px 30px rgba(61,71,40,.18)}
+.hamb{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;transition:color .3s}
+header.dark .hamb{color:#e0ebe0}
+header.light .hamb{color:#3d4728}
+header.hdr-servicios .hamb,
+header.hdr-perfil .hamb,
+header.hdr-contacto .hamb,
+header.hdr-avisos .hamb{color:#3d4728}
+.hamb span{display:block;width:22px;height:2px;background:currentColor;border-radius:2px}
+
+/* MOBILE MENU */
+.mob-menu{position:fixed;inset:0;background:#3d4728;z-index:200;display:none;flex-direction:column;padding:20px 24px 40px;overflow-y:auto}
+.mob-menu.open{display:flex}
+.mob-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px}
+.mob-close{background:none;border:none;cursor:pointer;color:#e0ebe0;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.mob-nav{display:flex;flex-direction:column;gap:0;flex:1}
+.mob-nb{background:none;border:none;border-bottom:1px solid rgba(255,255,255,.12);cursor:pointer;color:#f0ebe0;font-size:17px;font-weight:400;letter-spacing:.1em;padding:20px 0;text-align:left;font-family:'Jost',sans-serif}
+.mob-cta{width:100%;background:transparent;color:#d8e8c0;border:1.5px solid #7aa060;border-radius:28px;padding:15px 24px;font-size:11.5px;font-weight:600;letter-spacing:.15em;cursor:pointer;font-family:'Jost',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px}
+
+/* FAQ */
+.faq-chev{transition:transform .2s;flex-shrink:0}
+.faq-chev.open{transform:rotate(180deg)}
+.faq-body{overflow:hidden;max-height:0;transition:max-height .25s ease}
+.faq-body.open{max-height:400px}
+.faq-inner{padding:0 0 16px;font-size:13.5px;color:#5a5858;line-height:1.6;font-weight:300}
+.faq-inner.sm{font-size:13px;padding:0 0 14px}
+
+/* FOOTER */
+footer{background:#3d4728;color:#f0ebe0;margin-top:auto}
+.ft{padding:56px 80px;max-width:1440px;margin:0 auto;width:100%}
+.ft-top{display:flex;flex-wrap:wrap;gap:40px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:24px}
+.ft-bot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px}
+.ft-copy{font-size:11.5px;color:rgba(240,235,224,.45);font-weight:300}
+.ft-lbl{font-size:10px;font-weight:600;letter-spacing:.2em;color:#8aaa68;margin-bottom:16px}
+.ft-nb{background:none;border:none;cursor:pointer;color:rgba(240,235,224,.75);font-size:13px;font-weight:300;text-align:left;padding:0;font-family:'Jost',sans-serif}
+.soc-a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;color:rgba(240,235,224,.7);text-decoration:none}
+
+/* HERO ACTIONS */
+#page-inicio button[onclick*="contacto"],
+#page-inicio button[onclick*="servicios"]{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  cursor:pointer;
+  transform:translateZ(0);
+  transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease,background-color .24s ease,color .24s ease;
+}
+#page-inicio button[onclick*="contacto"]::before,
+#page-inicio button[onclick*="servicios"]::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  z-index:-1;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.34) 44%,transparent 62%);
+  opacity:0;
+  transform:translateX(-65%);
+  transition:opacity .24s ease,transform .55s ease;
+}
+#page-inicio button[onclick*="contacto"]:hover,
+#page-inicio button[onclick*="contacto"]:focus-visible{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 16px 34px rgba(138,170,104,.28);
+}
+#page-inicio button[onclick*="servicios"]:hover,
+#page-inicio button[onclick*="servicios"]:focus-visible{
+  transform:translateY(-3px) scale(1.03);
+  border-color:#c4b0e8!important;
+  background:rgba(196,176,232,.1)!important;
+  box-shadow:0 14px 30px rgba(196,176,232,.18);
+}
+#page-inicio button[onclick*="contacto"]:hover::before,
+#page-inicio button[onclick*="contacto"]:focus-visible::before,
+#page-inicio button[onclick*="servicios"]:hover::before,
+#page-inicio button[onclick*="servicios"]:focus-visible::before{
+  opacity:1;
+  transform:translateX(58%);
+}
+#page-inicio button[onclick*="contacto"] svg{
+  transition:transform .24s ease;
+}
+#page-inicio button[onclick*="contacto"]:hover svg,
+#page-inicio button[onclick*="contacto"]:focus-visible svg{
+  transform:translateY(-1px) rotate(-5deg);
+}
+
+/* SERVICE CARDS */
+#page-servicios article[data-service]{
+  --svc-accent:#8aaa68;
+  --svc-accent-soft:rgba(138,170,104,.16);
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  transform:translateZ(0);
+  transition:transform .24s ease,border-color .28s ease,background-color .28s ease,box-shadow .28s ease;
+  will-change:transform;
+}
+#page-servicios article[data-service="0"],
+#page-servicios article[data-service="2"],
+#page-servicios article[data-service="4"]{
+  --svc-accent:#9878cc;
+  --svc-accent-soft:rgba(152,120,204,.16);
+}
+#page-servicios article[data-service="3"]{
+  --svc-accent:#c07850;
+  --svc-accent-soft:rgba(192,120,80,.14);
+}
+#page-servicios article[data-service]::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:
+    radial-gradient(circle at 18% 16%,var(--svc-accent-soft),transparent 34%),
+    linear-gradient(115deg,transparent 0%,rgba(255,255,255,.58) 44%,transparent 62%);
+  opacity:0;
+  transform:translateX(-65%);
+  transition:opacity .24s ease,transform .55s ease;
+}
+#page-servicios article[data-service] > div:first-child > div:first-child,
+#page-servicios article[data-service] > div:last-child > svg,
+#page-servicios article[data-service] > div:last-child > span{
+  transition:transform .32s ease,border-color .28s ease,background-color .28s ease,color .28s ease;
+}
+#page-servicios article[data-service]:hover,
+#page-servicios article[data-service]:focus-within{
+  transform:translateY(-3px) scale(1.03);
+  border-color:color-mix(in srgb,var(--svc-accent) 42%,#e8e0d4)!important;
+  background:#fffefb!important;
+  box-shadow:0 18px 40px rgba(45,50,15,.13);
+}
+#page-servicios article[data-service]:hover::before,
+#page-servicios article[data-service]:focus-within::before{
+  opacity:1;
+  transform:translateX(58%);
+}
+#page-servicios article[data-service]:hover > div:first-child > div:first-child,
+#page-servicios article[data-service]:focus-within > div:first-child > div:first-child{
+  transform:scale(1.08) rotate(-3deg);
+}
+#page-servicios article[data-service]:hover > div:last-child > svg,
+#page-servicios article[data-service]:focus-within > div:last-child > svg{
+  transform:translateX(6px);
+}
+#page-servicios article[data-service]:hover > div:last-child > span,
+#page-servicios article[data-service]:focus-within > div:last-child > span{
+  border-color:color-mix(in srgb,var(--svc-accent) 28%,#e0d8cc)!important;
+  background:#fffaf2!important;
+  color:#5f6253!important;
+}
+@media(prefers-reduced-motion:reduce){
+  #page-servicios article[data-service],
+  #page-servicios article[data-service]::before,
+  #page-servicios article[data-service] > div:first-child > div:first-child,
+  #page-servicios article[data-service] > div:last-child > svg,
+  #page-servicios article[data-service] > div:last-child > span{
+    transition:none!important;
+    animation:none!important;
+    transform:none!important;
+  }
+  #page-servicios article[data-service]:hover,
+  #page-servicios article[data-service]:focus-within{
+    box-shadow:0 0 0 2px var(--svc-accent-soft);
+  }
+}
+
+/* FLASHCARDS */
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+){
+  --svc-accent:#9878cc;
+  --svc-accent-soft:rgba(152,120,204,.15);
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  transform:translateZ(0);
+  transition:transform .24s ease,border-color .28s ease,background-color .28s ease,box-shadow .28s ease;
+  will-change:transform;
+}
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+)::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:
+    radial-gradient(circle at 18% 16%,var(--svc-accent-soft),transparent 34%),
+    linear-gradient(115deg,transparent 0%,rgba(255,255,255,.58) 44%,transparent 62%);
+  opacity:0;
+  transform:translateX(-65%);
+  transition:opacity .24s ease,transform .55s ease;
+}
+#page-perfil div[style*="flex:1 1 220px"] > div:nth-child(even),
+#page-contacto section[aria-label="Canales de contacto"] > div > div > div:nth-child(2),
+#page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"]:nth-child(1),
+#page-avisos div[role="article"]:nth-child(3){
+  --svc-accent:#6a8c50;
+  --svc-accent-soft:rgba(106,140,80,.16);
+}
+#page-contacto section[aria-label="Canales de contacto"] > div > div > div:nth-child(3),
+#page-avisos div[role="article"]:nth-child(2){
+  --svc-accent:#4d8282;
+  --svc-accent-soft:rgba(77,130,130,.16);
+}
+#page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"]{
+  --svc-accent:#9878cc;
+  --svc-accent-soft:rgba(152,120,204,.15);
+}
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+):hover,
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+):focus-within{
+  transform:translateY(-3px) scale(1.03);
+  border-color:color-mix(in srgb,var(--svc-accent) 42%,#e8e0d4)!important;
+  background:#fffefb!important;
+  box-shadow:0 18px 40px rgba(45,50,15,.13)!important;
+}
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+):hover::before,
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+):focus-within::before{
+  opacity:1;
+  transform:translateX(58%);
+}
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+) div[style*="border-radius:50%"]{
+  transition:transform .32s ease,border-color .28s ease,background-color .28s ease;
+}
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+):hover div[style*="border-radius:50%"],
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+):focus-within div[style*="border-radius:50%"]{
+  transform:scale(1.08) rotate(-3deg);
+}
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+) span{
+  transition:border-color .28s ease,background-color .28s ease,color .28s ease;
+}
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+):hover span,
+:is(
+  #page-perfil div[style*="flex:1 1 220px"] > div,
+  #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+  #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+  #page-avisos div[role="article"]
+):focus-within span{
+  border-color:color-mix(in srgb,var(--svc-accent) 28%,#e0d8cc)!important;
+  background:#fffaf2!important;
+  color:#5f6253!important;
+}
+@media(prefers-reduced-motion:reduce){
+  :is(
+    #page-perfil div[style*="flex:1 1 220px"] > div,
+    #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+    #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+    #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+    #page-avisos div[role="article"]
+  ),
+  :is(
+    #page-perfil div[style*="flex:1 1 220px"] > div,
+    #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+    #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+    #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+    #page-avisos div[role="article"]
+  )::before,
+  :is(
+    #page-perfil div[style*="flex:1 1 220px"] > div,
+    #page-contacto section[aria-label="Canales de contacto"] > div > div > div,
+    #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[style*="flex:1 1 260px"],
+    #page-contacto section[aria-label="Sedes, horarios y preguntas frecuentes"] div[role="alert"],
+    #page-avisos div[role="article"]
+  ) div[style*="border-radius:50%"]{
+    transition:none!important;
+    animation:none!important;
+    transform:none!important;
+  }
+}
+
+/* RESPONSIVE */
+@media(max-width:800px){
+  .sec{padding:40px 20px}
+  .sec-lg{padding:52px 20px}
+  .h-inner{padding:0 20px}
+  nav.dnav{display:none!important}
+  .hamb{display:flex}
+  .ft{padding:40px 20px}
+  .vs-border{border-left:none!important;border-right:none!important}
+  .priv-border{border-left:none!important;padding-left:0!important}
+}
+/* ── SERVICE MODAL ─────────────────────────────────── */
+@media(prefers-reduced-motion:reduce){
+  header,
+  header::before,
+  .h-inner,
+  .logo-btn,
+  .logo-btn::before,
+  .nb,
+  .nb::before,
+  .nb::after,
+  .h-cta,
+  .h-cta::before,
+  .h-cta svg{
+    transition:none!important;
+    animation:none!important;
+    transform:none!important;
+  }
+}
+#svc-backdrop{position:fixed;inset:0;background:rgba(45,40,35,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:309;opacity:0;pointer-events:none;display:flex;align-items:center;justify-content:center}
+#svc-backdrop.open{pointer-events:auto}
+#svc-modal{width:90%;max-width:520px;background:#fafaf8;border-radius:16px;padding:32px;box-shadow:0 24px 64px rgba(0,0,0,.18);opacity:0;pointer-events:none}
+#svc-modal.open{pointer-events:auto}
+#svc-modal-header{display:flex;align-items:flex-start;gap:18px;margin-bottom:18px}
+#svc-modal-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#svc-modal-title{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3vw,26px);font-weight:400;color:#2c2c2c;line-height:1.15;flex:1;margin-top:6px}
+#svc-modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:#aaa;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;font-family:'Jost',sans-serif;line-height:1}
+#svc-modal-close:hover{color:#2c2c2c}
+#svc-modal-divider{height:1px;margin-bottom:20px}
+#svc-modal-desc{font-family:'Jost',sans-serif;font-size:14px;font-weight:300;color:#5a5858;line-height:1.75;margin:0}
+@media(max-width:800px){#svc-modal{padding:24px;width:calc(100% - 32px)}}
+/* SERVICE DETAIL PAGE */
+#page-servicio-detalle > section{
+  flex:0 0 auto;
+}
+#service-detail-hero{
+  background:linear-gradient(135deg,var(--detail-bg,#ede8f5),#fff 78%);
+  position:relative;
+  overflow:hidden;
+}
+#service-detail-hero .sec{
+  padding-top:140px;
+}
+#service-detail-hero::after{
+  content:"";
+  position:absolute;
+  right:-40px;
+  top:20px;
+  width:260px;
+  height:260px;
+  border:2px solid var(--detail-accent,#9878cc);
+  border-radius:50%;
+  opacity:.1;
+  pointer-events:none;
+}
+.service-detail-card{
+  background:#fafaf8;
+  border:1px solid #e8e0d4;
+  border-radius:12px;
+  padding:24px;
+  position:relative;
+  overflow:hidden;
+}
+.service-detail-card::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:var(--detail-accent,#9878cc);
+}
+.service-detail-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid color-mix(in srgb,var(--detail-accent,#9878cc) 28%,#e0d8cc);
+  background:#fffaf2;
+  border-radius:999px;
+  padding:6px 14px;
+  color:#5f6253;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.14em;
+}
+.service-back-btn{
+  position:relative;
+  z-index:3;
+  background:transparent;
+  border:1.5px solid color-mix(in srgb,var(--detail-accent,#9878cc) 44%,#e0d8cc);
+  color:#2c2c2c;
+  border-radius:999px;
+  padding:10px 18px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.1em;
+  cursor:pointer;
+}
+.service-detail-cta{
+  background:#3d4728;
+  color:#fff;
+  border:1.5px solid #3d4728;
+  border-radius:999px;
+  padding:12px 22px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.12em;
+  cursor:pointer;
+}
+/* ── SPLASH SCREEN ── */
+#splash{position:fixed;inset:0;z-index:600;overflow:hidden}
+#splash-left,#splash-right{position:absolute;top:0;width:50%;height:100%;background:radial-gradient(ellipse at center,#4e6030 0%,#3d4728 45%,#252d10 100%);will-change:transform;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+#splash-left{left:0}#splash-right{right:0}
+#splash-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:601;text-align:center;pointer-events:none;white-space:nowrap;transition:opacity .4s ease-in,transform .4s ease-in}
+.sp-petal{opacity:0;transform-box:view-box;transform-origin:50% 50%}
+#splash-name{font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:.18em;color:#f0ebe0;line-height:1.4;margin-top:18px;margin-bottom:0;opacity:0}
+#splash-role{font-family:'Jost',sans-serif;font-size:9.5px;font-weight:400;letter-spacing:.28em;color:#a8c080;margin-top:6px;opacity:0}
+@keyframes spPetalIn{from{opacity:0;transform:rotate(45deg) scale(.6)}to{opacity:1;transform:rotate(0deg) scale(1)}}
+@keyframes spFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spPulse{from{transform:scale(1)}to{transform:scale(1.04)}}
+#splash.sp-go .sp-petal:nth-child(1){animation:spPetalIn .75s cubic-bezier(.34,1.56,.64,1) .3s both}
+#splash.sp-go .sp-petal:nth-child(2){animation:spPetalIn .75s cubic-bezier(.34,1.56,.64,1) .65s both}
+#splash.sp-go .sp-petal:nth-child(3){animation:spPetalIn .75s cubic-bezier(.34,1.56,.64,1) 1.0s both}
+#splash.sp-go .sp-petal:nth-child(4){animation:spPetalIn .75s cubic-bezier(.34,1.56,.64,1) 1.35s both}
+#splash.sp-go #splash-name{animation:spFadeUp .6s ease-out 2.1s both}
+#splash.sp-go #splash-role{animation:spFadeUp .6s ease-out 2.7s both}
+#splash.sp-go #splash-logo-wrap{animation:spPulse 1.4s ease-in-out 3.4s infinite alternate}
+#splash.sp-out #splash-left{transform:translateX(-100%)}
+#splash.sp-out #splash-right{transform:translateX(100%)}
+#splash.sp-out #splash-center{opacity:0;transform:translate(-50%,calc(-50% - 12px))}
+@media(max-width:800px){#splash-logo-wrap svg{width:64px;height:64px}#splash-name{font-size:10px}}
+@media(prefers-reduced-motion:reduce){#splash.sp-go .sp-petal,#splash.sp-go #splash-name,#splash.sp-go #splash-role{animation:none;opacity:1;transform:none}#splash.sp-go #splash-logo-wrap{animation:none}#splash-left,#splash-right,#splash-center{transition:none}}
+.sp-wind-petal{position:absolute;pointer-events:none;z-index:2;will-change:transform,opacity}
+#splash-noise{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="hdr" class="dark" role="banner">
+  <div class="h-inner">
+    <button class="logo-btn" onclick="goTo('inicio')" aria-label="Maria Bernarda Pacheco Pediatría — Inicio">
+      <svg width="42" height="42" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+        <path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z" fill="#c4b0e8"/>
+        <path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z" fill="#8aaa68"/>
+        <path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z" fill="#c4d8a8"/>
+        <path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z" fill="#4d8282"/>
+      </svg>
+      <div>
+        <div class="logo-name">MARIA BERNARDA</div>
+        <div class="logo-name">PACHECO</div>
+        <div class="logo-ped">PEDIATRÍA</div>
+      </div>
+    </button>
+    <nav class="dnav" aria-label="Menú principal">
+      <button class="nb active" data-p="inicio" onclick="goTo('inicio')">INICIO</button>
+      <button class="nb" data-p="servicios" onclick="goTo('servicios')">SERVICIOS</button>
+      <button class="nb" data-p="perfil" onclick="goTo('perfil')">PERFIL</button>
+      <button class="nb" data-p="contacto" onclick="goTo('contacto')">CONTACTO</button>
+      <button class="nb" data-p="avisos" onclick="goTo('avisos')">AVISOS IMPORTANTES</button>
+      <button class="h-cta" onclick="goTo('contacto')" aria-label="Agendar cita">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        AGENDAR CITA
+      </button>
+    </nav>
+    <button class="hamb" id="hamb" onclick="openMenu()" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mob-menu" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="mob-top">
+    <svg width="38" height="38" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+      <path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z" fill="#c4b0e8"/>
+      <path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z" fill="#8aaa68"/>
+      <path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z" fill="rgba(255,255,255,.55)"/>
+      <path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z" fill="#4d8282"/>
+    </svg>
+    <button class="mob-close" onclick="closeMenu()" aria-label="Cerrar menú">✕</button>
+  </div>
+  <nav class="mob-nav" aria-label="Menú móvil">
+    <button class="mob-nb" onclick="goTo('inicio')">INICIO</button>
+    <button class="mob-nb" onclick="goTo('servicios')">SERVICIOS</button>
+    <button class="mob-nb" onclick="goTo('perfil')">PERFIL</button>
+    <button class="mob-nb" onclick="goTo('contacto')">CONTACTO</button>
+    <button class="mob-nb" onclick="goTo('avisos')">AVISOS IMPORTANTES</button>
+  </nav>
+  <button class="mob-cta" onclick="goTo('contacto')" aria-label="Agendar cita">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    AGENDAR CITA
+  </button>
+</div>
+
+
+<!-- ═══ INICIO PAGE ═══ -->
+<main class="page active" id="page-inicio" role="main" style="flex:1;display:flex;flex-direction:column;">
+
+  <!-- Hero -->
+  <section aria-label="Presentación principal" style="background:#3d4728;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:0;top:0;bottom:0;width:38%;background:#ede8f5;z-index:0;" aria-hidden="true"></div>
+    <div style="position:absolute;left:-28px;bottom:-28px;opacity:.1;z-index:0;pointer-events:none;" aria-hidden="true">
+      <svg width="240" height="240" viewBox="0 0 44 44" fill="none" stroke="#e0e8d0" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div style="position:absolute;right:16px;top:16px;opacity:.18;z-index:1;pointer-events:none;" aria-hidden="true">
+      <svg width="160" height="160" viewBox="0 0 44 44" fill="none" stroke="#9878cc" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div style="position:relative;z-index:1;">
+      <div class="sec-lg">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:48px;">
+          <div style="flex:1 1 340px;min-width:0;">
+            <p style="font-size:10.5px;font-weight:500;letter-spacing:.3em;color:#a8c080;margin-bottom:16px;">PEDIATRÍA</p>
+            <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,66px);font-weight:300;color:#f0ebe0;line-height:1.02;margin-bottom:18px;letter-spacing:.02em;">MARIA BERNARDA<br>PACHECO</h1>
+            <div style="width:44px;height:2px;background:#8aaa68;margin-bottom:22px;" aria-hidden="true"></div>
+            <p style="font-size:17px;font-weight:300;color:#bfd3a0;margin-bottom:40px;line-height:1.6;max-width:380px;">Pediatría con confianza,<br>tranquilidad y profesionalismo.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;">
+              <button onclick="goTo('contacto')" aria-label="Agendar cita" style="display:flex;align-items:center;gap:8px;background:#8aaa68;color:#1e2a14;border:none;border-radius:24px;padding:12px 22px;font-size:11px;font-weight:600;letter-spacing:.12em;cursor:pointer;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                AGENDAR CITA
+              </button>
+              <button onclick="goTo('servicios')" aria-label="Conocer servicios" style="background:transparent;color:#e0ebe0;border:1.5px solid #6a8050;border-radius:24px;padding:12px 22px;font-size:11px;font-weight:600;letter-spacing:.12em;cursor:pointer;">
+                CONOCER SERVICIOS
+              </button>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8aaa68" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              <p style="font-size:11.5px;color:#8aa070;">No envíe información clínica por este medio.</p>
+            </div>
+            <p style="font-size:10px;color:#6a8050;margin-top:16px;letter-spacing:.08em;">© 2026 Dra. Maria Bernarda Pacheco. Todos los derechos reservados.</p>
+          </div>
+          <div style="flex:1 1 280px;min-width:0;position:relative;z-index:2;">
+            <div style="background:linear-gradient(145deg,#f8f3e8 0%,#ede5d5 55%,#e0d8c8 100%);border-radius:16px;height:360px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,.1);" role="img" aria-label="Fotografía del ambiente de consulta (pendiente de publicación)">
+              <div style="text-align:center;">
+                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#c0b090" stroke-width=".8" style="display:block;margin:0 auto 10px;opacity:.4;" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <p style="color:#a89878;font-size:10px;letter-spacing:.15em;opacity:.7;">FOTOGRAFÍA PENDIENTE</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ SERVICIOS PAGE ═══ -->
+<main class="page" id="page-servicios" role="main" style="flex:1;display:flex;flex-direction:column;">
+
+  <!-- Hero -->
+  <section aria-label="Servicios — encabezado" style="background:#d4dfc8;position:relative;overflow:hidden;">
+    <div style="position:absolute;left:-20px;top:20px;opacity:.15;pointer-events:none;" aria-hidden="true">
+      <svg width="200" height="200" viewBox="0 0 44 44" fill="none" stroke="#3d4728" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:48px;">
+        <div style="flex:1 1 340px;min-width:0;">
+          <div style="display:inline-block;background:white;border-radius:20px;padding:5px 14px;margin-bottom:16px;">
+            <span style="font-size:10px;font-weight:600;letter-spacing:.22em;color:#3d4728;">SERVICIOS</span>
+          </div>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4.5vw,60px);font-weight:300;color:#2c2c2c;line-height:1.08;margin-bottom:18px;">Acompañamiento pediátrico para cada etapa</h1>
+          <div style="width:40px;height:2px;background:#6a8c50;margin-bottom:20px;" aria-hidden="true"></div>
+          <p style="font-size:15px;font-weight:300;color:#4a5858;line-height:1.65;max-width:420px;">Atención integral, humana y respetuosa para el bienestar de tu hijo en cada momento de su desarrollo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services grid -->
+  <section aria-label="Lista de servicios" style="background:#fff;">
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;gap:16px;">
+
+        <article data-service="0" style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;cursor:pointer;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3H18"/><path d="M6 3V7C6 10 18 10 18 7V3"/><path d="M12 10V18"/><circle cx="12" cy="20" r="2"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Consulta pediátrica general</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Evaluación integral del niño sano y enfermo. Seguimiento del desarrollo y orientación en cada etapa.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+        <article data-service="1" style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;cursor:pointer;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.4" stroke-linecap="round"><path d="M12 3V21"/><path d="M12 7C10 7 6 9 6 14C6 17.5 7.5 20 10.5 20H12V7"/><path d="M12 7C14 7 18 9 18 14C18 17.5 16.5 20 13.5 20H12V7"/><path d="M9 11C8 12.5 7.5 14 7.5 15.5"/><path d="M15 11C16 12.5 16.5 14 16.5 15.5"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Patología respiratoria</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Atención de asma, bronquitis, alergias respiratorias y otras condiciones del sistema respiratorio.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+        <article data-service="2" style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;cursor:pointer;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.4" stroke-linecap="round"><path d="M12 4C9 4 6.5 6 6.5 9C6.5 10.8 7.4 12.3 8.8 13"/><path d="M12 4C15 4 17.5 6 17.5 9C17.5 10.8 16.6 12.3 15.2 13"/><path d="M6.5 9C5 9 4 10 4 11.5C4 13 5 14 6.5 14"/><path d="M17.5 9C19 9 20 10 20 11.5C20 13 19 14 17.5 14"/><path d="M6.5 14C6.5 17 8.5 19.5 11 20"/><path d="M17.5 14C17.5 17 15.5 19.5 13 20"/><path d="M11 20H13"/><path d="M12 4V6"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Conducta y desarrollo</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Acompañamiento del desarrollo, aprendizaje, atención del TDAH y orientación a familias con enfoque integral.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+        <article data-service="3" style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;cursor:pointer;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#fce8d8;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c07850" stroke-width="1.4" stroke-linecap="round"><path d="M12 7C9 7 6 9.5 6 13.5C6 17.5 8.5 21 12 21C15.5 21 18 17.5 18 13.5C18 9.5 15 7 12 7Z"/><path d="M12 7V5"/><path d="M14 4C15.5 3 17 3.5 17 3.5C17 3.5 15 6 12 7"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Nutrición pediátrica</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Planes nutricionales personalizados y orientación para promover hábitos saludables desde la infancia.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c07850" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+        <article data-service="4" style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;cursor:pointer;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H15V9H21V15H15V21H9V15H3V9H9Z"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Atención al recién nacido</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Cuidado integral en los primeros días de vida. Orientación a padres primerizos y seguimiento neonatal.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+        <article data-service="5" style="flex:1 1 300px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:260px;cursor:pointer;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.4" stroke-linecap="round"><path d="M3 20H21"/><path d="M3 20V3"/><rect x="6" y="13" width="3" height="7" rx="1"/><rect x="11" y="9" width="3" height="11" rx="1"/><rect x="16" y="5" width="3" height="15" rx="1"/><path d="M7.5 13L12.5 9L17.5 5" stroke-dasharray="2 1.5"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Control de crecimiento</h2>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">Monitoreo del crecimiento físico, cognitivo y emocional para asegurar un desarrollo saludable en cada etapa.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;">
+            <span style="display:flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:10px;color:#7a7868;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Descripción detallada pendiente de aprobación
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ SERVICIO DETALLE PAGE ═══ -->
+<main class="page" id="page-servicio-detalle" role="main" style="flex:1;display:flex;flex-direction:column;">
+  <section id="service-detail-hero" aria-label="Detalle del servicio">
+    <div class="sec">
+      <button class="service-back-btn" onclick="goTo('servicios')" aria-label="Volver a servicios">← VOLVER A SERVICIOS</button>
+      <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:center;margin-top:28px;">
+        <div style="flex:1 1 360px;min-width:0;">
+          <div class="service-detail-eyebrow" id="service-detail-eyebrow">BORRADOR PENDIENTE DE APROBACIÓN</div>
+          <h1 id="service-detail-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,64px);font-weight:300;color:#2c2c2c;line-height:1.05;margin:18px 0;"></h1>
+          <div id="service-detail-line" style="width:48px;height:2px;background:var(--detail-accent,#9878cc);margin-bottom:20px;" aria-hidden="true"></div>
+          <p id="service-detail-intro" style="font-size:15px;font-weight:300;color:#4a5858;line-height:1.7;max-width:560px;"></p>
+        </div>
+        <div style="flex:0 1 280px;min-width:220px;">
+          <div id="service-detail-icon" style="width:144px;height:144px;border-radius:50%;background:var(--detail-bg,#ede8f5);display:flex;align-items:center;justify-content:center;margin:auto;">
+            <svg id="service-detail-svg" width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="var(--detail-accent,#9878cc)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section aria-label="Información del servicio" style="background:#fff;">
+    <div class="sec">
+      <div id="service-detail-sections" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;"></div>
+    </div>
+  </section>
+  <section aria-label="Aviso y contacto administrativo" style="background:#f0ebe0;">
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:stretch;">
+        <div class="service-detail-card" style="flex:2 1 420px;">
+          <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Aviso importante</h2>
+          <p id="service-detail-notice" style="font-size:13.5px;color:#5a5858;line-height:1.7;font-weight:300;"></p>
+        </div>
+        <div class="service-detail-card" style="flex:1 1 280px;display:flex;flex-direction:column;gap:14px;justify-content:space-between;">
+          <div>
+            <h2 id="service-detail-cta-title" style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;"></h2>
+            <p id="service-detail-cta-copy" style="font-size:13px;color:#5a5858;line-height:1.6;font-weight:300;"></p>
+          </div>
+          <button class="service-detail-cta" onclick="goTo('contacto')">VER CANALES</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ═══ PERFIL PAGE ═══ -->
+<main class="page" id="page-perfil" role="main" style="flex:1;display:flex;flex-direction:column;">
+
+  <!-- Hero -->
+  <section aria-label="Perfil profesional — encabezado" style="background:#ede8f5;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-10px;top:-10px;opacity:.12;pointer-events:none;" aria-hidden="true">
+      <svg width="220" height="220" viewBox="0 0 44 44" fill="none" stroke="#9878cc" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div class="sec-lg">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:40px;">
+        <div style="flex:1 1 280px;min-width:0;">
+          <div style="display:inline-block;background:rgba(152,120,204,.15);border:1px solid rgba(152,120,204,.3);border-radius:20px;padding:5px 14px;margin-bottom:16px;">
+            <span style="font-size:10px;font-weight:600;letter-spacing:.22em;color:#7858a8;">PERFIL PROFESIONAL</span>
+          </div>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.8vw,52px);font-weight:300;color:#2c2c2c;line-height:1.1;margin-bottom:18px;">Una atención cercana, clara y respetuosa</h1>
+          <div style="width:40px;height:2px;background:#9878cc;margin-bottom:20px;" aria-hidden="true"></div>
+          <p style="font-size:14px;color:#5a5858;line-height:1.7;font-weight:300;margin-bottom:28px;max-width:400px;">Creo en una pediatría basada en la escucha, el respeto y la información clara. Acompaño a cada niño y su familia en cada etapa del crecimiento, con compromiso y humanidad.</p>
+          <p style="font-size:12px;font-weight:600;letter-spacing:.14em;color:#2c2c2c;margin-bottom:2px;">MARIA BERNARDA PACHECO</p>
+          <p style="font-size:13px;color:#9878cc;font-weight:400;">Pediatría</p>
+        </div>
+        <div style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:14px;">
+          <div style="background:white;border:1px solid #e0d8cc;border-radius:12px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 2.5 2.7 4 6 4s6-1.5 6-4v-5"/></svg>
+              </div>
+              <div>
+                <p style="font-size:13px;font-weight:500;color:#2c2c2c;">Especialidad</p>
+                <p style="font-size:12px;color:#888;font-weight:300;">Pediatría</p>
+              </div>
+            </div>
+            <span style="background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#7a7060;">INFORMACIÓN PENDIENTE DE VALIDACIÓN</span>
+          </div>
+          <div style="background:white;border:1px solid #e0d8cc;border-radius:12px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><circle cx="8" cy="10" r="2.5"/><path d="M4 20c0-2 2-3 4-3s4 1 4 3"/><line x1="14" y1="9" x2="20" y2="9"/><line x1="14" y1="13" x2="20" y2="13"/></svg>
+              </div>
+              <div>
+                <p style="font-size:13px;font-weight:500;color:#2c2c2c;">Registro profesional</p>
+                <p style="font-size:12px;color:#888;font-weight:300;">Cédula profesional</p>
+              </div>
+            </div>
+            <span style="background:#e8edd8;border:1px solid #c8d4b0;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#4a6030;">INFORMACIÓN PENDIENTE DE VALIDACIÓN</span>
+          </div>
+          <div style="background:white;border:1px solid #e0d8cc;border-radius:12px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              </div>
+              <div>
+                <p style="font-size:13px;font-weight:500;color:#2c2c2c;">Experiencia</p>
+                <p style="font-size:12px;color:#888;font-weight:300;">Trayectoria profesional</p>
+              </div>
+            </div>
+            <span style="background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#7a7060;">INFORMACIÓN PENDIENTE DE VALIDACIÓN</span>
+          </div>
+          <div style="background:white;border:1px solid #e0d8cc;border-radius:12px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="7" r="3"/><path d="M3 22v-2a5 5 0 0110 0v2"/><circle cx="17" cy="8" r="2"/><path d="M14 22v-1a4 4 0 018 0v1"/></svg>
+              </div>
+              <div>
+                <p style="font-size:13px;font-weight:500;color:#2c2c2c;">Modalidad de atención</p>
+                <p style="font-size:12px;color:#888;font-weight:300;">Consulta presencial</p>
+              </div>
+            </div>
+            <span style="background:#e8edd8;border:1px solid #c8d4b0;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#4a6030;">INFORMACIÓN PENDIENTE DE VALIDACIÓN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+</main>
+
+<!-- ═══ CONTACTO PAGE ═══ -->
+<main class="page" id="page-contacto" role="main" style="flex:1;display:flex;flex-direction:column;">
+
+  <!-- Hero -->
+  <section aria-label="Contacto — encabezado" style="background:#f0ebe0;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-10px;top:10px;opacity:.12;pointer-events:none;" aria-hidden="true">
+      <svg width="200" height="200" viewBox="0 0 44 44" fill="none" stroke="#8aaa68" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:48px;">
+        <div style="flex:1 1 320px;min-width:0;">
+          <div style="display:inline-block;background:white;border:1px solid #e0d8cc;border-radius:20px;padding:5px 14px;margin-bottom:16px;">
+            <span style="font-size:10px;font-weight:600;letter-spacing:.22em;color:#4d8282;">CONTACTO</span>
+          </div>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,52px);font-weight:300;color:#2c2c2c;line-height:1.1;margin-bottom:16px;">Canales seguros para información administrativa</h1>
+          <div style="width:40px;height:2px;background:#9878cc;margin-bottom:18px;" aria-hidden="true"></div>
+          <p style="font-size:15px;font-weight:300;color:#5a5858;line-height:1.65;max-width:380px;">Use estos canales solo para agenda y dudas administrativas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact channels -->
+  <section aria-label="Canales de contacto" style="background:#fff;">
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;gap:16px;">
+        <div style="flex:1 1 200px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px;min-width:180px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:52px;height:52px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:3px;">Teléfono</h2>
+              <p style="font-size:12.5px;color:#888;font-weight:300;">Información pendiente</p>
+            </div>
+          </div>
+          <span style="align-self:flex-start;background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:5px 12px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#7a7060;">PRÓXIMAMENTE DISPONIBLE</span>
+        </div>
+        <div style="flex:1 1 200px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px;min-width:180px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:52px;height:52px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.5" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:3px;">WhatsApp</h2>
+              <p style="font-size:12.5px;color:#888;font-weight:300;">Información pendiente</p>
+            </div>
+          </div>
+          <span style="align-self:flex-start;background:#e8edd8;border:1px solid #c8d4b0;border-radius:20px;padding:5px 12px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#4a6030;">PRÓXIMAMENTE DISPONIBLE</span>
+        </div>
+        <div style="flex:1 1 200px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px;min-width:180px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:52px;height:52px;border-radius:50%;background:#d8ecec;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4d8282" stroke-width="1.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:15px;font-weight:500;color:#2c2c2c;margin-bottom:3px;">Correo electrónico</h2>
+              <p style="font-size:12.5px;color:#888;font-weight:300;">Información pendiente</p>
+            </div>
+          </div>
+          <span style="align-self:flex-start;background:#ddeaed;border:1px solid #b0d0d4;border-radius:20px;padding:5px 12px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#2d6068;">PRÓXIMAMENTE DISPONIBLE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy warning -->
+  <section aria-label="Aviso de privacidad y seguridad" style="background:#4d8282;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:40px;bottom:-20px;opacity:.1;pointer-events:none;" aria-hidden="true">
+      <svg width="160" height="160" viewBox="0 0 44 44" fill="none" stroke="white" stroke-width=".7"><path d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z"/><path d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z"/><path d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z"/><path d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z"/></svg>
+    </div>
+    <div class="sec">
+      <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:center;">
+        <div style="display:flex;align-items:flex-start;gap:16px;flex:1 1 280px;min-width:260px;">
+          <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <div>
+            <h2 style="font-size:17px;font-weight:500;color:white;margin-bottom:8px;">No envíe información clínica por estos canales</h2>
+            <p style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;font-weight:300;">Por tu privacidad y seguridad, no compartas síntomas, resultados de estudios ni documentos médicos por teléfono, WhatsApp o correo.</p>
+          </div>
+        </div>
+        <div class="priv-border" style="display:flex;align-items:flex-start;gap:16px;flex:1 1 280px;min-width:260px;border-left:1px solid rgba(255,255,255,.2);padding-left:40px;">
+          <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><path d="M12 22V12"/><path d="M12 12C10 10 6 8 6 4c0-2 2-3 4-2 1 .5 2 2 2 3 0-1 1-2.5 2-3 2-1 4 0 4 2 0 4-4 6-6 8z"/></svg>
+          </div>
+          <div>
+            <h2 style="font-size:17px;font-weight:500;color:white;margin-bottom:8px;">Protegemos tu privacidad</h2>
+            <p style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;font-weight:300;">Estos canales son exclusivamente para agenda y asuntos administrativos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Locations & Hours + FAQ -->
+  <section aria-label="Sedes, horarios y preguntas frecuentes" style="background:#f0ebe0;">
+    <div class="sec">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.8vw,32px);font-weight:400;color:#2c2c2c;margin-bottom:8px;">Sedes y horarios</h2>
+      <div style="width:32px;height:2px;background:#9878cc;margin-bottom:28px;" aria-hidden="true"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:stretch;">
+        <div style="display:contents;">
+          <div style="display:contents;">
+            <div style="flex:1 1 260px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;min-width:220px;min-height:280px;display:flex;flex-direction:column;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+                <div style="width:38px;height:38px;border-radius:50%;background:#f0ebe0;box-shadow:3px 3px 8px rgba(180,165,140,.4),-3px -3px 8px rgba(255,255,248,.9);display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6a8050" stroke-width="1.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <p style="font-size:11px;font-weight:600;letter-spacing:.15em;color:#6a8050;margin:0;">SEDE PRINCIPAL</p>
+                  <p style="font-size:12px;color:#7a7060;font-weight:300;margin:0;line-height:1.5;">Dirección pendiente de publicación.<br>Ciudad pendiente de publicación.</p>
+                </div>
+              </div>
+              <div style="background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:8px 12px;align-self:flex-start;">
+                <p style="font-size:9.5px;font-weight:600;letter-spacing:.12em;color:#9878cc;margin:0;">PRÓXIMAMENTE DISPONIBLE</p>
+              </div>
+            </div>
+            <div style="flex:1 1 260px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;min-width:220px;min-height:280px;display:flex;flex-direction:column;justify-content:space-between;">
+              <div style="display:flex;align-items:flex-start;gap:12px;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                  <p style="font-size:13px;font-weight:500;color:#2c2c2c;margin-bottom:4px;">Horario de atención</p>
+                  <p style="font-size:12px;color:#888;font-weight:300;line-height:1.7;">Lunes a Viernes<br>Horario pendiente de publicación<br><br>Sábado<br>Horario pendiente de publicación</p>
+                </div>
+              </div>
+              <div style="margin-top:14px;align-self:flex-start;">
+                <span style="background:#f5f0e8;border:1px solid #e0d8cc;border-radius:20px;padding:4px 10px;font-size:9.5px;font-weight:600;letter-spacing:.1em;color:#7a7060;">INFORMACIÓN PENDIENTE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:contents;">
+          <div style="flex:1 1 260px;background:#fafaf8;border:1px solid #e8e0d4;border-radius:12px;padding:24px;min-width:220px;min-height:280px;display:flex;flex-direction:column;justify-content:flex-start;gap:14px;" role="alert">
+            <div style="width:36px;height:36px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div>
+              <p style="font-size:14px;font-weight:500;color:#2c2c2c;margin-bottom:4px;">En caso de urgencia,</p>
+              <p style="font-size:13px;color:#5a5858;line-height:1.55;font-weight:300;">acuda al servicio de emergencias más cercano.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+
+<!-- ═══ AVISOS PAGE ═══ -->
+<main class="page" id="page-avisos" role="main" style="flex:1;display:flex;flex-direction:column;">
+
+  <!-- Hero -->
+  <section aria-label="Avisos importantes — encabezado" style="background:#f0ebe0;border-bottom:1px solid #e0d8cc;">
+    <div class="sec" style="padding-top:40px;padding-bottom:40px;">
+      <p style="font-size:10px;font-weight:600;letter-spacing:.25em;color:#9878cc;margin-bottom:12px;">AVISOS IMPORTANTES</p>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.8vw,50px);font-weight:300;color:#2c2c2c;line-height:1.1;margin-bottom:16px;">Información importante<br>para el uso de este sitio</h1>
+      <div style="width:40px;height:2px;background:#9878cc;margin-bottom:18px;" aria-hidden="true"></div>
+      <p style="font-size:15px;font-weight:300;color:#5a5858;line-height:1.65;max-width:560px;">Lea con atención los siguientes avisos antes de utilizar los canales de comunicación o los servicios de información de este sitio web.</p>
+    </div>
+  </section>
+
+  <!-- Notices -->
+  <section aria-label="Lista de avisos importantes" style="background:#fff;">
+    <div class="sec">
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:800px;padding-right:8px;">
+
+        <div style="background:#fafaf8;border:1px solid #e8e0d4;border-left:3px solid #9878cc;border-radius:0 12px 12px 0;padding:28px;" role="article">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#ede8f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9878cc" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Este sitio no sustituye la consulta médica</h2>
+              <p style="font-size:13.5px;color:#5a5858;line-height:1.65;font-weight:300;">La información contenida en este sitio web es de carácter informativo y orientativo únicamente. No reemplaza la evaluación, diagnóstico ni tratamiento médico profesional. Ante cualquier duda sobre la salud de su hijo, consulte directamente con su médico.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fafaf8;border:1px solid #e8e0d4;border-left:3px solid #4d8282;border-radius:0 12px 12px 0;padding:28px;" role="article">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#d8ecec;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4d8282" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">No se recibe información clínica por canales de contacto</h2>
+              <p style="font-size:13.5px;color:#5a5858;line-height:1.65;font-weight:300;">No se reciben síntomas, estudios, fotografías, documentos médicos ni información clínica de ningún tipo a través de teléfono, WhatsApp, correo electrónico ni ningún otro canal de contacto de este consultorio. Los canales son exclusivamente para agenda y asuntos administrativos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fafaf8;border:1px solid #e8e0d4;border-left:3px solid #6a8c50;border-radius:0 12px 12px 0;padding:28px;" role="article">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#e0e8d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6a8c50" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Los canales son solo para agenda y asuntos administrativos</h2>
+              <p style="font-size:13.5px;color:#5a5858;line-height:1.65;font-weight:300;">Los canales de comunicación disponibles son para: agendar, cancelar o reprogramar citas; resolver dudas sobre horarios, sedes y requisitos; y trámites administrativos generales. No se atienden consultas médicas por estos medios.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fce8e8;border:1px solid #f0c8c8;border-left:3px solid #c87070;border-radius:0 12px 12px 0;padding:28px;" role="article">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c07070" stroke-width="1.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">En caso de urgencia médica</h2>
+              <p style="font-size:13.5px;color:#5a5858;line-height:1.65;font-weight:300;">En caso de emergencia médica, no intente comunicarse a través de los canales de este consultorio. Acuda de inmediato al servicio de urgencias más cercano o llame a los servicios de emergencia de su localidad. Este consultorio no presta servicios de urgencias.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fafaf8;border:1px solid #e8e0d4;border-left:3px solid #b8a870;border-radius:0 12px 12px 0;padding:28px;" role="article">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#f5f0e0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b8a870" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size:16px;font-weight:500;color:#2c2c2c;margin-bottom:8px;">Información pendiente de actualización</h2>
+              <p style="font-size:13.5px;color:#5a5858;line-height:1.65;font-weight:300;">Parte de la información profesional o administrativa de este sitio puede estar pendiente de validación o actualización. Los datos de contacto, sedes y horarios se publicarán en cuanto estén disponibles y verificados.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ── Navigation ──
+let currentPage = 'inicio';
+
+function headerClassFor(page) {
+  const classes = {
+    inicio: 'dark',
+    servicios: 'hdr-servicios',
+    'servicio-detalle': 'hdr-servicios',
+    perfil: 'hdr-perfil',
+    contacto: 'hdr-contacto',
+    avisos: 'hdr-avisos'
+  };
+  return classes[page] || 'light';
+}
+
+function navPageFor(page) {
+  return page === 'servicio-detalle' ? 'servicios' : page;
+}
+
+function goTo(page) {
+  if (page === currentPage && document.getElementById('page-' + page)?.classList.contains('active')) return;
+  const cur = document.querySelector('main.page.active') || document.getElementById('page-' + currentPage);
+  if (cur) cur.classList.remove('active');
+
+  // Update active state
+  currentPage = page;
+
+  // Show new
+  const next = document.getElementById('page-' + page);
+  if (next) next.classList.add('active');
+
+  // Update header style
+  const hdr = document.getElementById('hdr');
+  hdr.className = headerClassFor(page);
+
+  // Update nav active states
+  const navPage = navPageFor(page);
+  document.querySelectorAll('.nb[data-p]').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-p') === navPage);
+  });
+
+  // Close mobile menu and scroll to top
+  closeMenu();
+  window.scrollTo(0, 0);
+  if (next) next.scrollTop = 0;
+}
+
+function bindNavigationButtons() {
+  document.querySelectorAll('[onclick*="goTo("]').forEach(btn => {
+    if (btn.dataset.navBound === 'true') return;
+    const match = (btn.getAttribute('onclick') || '').match(/goTo\('([^']+)'\)/);
+    if (!match) return;
+    btn.dataset.navBound = 'true';
+    btn.addEventListener('click', event => {
+      event.preventDefault();
+      goTo(match[1]);
+    });
+  });
+}
+
+bindNavigationButtons();
+
+// ── Mobile menu ──
+function openMenu() {
+  document.getElementById('mob-menu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  document.getElementById('mob-menu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close menu on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeMenu();
+    MBPAnimations.closeServiceModal();
+  }
+});
+
+// ── FAQ Accordions ──
+function toggleFaq(id) {
+  const body = document.getElementById('faq-body-' + id);
+  const chev = document.getElementById('faq-chev-' + id);
+  const btn  = document.getElementById('faq-btn-'  + id);
+
+  const isOpen = body.classList.toggle('open');
+  chev.classList.toggle('open', isOpen);
+  btn.setAttribute('aria-expanded', String(isOpen));
+}
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════
+   MBP GSAP ANIMATION SYSTEM — v1.0
+   All layers: 0 Setup · 1 Entrances · 2 Transitions
+               3 Scroll reveals · 4 Micro · 5 Decorative
+   Depends on: goTo, openMenu, closeMenu, toggleFaq (above)
+═══════════════════════════════════════════════════════ */
+
+(function() {
+  'use strict';
+
+  // ── Service content data ───────────────────────────────
+  var SERVICES = {
+    0: {
+      title: 'Consulta pediátrica general',
+      color: '#9878cc', bg: '#ede8f5',
+      svgPaths: '<path d="M6 3H18"/><path d="M6 3V7C6 10 18 10 18 7V3"/><path d="M12 10V18"/><circle cx="12" cy="20" r="2"/>',
+      desc: 'Información general sobre la consulta pediátrica, pendiente de revisión y aprobación médica antes de publicación.',
+      detailIntro: 'Un espacio de atención pediátrica general para acompañar a la familia con información clara, trato cercano y orientación administrativa sobre la consulta.',
+      sections: [
+        { title: 'Presentación del servicio', copy: 'Borrador informativo para explicar, en lenguaje sencillo, el propósito de la consulta pediátrica general y el acompañamiento a niños y familias.' },
+        { title: 'Alcance informativo', copy: 'Esta página no reemplaza la valoración médica. Su objetivo es ayudar al paciente a entender cómo se organiza el servicio y qué información administrativa puede solicitar.' },
+        { title: 'Información para la familia', copy: 'El contenido definitivo deberá ser revisado por la doctora para confirmar nombres publicables, alcance del servicio y mensajes permitidos.' },
+        { title: 'Próximo paso', copy: 'Los canales del sitio se usarán solo para información administrativa y disponibilidad, sin recibir síntomas, estudios ni documentos clínicos.' }
+      ],
+      notice: 'Contenido en borrador pendiente de aprobación médica. Este sitio es informativo y no sustituye una consulta. No envíe información clínica por estos canales; ante una urgencia, acuda al servicio de emergencias más cercano.',
+      ctaTitle: 'Solicitar información administrativa',
+      ctaCopy: 'Consulte disponibilidad, horarios y canales autorizados para agendar o pedir orientación administrativa.'
+    },
+    1: {
+      title: 'Patología respiratoria',
+      color: '#6a8c50', bg: '#e0e8d0',
+      svgPaths: '<path d="M12 3V21"/><path d="M12 7C10 7 6 9 6 14C6 17.5 7.5 20 10.5 20H12V7"/><path d="M12 7C14 7 18 9 18 14C18 17.5 16.5 20 13.5 20H12V7"/><path d="M9 11C8 12.5 7.5 14 7.5 15.5"/><path d="M15 11C16 12.5 16.5 14 16.5 15.5"/>',
+      desc: 'Información general sobre consulta pediátrica relacionada con salud respiratoria, pendiente de aprobación médica.',
+      detailIntro: 'Una página serena y clara para presentar el acompañamiento pediátrico relacionado con temas respiratorios, sin convertir el sitio en canal de evaluación clínica.',
+      sections: [
+        { title: 'Introducción al servicio', copy: 'Texto informativo para que la familia conozca el enfoque general del servicio y sepa que la valoración ocurre exclusivamente en consulta.' },
+        { title: 'Acompañamiento pediátrico', copy: 'El contenido deberá mantenerse en un nivel descriptivo y administrativo, sin indicar diagnósticos, tratamientos ni conductas según síntomas.' },
+        { title: 'Información disponible', copy: 'Aquí podrán explicarse horarios, modalidad de contacto, preparación administrativa y estado de aprobación del contenido.' },
+        { title: 'Antes de solicitar información', copy: 'Los canales del sitio no son apropiados para enviar crisis, síntomas, fotos, exámenes ni historias clínicas.' }
+      ],
+      notice: 'Borrador pendiente de revisión médica. Si el niño presenta una situación respiratoria urgente, use los servicios de emergencia. Este sitio no realiza triage ni recomendaciones médicas.',
+      ctaTitle: 'Consultar canales autorizados',
+      ctaCopy: 'Use los canales de contacto solo para disponibilidad, agenda y dudas administrativas.'
+    },
+    2: {
+      title: 'Conducta y desarrollo',
+      color: '#9878cc', bg: '#ede8f5',
+      svgPaths: '<path d="M12 4C9 4 6.5 6 6.5 9C6.5 10.8 7.4 12.3 8.8 13"/><path d="M12 4C15 4 17.5 6 17.5 9C17.5 10.8 16.6 12.3 15.2 13"/><path d="M6.5 9C5 9 4 10 4 11.5C4 13 5 14 6.5 14"/><path d="M17.5 9C19 9 20 10 20 11.5C20 13 19 14 17.5 14"/><path d="M6.5 14C6.5 17 8.5 19.5 11 20"/><path d="M17.5 14C17.5 17 15.5 19.5 13 20"/><path d="M11 20H13"/><path d="M12 4V6"/>',
+      desc: 'Información general sobre acompañamiento pediátrico en conducta y desarrollo, pendiente de aprobación médica.',
+      detailIntro: 'Un espacio pensado para explicar de forma tranquila cómo se presenta el servicio a las familias, cuidando el lenguaje y evitando conclusiones clínicas fuera de consulta.',
+      sections: [
+        { title: 'Un espacio para conversar', copy: 'La página debe transmitir escucha, respeto por el proceso de cada niño y claridad sobre el carácter informativo del sitio.' },
+        { title: 'Motivos administrativos', copy: 'Puede orientar sobre cómo solicitar información de agenda o disponibilidad, sin pedir relatos clínicos por canales digitales.' },
+        { title: 'Contacto inicial', copy: 'El primer contacto debe limitarse a datos administrativos mínimos y no reemplaza la conversación directa durante la consulta.' },
+        { title: 'Contenido pendiente', copy: 'El alcance final, nombres publicables y afirmaciones del servicio quedan sujetos a validación de la doctora.' }
+      ],
+      notice: 'Contenido pendiente de aprobación médica. Esta página no diagnostica, no clasifica casos y no entrega recomendaciones personalizadas. Ante una urgencia, acuda al servicio correspondiente.',
+      ctaTitle: 'Solicitar información administrativa',
+      ctaCopy: 'Conozca disponibilidad y forma de contacto sin enviar información clínica.'
+    },
+    3: {
+      title: 'Nutrición pediátrica',
+      color: '#c07850', bg: '#fce8d8',
+      svgPaths: '<path d="M12 7C9 7 6 9.5 6 13.5C6 17.5 8.5 21 12 21C15.5 21 18 17.5 18 13.5C18 9.5 15 7 12 7Z"/><path d="M12 7V5"/><path d="M14 4C15.5 3 17 3.5 17 3.5C17 3.5 15 6 12 7"/>',
+      desc: 'Información general sobre consulta de nutrición pediátrica, pendiente de revisión y aprobación médica.',
+      detailIntro: 'Una experiencia fresca y ordenada para presentar el servicio de nutrición pediátrica desde el cuidado, la claridad y la responsabilidad informativa.',
+      sections: [
+        { title: 'Presentación del servicio', copy: 'Borrador para explicar el objetivo general del espacio de consulta y su relación con el acompañamiento pediátrico.' },
+        { title: 'Cuándo pedir información', copy: 'La página puede guiar al paciente hacia canales administrativos sin pedir datos de salud, dietas, fotos ni exámenes.' },
+        { title: 'Preparación familiar', copy: 'El contenido definitivo podrá indicar qué información administrativa tener a mano, siempre que no implique enviar datos clínicos por el sitio.' },
+        { title: 'Enfoque pediátrico', copy: 'El tono debe sentirse cercano, preventivo y profesional, sin recomendaciones nutricionales personalizadas fuera de consulta.' }
+      ],
+      notice: 'Borrador pendiente de aprobación. La información publicada no sustituye valoración médica ni nutricional individual. No envíe información clínica por canales no autorizados.',
+      ctaTitle: 'Solicitar información de consulta',
+      ctaCopy: 'Revise los canales disponibles para agenda y preguntas administrativas.'
+    },
+    4: {
+      title: 'Atención al recién nacido',
+      color: '#9878cc', bg: '#ede8f5',
+      svgPaths: '<path d="M9 3H15V9H21V15H15V21H9V15H3V9H9Z"/>',
+      desc: 'Información general sobre la atención al recién nacido, pendiente de aprobación médica.',
+      detailIntro: 'Una página cálida y serena para acompañar a familias en la etapa inicial, con información administrativa clara y lenguaje cuidadoso.',
+      sections: [
+        { title: 'Presentación del servicio', copy: 'Borrador informativo para explicar el sentido de la consulta sin convertir la página en una guía clínica.' },
+        { title: 'Para quién es', copy: 'El texto definitivo deberá ser aprobado por la doctora y describir el servicio sin prometer resultados ni orientar casos individuales.' },
+        { title: 'Qué puede esperar la familia', copy: 'La página puede comunicar trato cercano, organización y canales de agenda, manteniendo límites claros de privacidad.' },
+        { title: 'Antes de agendar', copy: 'El contacto inicial debe usarse para asuntos administrativos. No se deben enviar fotos, síntomas, documentos ni datos sensibles por este medio.' }
+      ],
+      notice: 'Contenido pendiente de aprobación médica. Ante cualquier señal de urgencia en un recién nacido, acuda directamente a un servicio de emergencias. Este sitio no reemplaza atención inmediata.',
+      ctaTitle: 'Consultar disponibilidad de cita',
+      ctaCopy: 'Use los canales oficiales para confirmar horarios y disponibilidad administrativa.'
+    },
+    5: {
+      title: 'Control de crecimiento',
+      color: '#6a8c50', bg: '#e0e8d0',
+      svgPaths: '<path d="M3 20H21"/><path d="M3 20V3"/><rect x="6" y="13" width="3" height="7" rx="1"/><rect x="11" y="9" width="3" height="11" rx="1"/><rect x="16" y="5" width="3" height="15" rx="1"/>',
+      desc: 'Información general sobre control de crecimiento pediátrico, pendiente de aprobación médica.',
+      detailIntro: 'Una página organizada y tranquila para explicar el acompañamiento del crecimiento como parte del seguimiento pediátrico, sin emitir valoraciones desde el sitio.',
+      sections: [
+        { title: 'Acompañamiento por etapas', copy: 'El contenido puede presentar el servicio como un seguimiento pediátrico ordenado, con el alcance final pendiente de aprobación médica.' },
+        { title: 'Información para familias', copy: 'La familia encontrará orientación administrativa sobre agenda, disponibilidad y canales, no interpretación de medidas o resultados.' },
+        { title: 'Para quién está pensado', copy: 'La descripción publicable deberá confirmar edades, nombres de servicios y mensajes autorizados por la doctora.' },
+        { title: 'Preparación administrativa', copy: 'Antes de la cita, el sitio solo debe pedir datos mínimos de contacto y evitar cualquier recolección de información clínica.' }
+      ],
+      notice: 'Borrador pendiente de aprobación. Esta página no interpreta curvas, signos, medidas ni condiciones individuales. Para inquietudes clínicas, solicite consulta o acuda a urgencias si corresponde.',
+      ctaTitle: 'Solicitar información para agendar',
+      ctaCopy: 'Revise los canales administrativos disponibles para coordinar la atención.'
+    }
+  };
+
+  // ── Modal close timer (hover debounce) ─────────────────
+  var _svcCloseTimer = null;
+
+  // ── Helper: word split ─────────────────────────────────
+  function wordSplit(el, cssClass) {
+    if (!el) return [];
+    var original = el.textContent;
+    el.setAttribute('aria-label', original);
+    el.innerHTML = original.trim().split(/\s+/).map(function(word) {
+      var safe = word.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      return '<span class="' + cssClass + '" aria-hidden="true">' + safe + '</span>';
+    }).join(' ');
+    return el.querySelectorAll('.' + cssClass);
+  }
+
+  function escapeHtml(text) {
+    return String(text || '').replace(/[&<>"']/g, function(ch) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[ch];
+    });
+  }
+
+  window.openServiceDetail = function(idx) {
+    var svc = SERVICES[idx];
+    var page = document.getElementById('page-servicio-detalle');
+    if (!svc || !page) return;
+
+    page.style.setProperty('--detail-accent', svc.color);
+    page.style.setProperty('--detail-bg', svc.bg);
+
+    var title = document.getElementById('service-detail-title');
+    var intro = document.getElementById('service-detail-intro');
+    var svg = document.getElementById('service-detail-svg');
+    var sections = document.getElementById('service-detail-sections');
+    var notice = document.getElementById('service-detail-notice');
+    var ctaTitle = document.getElementById('service-detail-cta-title');
+    var ctaCopy = document.getElementById('service-detail-cta-copy');
+
+    if (title) title.textContent = svc.title;
+    if (intro) intro.textContent = svc.detailIntro || svc.desc;
+    if (svg) {
+      svg.setAttribute('stroke', svc.color);
+      svg.innerHTML = svc.svgPaths;
+    }
+    if (sections) {
+      sections.innerHTML = (svc.sections || []).map(function(item) {
+        return [
+          '<article class="service-detail-card">',
+            '<h2 style="font-size:16px;font-weight:600;color:#2c2c2c;margin-bottom:10px;">', escapeHtml(item.title), '</h2>',
+            '<p style="font-size:13.5px;color:#5a5858;line-height:1.7;font-weight:300;">', escapeHtml(item.copy), '</p>',
+          '</article>'
+        ].join('');
+      }).join('');
+    }
+    if (notice) notice.textContent = svc.notice || '';
+    if (ctaTitle) ctaTitle.textContent = svc.ctaTitle || 'Solicitar información';
+    if (ctaCopy) ctaCopy.textContent = svc.ctaCopy || 'Revise los canales disponibles para información administrativa.';
+
+    goTo('servicio-detalle');
+  };
+
+  function setupServiceDetailLinks() {
+    document.querySelectorAll('.service-back-btn').forEach(function(btn) {
+      if (btn.dataset.backBound === 'true') return;
+      btn.dataset.backBound = 'true';
+      btn.addEventListener('click', function() {
+        goTo('servicios');
+      });
+    });
+
+    document.querySelectorAll('#page-servicios article[data-service]').forEach(function(card) {
+      var idx = parseInt(card.getAttribute('data-service'), 10);
+      var svc = SERVICES[idx];
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'link');
+      if (svc) card.setAttribute('aria-label', 'Ver detalle de ' + svc.title);
+      if (card.dataset.detailBound === 'true') return;
+      card.dataset.detailBound = 'true';
+      card.addEventListener('click', function() {
+        window.openServiceDetail(idx);
+      });
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.openServiceDetail(idx);
+        }
+      });
+    });
+  }
+
+  // ── MBPAnimations namespace (always defined) ───────────
+  window.MBPAnimations = {
+    injectModal: function() {
+      var bd = document.createElement('div');
+      bd.id = 'svc-backdrop';
+      bd.setAttribute('aria-hidden', 'true');
+
+      var modal = document.createElement('div');
+      modal.id = 'svc-modal';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-labelledby', 'svc-modal-title');
+      modal.innerHTML = [
+        '<div id="svc-modal-header">',
+          '<div id="svc-modal-icon" aria-hidden="true">',
+            '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"',
+            ' stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="svc-modal-svg"></svg>',
+          '</div>',
+          '<h2 id="svc-modal-title"></h2>',
+          '<button id="svc-modal-close" aria-label="Cerrar">&#x2715;</button>',
+        '</div>',
+        '<div id="svc-modal-divider"></div>',
+        '<p id="svc-modal-desc"></p>'
+      ].join('');
+
+      bd.appendChild(modal);
+      document.body.appendChild(bd);
+    },
+    openServiceModal: function(idx) {
+      var svc = SERVICES[idx];
+      if (!svc) return;
+
+      // Cancel any pending close
+      if (_svcCloseTimer) { clearTimeout(_svcCloseTimer); _svcCloseTimer = null; }
+
+      // Populate content
+      var icon  = document.getElementById('svc-modal-icon');
+      var svg   = document.getElementById('svc-modal-svg');
+      var title = document.getElementById('svc-modal-title');
+      var div   = document.getElementById('svc-modal-divider');
+      var desc  = document.getElementById('svc-modal-desc');
+      var modal = document.getElementById('svc-modal');
+      var bd    = document.getElementById('svc-backdrop');
+
+      if (!modal || !bd) return;
+
+      icon.style.background = svc.bg;
+      svg.setAttribute('stroke', svc.color);
+      svg.innerHTML = svc.svgPaths;
+      title.textContent = svc.title;
+      div.style.background = svc.color;
+      div.style.opacity = '0.35';
+      desc.textContent = svc.desc;
+
+      // Reset state
+      gsap.set(modal, { opacity: 0, scale: 0.85 });
+      gsap.set(bd,    { opacity: 0 });
+      modal.classList.add('open');
+      bd.classList.add('open');
+
+      // Animate in
+      var closeBtn = document.getElementById('svc-modal-close');
+      var tl = gsap.timeline({ onComplete: function() { if (closeBtn) closeBtn.focus(); } });
+      tl.to(bd,    { opacity: 1, duration: 0.25, ease: 'power2.out' }, 0);
+      tl.to(modal, { opacity: 1, scale: 1, duration: 0.32, ease: 'power3.out' }, 0);
+      tl.from([icon, title, desc], { opacity: 0, y: 8, duration: 0.3, ease: 'power2.out', stagger: 0.06 }, 0.1);
+    },
+    closeServiceModal: function() {
+      var modal = document.getElementById('svc-modal');
+      var bd    = document.getElementById('svc-backdrop');
+      if (!modal || !bd || !modal.classList.contains('open')) return;
+
+      var tl = gsap.timeline({
+        onComplete: function() {
+          modal.classList.remove('open');
+          bd.classList.remove('open');
+          gsap.set(modal, { scale: 0.85, opacity: 0 });
+          gsap.set(bd, { opacity: 0 });
+        }
+      });
+      tl.to(modal, { opacity: 0, scale: 0.88, duration: 0.2, ease: 'power2.in' }, 0);
+      tl.to(bd,    { opacity: 0, duration: 0.2, ease: 'power2.in' }, 0);
+    },
+    ready: false,
+
+    init: function() {
+      this.injectModal();
+      gsap.registerPlugin(ScrollTrigger);
+      this.ready = true;
+      this.patchFunctions();
+      this.enterPage(typeof currentPage !== 'undefined' ? currentPage : 'inicio');
+      this.initMicro();
+      this.initDecorative();
+      this.initNavDecorations();
+    },
+
+    enterPage: function(page) {
+      ScrollTrigger.getAll().forEach(function(t) { t.kill(); });
+      var safePage = (typeof page === 'string' && page) ? page : 'inicio';
+      var fn = this['enter_' + safePage];
+      if (fn) fn.call(this);
+      this.initScrollReveals(safePage);
+    },
+
+    patchFunctions: function() {
+      var self = this;
+
+      // ── Patch goTo ────────────────────────────────────────
+      var _goTo = window.goTo;
+      window.goTo = function(page) {
+        if (page === currentPage && document.getElementById('page-' + page)?.classList.contains('active')) return;
+        if (!MBPAnimations.ready) { _goTo(page); return; }
+
+        var curEl  = document.querySelector('main.page.active') || document.getElementById('page-' + currentPage);
+        var nextEl = document.getElementById('page-' + page);
+        var hdr    = document.getElementById('hdr');
+
+        gsap.to(curEl, {
+          opacity: 0,
+          y: -10,
+          duration: 0.22,
+          ease: 'power2.in',
+          onComplete: function() {
+            curEl.classList.remove('active');
+            gsap.set(curEl, { opacity: 0, y: 0 });
+
+            currentPage = page;
+            hdr.className = headerClassFor(page);
+            var navPage = navPageFor(page);
+            document.querySelectorAll('.nb[data-p]').forEach(function(btn) {
+              btn.classList.toggle('active', btn.getAttribute('data-p') === navPage);
+            });
+            closeMenu();
+            window.scrollTo(0, 0);
+            if (nextEl) nextEl.scrollTop = 0;
+
+            nextEl.classList.add('active');
+            gsap.fromTo(nextEl,
+              { opacity: 0, y: 10 },
+              {
+                opacity: 1, y: 0,
+                duration: 0.3, ease: 'power3.out',
+                onComplete: function() { self.enterPage(page); }
+              }
+            );
+          }
+        });
+      };
+
+      // ── Patch openMenu ────────────────────────────────────
+      window.openMenu = function() {
+        var menu = document.getElementById('mob-menu');
+        menu.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        gsap.from(menu, { opacity: 0, x: 20, duration: 0.28, ease: 'power3.out' });
+        gsap.from(menu.querySelectorAll('.mob-nb, .mob-cta'), {
+          opacity: 0, y: 12, stagger: 0.06, delay: 0.1,
+          duration: 0.35, ease: 'power2.out'
+        });
+      };
+
+      // ── Patch closeMenu ───────────────────────────────────
+      window.closeMenu = function() {
+        var menu = document.getElementById('mob-menu');
+        if (!menu.classList.contains('open')) return;
+        gsap.to(menu, {
+          opacity: 0, x: 20, duration: 0.2, ease: 'power2.in',
+          onComplete: function() {
+            menu.classList.remove('open');
+            gsap.set(menu, { opacity: 1, x: 0 });
+            document.body.style.overflow = '';
+          }
+        });
+      };
+
+      // ── Patch toggleFaq ───────────────────────────────────
+      window.toggleFaq = function(id) {
+        var body = document.getElementById('faq-body-' + id);
+        var chev = document.getElementById('faq-chev-' + id);
+        var btn  = document.getElementById('faq-btn-'  + id);
+        if (!body) return;
+
+        var isOpen = body.classList.contains('open');
+        if (isOpen) {
+          gsap.to(body, {
+            maxHeight: 0, duration: 0.25, ease: 'power2.in',
+            onComplete: function() { body.classList.remove('open'); }
+          });
+          chev && chev.classList.remove('open');
+          btn  && btn.setAttribute('aria-expanded', 'false');
+        } else {
+          body.classList.add('open');
+          var h = body.scrollHeight;
+          gsap.fromTo(body,
+            { maxHeight: 0 },
+            { maxHeight: h, duration: 0.35, ease: 'power2.out' }
+          );
+          chev && chev.classList.add('open');
+          btn  && btn.setAttribute('aria-expanded', 'true');
+        }
+      };
+    },
+    enter_inicio: function() {
+      var h1 = document.querySelector('#page-inicio h1');
+      if (!h1) return;
+
+      var originalText = h1.innerText.replace(/\s+/g, ' ').trim();
+      h1.setAttribute('aria-label', originalText);
+
+      var lines = h1.innerHTML.split(/<br\s*\/?>/i);
+      h1.innerHTML = lines.map(function(line) {
+        return line.split('').map(function(ch) {
+          if (ch === ' ') return '<span aria-hidden="true"> </span>';
+          return '<span class="ltr" aria-hidden="true">' + ch + '</span>';
+        }).join('');
+      }).join('<br>');
+
+      var letters  = h1.querySelectorAll('.ltr');
+      var tagline  = document.querySelector('#page-inicio p[style*="font-size:17px"]');
+      var ctaGroup = document.querySelector('#page-inicio div[style*="gap:12px"]');
+      var disclaim = document.querySelector('#page-inicio div[style*="gap:8px"]');
+
+      var tl = gsap.timeline();
+
+      tl.from(letters, {
+        opacity: 0, y: 40,
+        duration: 0.9, ease: 'power3.out',
+        stagger: 0.022, clearProps: 'all'
+      }, 0.1);
+
+      if (tagline) {
+        tl.from(tagline, { opacity: 0, y: 16, duration: 0.7, ease: 'power3.out' }, 0.55);
+      }
+      if (ctaGroup) {
+        tl.from(Array.from(ctaGroup.children), {
+          opacity: 0, y: 12, duration: 0.5, ease: 'power3.out', stagger: 0.1
+        }, 0.65);
+      }
+      if (disclaim) {
+        tl.from(disclaim, { opacity: 0, duration: 0.5, ease: 'power2.out' }, 0.9);
+      }
+    },
+    enter_servicios: function() {
+      var h1      = document.querySelector('#page-servicios h1');
+      var badge   = document.querySelector('#page-servicios div[style*="display:inline-block"]');
+      var divider = document.querySelector('#page-servicios div[style*="width:40px;height:2px"]');
+      var body    = document.querySelector('#page-servicios p[style*="font-size:15px"]');
+
+      var words = wordSplit(h1, 'wd');
+      var tl = gsap.timeline();
+
+      if (badge)   { tl.from(badge,   { scale:0, opacity:0, duration:0.4, ease:'back.out(1.7)' }, 0); }
+      if (words.length) { tl.from(words, { opacity:0, y:24, duration:0.6, ease:'power3.out', stagger:0.06 }, 0.15); }
+      if (divider) { tl.from(divider, { width:0, duration:0.5, ease:'power3.out' }, 0.4); }
+      if (body)    { tl.from(body,    { opacity:0, y:12, duration:0.5, ease:'power2.out' }, 0.5); }
+    },
+    'enter_servicio-detalle': function() {
+      var eyebrow = document.getElementById('service-detail-eyebrow');
+      var h1 = document.getElementById('service-detail-title');
+      var line = document.getElementById('service-detail-line');
+      var intro = document.getElementById('service-detail-intro');
+      var icon = document.getElementById('service-detail-icon');
+      var cards = document.querySelectorAll('#service-detail-sections .service-detail-card');
+      var lowerCards = document.querySelectorAll('#page-servicio-detalle section[aria-label="Aviso y contacto"] .service-detail-card');
+      var words = wordSplit(h1, 'wd');
+      var tl = gsap.timeline();
+
+      if (eyebrow) { tl.from(eyebrow, { opacity:0, y:8, duration:0.35, ease:'power2.out' }, 0); }
+      if (words.length) { tl.from(words, { opacity:0, y:20, duration:0.55, ease:'power3.out', stagger:0.04 }, 0.12); }
+      if (line) { tl.from(line, { width:0, duration:0.45, ease:'power3.out' }, 0.32); }
+      if (intro) { tl.from(intro, { opacity:0, y:12, duration:0.45, ease:'power2.out' }, 0.42); }
+      if (icon) { tl.from(icon, { opacity:0, scale:0.88, duration:0.45, ease:'back.out(1.5)' }, 0.22); }
+      if (cards.length) { tl.from(cards, { opacity:0, y:22, duration:0.5, ease:'power3.out', stagger:0.08 }, 0.55); }
+      if (lowerCards.length) { tl.from(lowerCards, { opacity:0, y:18, duration:0.45, ease:'power2.out', stagger:0.08 }, 0.7); }
+    },
+    enter_perfil: function() {
+      var h1      = document.querySelector('#page-perfil h1');
+      var badge   = document.querySelector('#page-perfil div[style*="display:inline-block"]');
+      var divider = document.querySelector('#page-perfil div[style*="width:40px;height:2px"]');
+      var body    = document.querySelector('#page-perfil p[style*="font-size:14px"]');
+      var cards   = document.querySelectorAll('#page-perfil div[style*="flex:1 1 220px"] > div');
+
+      var words = wordSplit(h1, 'wd');
+      var tl = gsap.timeline();
+
+      if (badge)   { tl.from(badge, { scale:0, opacity:0, duration:0.4, ease:'back.out(1.7)' }, 0); }
+      if (words.length) {
+        tl.from(words, {
+          opacity:0, y:28, rotateX:25, duration:0.75, ease:'power3.out',
+          stagger:0.06, transformOrigin:'center bottom'
+        }, 0.15);
+      }
+      if (divider) { tl.from(divider, { width:0, duration:0.5, ease:'power3.out' }, 0.4); }
+      if (body)    { tl.from(body,    { opacity:0, y:12, duration:0.5, ease:'power2.out' }, 0.5); }
+      if (cards.length) {
+        tl.from(Array.from(cards), { opacity:0, x:20, duration:0.55, ease:'power2.out', stagger:0.08 }, 0.5);
+      }
+    },
+    enter_contacto: function() {
+      var h1      = document.querySelector('#page-contacto h1');
+      var badge   = document.querySelector('#page-contacto div[style*="display:inline-block"]');
+      var divider = document.querySelector('#page-contacto div[style*="width:40px;height:2px"]');
+      var body    = document.querySelector('#page-contacto p[style*="font-size:15px"]');
+
+      var words = wordSplit(h1, 'wd');
+      var tl = gsap.timeline();
+
+      if (badge)   { tl.from(badge,   { scale:0, opacity:0, duration:0.4, ease:'back.out(1.7)' }, 0); }
+      if (words.length) { tl.from(words, { opacity:0, y:24, duration:0.6, ease:'power3.out', stagger:0.06 }, 0.15); }
+      if (divider) { tl.from(divider, { width:0, duration:0.5, ease:'power3.out' }, 0.4); }
+      if (body)    { tl.from(body,    { opacity:0, y:12, duration:0.5, ease:'power2.out' }, 0.5); }
+    },
+    enter_avisos: function() {
+      var eyebrow = document.querySelector('#page-avisos p[style*="letter-spacing:.25em"]');
+      var h1      = document.querySelector('#page-avisos h1');
+      var divider = document.querySelector('#page-avisos div[style*="width:40px;height:2px"]');
+      var body    = document.querySelector('#page-avisos p[style*="font-size:15px"]');
+
+      var words = wordSplit(h1, 'wd');
+      var tl = gsap.timeline();
+
+      if (eyebrow) { tl.from(eyebrow, { opacity:0, y:8, duration:0.4, ease:'power2.out' }, 0); }
+      if (words.length) { tl.from(words, { opacity:0, y:20, duration:0.55, ease:'power3.out', stagger:0.05 }, 0.15); }
+      if (divider) { tl.from(divider, { width:0, duration:0.45, ease:'power3.out' }, 0.35); }
+      if (body)    { tl.from(body,    { opacity:0, y:12, duration:0.5, ease:'power2.out' }, 0.45); }
+    },
+    initScrollReveals: function(page) {
+      if (page === 'servicios') {
+        var cards = document.querySelectorAll('#page-servicios article');
+        if (!cards.length) return;
+        gsap.from(Array.from(cards), {
+          opacity: 0, y: 36, scale: 0.96,
+          duration: 0.65, ease: 'power3.out',
+          stagger: { each: 0.09, from: 'start' },
+          scrollTrigger: {
+            trigger: cards[0].closest('div'),
+            start: 'top 78%',
+            toggleActions: 'play none none none'
+          }
+        });
+      }
+
+      if (page === 'contacto') {
+        var channelCards = document.querySelectorAll(
+          '#page-contacto section[aria-label="Canales de contacto"] > div > div > div'
+        );
+        if (channelCards.length) {
+          gsap.from(Array.from(channelCards), {
+            opacity: 0, y: 24,
+            duration: 0.55, ease: 'power2.out',
+            stagger: 0.12,
+            scrollTrigger: {
+              trigger: channelCards[0].closest('div'),
+              start: 'top 80%',
+              toggleActions: 'play none none none'
+            }
+          });
+        }
+        var privacySection = document.querySelector(
+          '#page-contacto section[aria-label="Aviso de privacidad y seguridad"]'
+        );
+        if (privacySection) {
+          gsap.from(privacySection, {
+            opacity: 0, y: 20,
+            duration: 0.6, ease: 'power3.out',
+            scrollTrigger: {
+              trigger: privacySection,
+              start: 'top 82%',
+              toggleActions: 'play none none none'
+            }
+          });
+        }
+      }
+
+      if (page === 'avisos') {
+        var notices = document.querySelectorAll('#page-avisos article');
+        if (notices.length) {
+          gsap.from(Array.from(notices), {
+            opacity: 0, x: -16,
+            duration: 0.55, ease: 'power2.out',
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: notices[0].closest('div'),
+              start: 'top 80%',
+              toggleActions: 'play none none none'
+            }
+          });
+        }
+      }
+    },
+    initMicro: function() {
+      // ── Service card hover lift + detail page trigger ──────
+      var isTouch = window.matchMedia('(hover: none)').matches;
+      var modal   = document.getElementById('svc-modal');
+      var self    = MBPAnimations;
+      setupServiceDetailLinks();
+
+      document.querySelectorAll('#page-servicios article[data-service]').forEach(function(card) {
+        if (card.dataset.hoverBound === 'true') return;
+        card.dataset.hoverBound = 'true';
+        if (!isTouch) {
+          // Desktop: hover lift; click/keyboard opens the service page
+          card.addEventListener('mouseenter', function() {
+            gsap.to(card, { y:-6, boxShadow:'0 12px 32px rgba(45,50,15,0.14)', duration:0.28, ease:'power2.out' });
+          });
+          card.addEventListener('mouseleave', function() {
+            gsap.to(card, { y:0, boxShadow:'0 0px 0px rgba(45,50,15,0)', duration:0.22, ease:'power2.inOut' });
+          });
+        }
+      });
+
+      // Desktop: hovering the modal cancels the close timer
+      if (!isTouch && modal) {
+        modal.addEventListener('mouseenter', function() {
+          if (_svcCloseTimer) { clearTimeout(_svcCloseTimer); _svcCloseTimer = null; }
+        });
+        modal.addEventListener('mouseleave', function() {
+          _svcCloseTimer = setTimeout(function() { self.closeServiceModal(); }, 200);
+        });
+      }
+
+      // ── CTA button hover scale ─────────────────────────────
+      var ctaSelectors = '.h-cta, #page-inicio button[onclick*="contacto"], #page-inicio button[onclick*="servicios"], .mob-cta';
+      document.querySelectorAll(ctaSelectors).forEach(function(btn) {
+        btn.addEventListener('mouseenter', function() {
+          gsap.to(btn, { scale:1.03, duration:0.18, ease:'back.out(1.4)' });
+        });
+        btn.addEventListener('mouseleave', function() {
+          gsap.to(btn, { scale:1, duration:0.15, ease:'power2.in' });
+        });
+      });
+
+      // ── Contact channel card hover glow ───────────────────
+      document.querySelectorAll('#page-contacto section[aria-label="Canales de contacto"] > div > div > div').forEach(function(card) {
+        card.addEventListener('mouseenter', function() {
+          gsap.to(card, { boxShadow:'0 6px 24px rgba(77,130,130,0.15)', duration:0.25, ease:'power2.out' });
+        });
+        card.addEventListener('mouseleave', function() {
+          gsap.to(card, { boxShadow:'0 0px 0px rgba(77,130,130,0)', duration:0.2, ease:'power2.inOut' });
+        });
+      });
+
+      // ── Footer social icon hover ───────────────────────────
+      document.querySelectorAll('.soc-a').forEach(function(icon) {
+        icon.addEventListener('mouseenter', function() {
+          gsap.to(icon, { scale:1.1, duration:0.2, ease:'power2.out' });
+        });
+        icon.addEventListener('mouseleave', function() {
+          gsap.to(icon, { scale:1, duration:0.15, ease:'power2.in' });
+        });
+      });
+
+      // ── Modal close button and backdrop ───────────────────
+      var closeBtn = document.getElementById('svc-modal-close');
+      var backdrop = document.getElementById('svc-backdrop');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function() { MBPAnimations.closeServiceModal(); });
+      }
+      if (backdrop) {
+        backdrop.addEventListener('click', function(e) { if (e.target === backdrop) MBPAnimations.closeServiceModal(); });
+      }
+    },
+    initDecorative: function() {
+      // ── Logo SVG petal hover ──────────────────────────────
+      var logoBtn = document.querySelector('.logo-btn');
+      var petals  = document.querySelectorAll('.logo-btn > svg > path');
+
+      if (logoBtn && petals.length) {
+        logoBtn.addEventListener('mouseenter', function() {
+          gsap.to(Array.from(petals), {
+            scale: 1.15,
+            duration: 0.35,
+            ease: 'back.out(1.7)',
+            stagger: 0.06,
+            transformOrigin: '22px 22px'
+          });
+        });
+        logoBtn.addEventListener('mouseleave', function() {
+          gsap.to(Array.from(petals), {
+            scale: 1,
+            duration: 0.25,
+            ease: 'power2.in',
+            stagger: { each: 0.04, from: 'end' },
+            transformOrigin: '22px 22px'
+          });
+        });
+      }
+    },
+    initNavDecorations: function() {
+      var hdr = document.getElementById('hdr');
+      if (!hdr || !window.gsap) return;
+      var svgNS = 'http://www.w3.org/2000/svg';
+
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;';
+      hdr.insertBefore(wrap, hdr.firstChild);
+
+      var vw = window.innerWidth;
+      var navEls = [
+        { viewBox:'0 0 12 12', size:8,  opacity:0.18, anim:'drift',
+          paths:[{ d:'M6,0 C10,2 10,8 6,12 C2,8 2,2 6,0 Z', fill:'#c4b0e8' }] },
+        { viewBox:'0 0 12 12', size:7,  opacity:0.15, anim:'drift',
+          paths:[{ d:'M6,1 C8,3 10,7 6,11 C2,7 4,3 6,1 Z', fill:'#8aaa68' }] },
+        { viewBox:'0 0 12 12', size:7,  opacity:0.15, anim:'oscillate',
+          paths:[{ d:'M2,9 C1,5 4,1 9,2 C8,6 6,10 2,9 Z', fill:'#c4d8a8' }] },
+        { viewBox:'0 0 16 16', size:10, opacity:0.20, anim:'cross',
+          paths:[
+            { d:'M8,8 C4,5 1,3 2,7 C3,10 6,10 8,8 Z',       fill:'#c4b0e8' },
+            { d:'M8,8 C12,5 15,3 14,7 C13,10 10,10 8,8 Z',   fill:'#c4b0e8' },
+            { d:'M8,8 C4,9 2,13 5,13 C7,13 8,10 8,8 Z',      fill:'#c4d8a8' },
+            { d:'M8,8 C12,9 14,13 11,13 C9,13 8,10 8,8 Z',   fill:'#c4d8a8' },
+            { d:'M8,8 C12,9 14,13 11,13 C9,13 8,10 8,8 Z',   fill:'#c4d8a8' },
+            { d:'M7,5 C7,4 9,4 9,5 L9,11 C9,12 7,12 7,11 Z', fill:'#3d4728' }
+          ]},
+        { viewBox:'0 0 14 14', size:9,  opacity:0.22, anim:'buzz-nav',
+          paths:[
+            { d:'M4,5 C4,3 10,3 10,5 L10,10 C10,12 4,12 4,10 Z', fill:'#f0c060' },
+            { d:'M4,7 C4,6.5 10,6.5 10,7 L10,8 C10,8.5 4,8.5 4,8 Z', fill:'#3d4728' },
+            { d:'M7,5 C4,2 1,3 2,6 Z', fill:'rgba(196,216,168,0.65)' },
+            { d:'M7,5 C10,2 13,3 12,6 Z', fill:'rgba(196,216,168,0.65)' }
+          ]}
+      ];
+
+      navEls.forEach(function(cfg) {
+        var svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute('width',   cfg.size);
+        svg.setAttribute('height',  cfg.size);
+        svg.setAttribute('viewBox', cfg.viewBox);
+        svg.setAttribute('fill',    'none');
+        svg.setAttribute('aria-hidden', 'true');
+        svg.style.cssText = 'position:absolute;will-change:transform;';
+
+        cfg.paths.forEach(function(ph) {
+          var p = document.createElementNS(svgNS, 'path');
+          p.setAttribute('d', ph.d);
+          p.setAttribute('fill', ph.fill);
+          svg.appendChild(p);
+        });
+        wrap.appendChild(svg);
+
+        var op = cfg.opacity;
+
+        if (cfg.anim === 'drift') {
+          var sx = Math.random() * (vw * 0.5) + vw * 0.1;
+          var sy = 10 + Math.random() * 48;
+          gsap.set(svg, { x:sx, y:sy, opacity:op, rotation:Math.random()*360 });
+          gsap.to(svg, {
+            x: '+=' + (100 + Math.random() * 80),
+            y: '+=' + ((Math.random() - 0.5) * 18),
+            rotation: '+=' + (50 + Math.random() * 60),
+            duration: 14 + Math.random() * 6,
+            ease: 'none',
+            repeat: -1,
+            yoyo: true
+          });
+
+        } else if (cfg.anim === 'oscillate') {
+          var ox = Math.random() * (vw * 0.4) + vw * 0.25;
+          var oy = 14 + Math.random() * 40;
+          gsap.set(svg, { x:ox, y:oy, opacity:op, rotation:Math.random()*180 });
+          gsap.to(svg, {
+            y: '+=' + 8,
+            rotation: '+=' + 20,
+            duration: 5 + Math.random() * 3,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true
+          });
+
+        } else if (cfg.anim === 'cross') {
+          var cy2 = 10 + Math.random() * 46;
+          gsap.set(svg, { x:-20, y:cy2, opacity:0 });
+          gsap.to(svg, {
+            x: vw + 20,
+            opacity: op,
+            duration: 22 + Math.random() * 10,
+            ease: 'none',
+            repeat: -1,
+            onRepeat: function() {
+              gsap.set(svg, { x:-20, y: 10 + Math.random() * 46, opacity:0 });
+            }
+          });
+
+        } else if (cfg.anim === 'buzz-nav') {
+          var bx = vw * 0.55 + Math.random() * (vw * 0.35);
+          var by = 10 + Math.random() * 50;
+          gsap.set(svg, { x:bx, y:by, opacity:op });
+          (function navBuzz(cx, cy) {
+            var nx = cx + (Math.random() - 0.5) * 60;
+            var ny = Math.max(4, Math.min(64, cy + (Math.random() - 0.5) * 28));
+            nx = Math.max(40, Math.min(vw - 40, nx));
+            gsap.to(svg, {
+              x:nx, y:ny,
+              rotation: Math.random() * 30 - 15,
+              duration: 0.8 + Math.random() * 0.6,
+              ease: 'power1.inOut',
+              onComplete: function() { navBuzz(nx, ny); }
+            });
+          })(bx, by);
+        }
+      });
+    }
+  };
+
+  // ── Essential service detail links work without animation ─
+  setupServiceDetailLinks();
+
+  // ── Layer 0: Kill switch — reduced motion ──────────────
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // ── Conditional CDN load: GSAP → ScrollTrigger → init ─
+  var s1 = document.createElement('script');
+  s1.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js';
+  s1.onerror = function() {
+    console.warn('[MBP] GSAP failed to load — animations disabled');
+  };
+  s1.onload = function() {
+    var s2 = document.createElement('script');
+    s2.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js';
+    s2.onerror = function() {
+      console.warn('[MBP] ScrollTrigger failed — animations disabled');
+    };
+    s2.onload = function() { MBPAnimations.init(); };
+    document.head.appendChild(s2);
+  };
+  document.head.appendChild(s1);
+
+})();
+</script>
+
+<!-- SPLASH SCREEN -->
+<div id="splash" aria-hidden="true" role="presentation">
+  <div id="splash-left"></div>
+  <div id="splash-right"></div>
+  <svg id="splash-noise" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" style="opacity:.07">
+    <filter id="noise-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#noise-filter)"/>
+  </svg>
+  <div id="splash-center">
+    <div id="splash-logo-wrap">
+      <svg width="88" height="88" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+        <path class="sp-petal" d="M22,22 C20,15 15,8 10,6 C6,4 4,8 6,12 C8,17 16,20 22,22 Z" fill="#c4b0e8"/>
+        <path class="sp-petal" d="M22,22 C29,20 36,15 38,10 C40,6 36,4 32,6 C27,8 24,16 22,22 Z" fill="#8aaa68"/>
+        <path class="sp-petal" d="M22,22 C15,24 8,29 6,34 C4,38 8,40 12,38 C17,36 20,28 22,22 Z" fill="#c4d8a8"/>
+        <path class="sp-petal" d="M22,22 C24,29 29,36 34,38 C38,40 40,36 38,32 C36,27 28,24 22,22 Z" fill="#4d8282"/>
+      </svg>
+    </div>
+    <p id="splash-name">MARIA BERNARDA<br>PACHECO</p>
+    <p id="splash-role">PEDIATRÍA</p>
+  </div>
+</div>
+<script>
+var splashTimers = [];
+
+function initWindPetals(container) {
+  var configs = [
+    // ── Flores existentes (12) ────────────────────────────
+    { path: 'M6,1 C8,3 10,7 6,11 C2,7 4,3 6,1 Z', fill: '#c4b0e8' },
+    { path: 'M6,1 C8,3 10,7 6,11 C2,7 4,3 6,1 Z', fill: '#c4b0e8' },
+    { path: 'M6,1 C8,3 10,7 6,11 C2,7 4,3 6,1 Z', fill: '#c4b0e8' },
+    { path: 'M6,1 C8,3 10,7 6,11 C2,7 4,3 6,1 Z', fill: '#c4d8a8' },
+    { path: 'M6,1 C8,3 10,7 6,11 C2,7 4,3 6,1 Z', fill: '#c4d8a8' },
+    { path: 'M2,9 C1,5 4,1 9,2 C8,6 6,10 2,9 Z',  fill: '#8aaa68' },
+    { path: 'M2,9 C1,5 4,1 9,2 C8,6 6,10 2,9 Z',  fill: '#8aaa68' },
+    { path: 'M2,9 C1,5 4,1 9,2 C8,6 6,10 2,9 Z',  fill: '#8aaa68' },
+    { path: 'M2,9 C1,5 4,1 9,2 C8,6 6,10 2,9 Z',  fill: '#8aaa68' },
+    { path: 'M6,1 L11,5 L8,11 L3,9 L1,4 Z',        fill: '#4d8282' },
+    { path: 'M6,1 L11,5 L8,11 L3,9 L1,4 Z',        fill: '#4d8282' },
+    { path: 'M6,1 L11,5 L8,11 L3,9 L1,4 Z',        fill: '#4d8282' },
+    // ── Flores nuevas — pétalo elongado (5) ──────────────
+    { path: 'M6,0 C10,2 10,8 6,12 C2,8 2,2 6,0 Z', fill: '#9878cc' },
+    { path: 'M6,0 C10,2 10,8 6,12 C2,8 2,2 6,0 Z', fill: '#9878cc' },
+    { path: 'M6,0 C10,2 10,8 6,12 C2,8 2,2 6,0 Z', fill: '#9878cc' },
+    { path: 'M6,0 C10,2 10,8 6,12 C2,8 2,2 6,0 Z', fill: '#c4b0e8' },
+    { path: 'M6,0 C10,2 10,8 6,12 C2,8 2,2 6,0 Z', fill: '#c4b0e8' },
+    // ── Flores nuevas — lágrima (5) ───────────────────────
+    { path: 'M6,12 C2,10 1,5 6,0 C11,5 10,10 6,12 Z', fill: '#4d8282' },
+    { path: 'M6,12 C2,10 1,5 6,0 C11,5 10,10 6,12 Z', fill: '#4d8282' },
+    { path: 'M6,12 C2,10 1,5 6,0 C11,5 10,10 6,12 Z', fill: '#8aaa68' },
+    { path: 'M6,12 C2,10 1,5 6,0 C11,5 10,10 6,12 Z', fill: '#8aaa68' },
+    { path: 'M6,12 C2,10 1,5 6,0 C11,5 10,10 6,12 Z', fill: '#c4d8a8' },
+    // ── Mariposas (5) ────────────────────────────────────
+    { type: 'butterfly', viewBox: '0 0 16 16', paths: [
+        { d: 'M8,8 C4,5 1,3 2,7 C3,10 6,10 8,8 Z',   fill: '#c4b0e8' },
+        { d: 'M8,8 C12,5 15,3 14,7 C13,10 10,10 8,8 Z', fill: '#c4b0e8' },
+        { d: 'M8,8 C4,9 2,13 5,13 C7,13 8,10 8,8 Z',  fill: '#c4d8a8' },
+        { d: 'M8,8 C12,9 14,13 11,13 C9,13 8,10 8,8 Z', fill: '#c4d8a8' },
+        { d: 'M7,5 C7,4 9,4 9,5 L9,11 C9,12 7,12 7,11 Z', fill: '#3d4728' }
+    ]},
+    { type: 'butterfly', viewBox: '0 0 16 16', paths: [
+        { d: 'M8,8 C4,5 1,3 2,7 C3,10 6,10 8,8 Z',   fill: '#8aaa68' },
+        { d: 'M8,8 C12,5 15,3 14,7 C13,10 10,10 8,8 Z', fill: '#8aaa68' },
+        { d: 'M8,8 C4,9 2,13 5,13 C7,13 8,10 8,8 Z',  fill: '#c4d8a8' },
+        { d: 'M8,8 C12,9 14,13 11,13 C9,13 8,10 8,8 Z', fill: '#c4d8a8' },
+        { d: 'M7,5 C7,4 9,4 9,5 L9,11 C9,12 7,12 7,11 Z', fill: '#3d4728' }
+    ]},
+    { type: 'butterfly', viewBox: '0 0 16 16', paths: [
+        { d: 'M8,8 C4,5 1,3 2,7 C3,10 6,10 8,8 Z',   fill: '#9878cc' },
+        { d: 'M8,8 C12,5 15,3 14,7 C13,10 10,10 8,8 Z', fill: '#9878cc' },
+        { d: 'M8,8 C4,9 2,13 5,13 C7,13 8,10 8,8 Z',  fill: '#c4b0e8' },
+        { d: 'M8,8 C12,9 14,13 11,13 C9,13 8,10 8,8 Z', fill: '#c4b0e8' },
+        { d: 'M7,5 C7,4 9,4 9,5 L9,11 C9,12 7,12 7,11 Z', fill: '#3d4728' }
+    ]},
+    { type: 'butterfly', viewBox: '0 0 16 16', paths: [
+        { d: 'M8,8 C4,5 1,3 2,7 C3,10 6,10 8,8 Z',   fill: '#c4b0e8' },
+        { d: 'M8,8 C12,5 15,3 14,7 C13,10 10,10 8,8 Z', fill: '#4d8282' },
+        { d: 'M8,8 C4,9 2,13 5,13 C7,13 8,10 8,8 Z',  fill: '#4d8282' },
+        { d: 'M8,8 C12,9 14,13 11,13 C9,13 8,10 8,8 Z', fill: '#c4b0e8' },
+        { d: 'M7,5 C7,4 9,4 9,5 L9,11 C9,12 7,12 7,11 Z', fill: '#3d4728' }
+    ]},
+    { type: 'butterfly', viewBox: '0 0 16 16', paths: [
+        { d: 'M8,8 C4,5 1,3 2,7 C3,10 6,10 8,8 Z',   fill: '#8aaa68' },
+        { d: 'M8,8 C12,5 15,3 14,7 C13,10 10,10 8,8 Z', fill: '#c4d8a8' },
+        { d: 'M8,8 C4,9 2,13 5,13 C7,13 8,10 8,8 Z',  fill: '#8aaa68' },
+        { d: 'M8,8 C12,9 14,13 11,13 C9,13 8,10 8,8 Z', fill: '#c4d8a8' },
+        { d: 'M7,5 C7,4 9,4 9,5 L9,11 C9,12 7,12 7,11 Z', fill: '#2c2c2c' }
+    ]},
+    // ── Abejas (3) ────────────────────────────────────────
+    { type: 'bee', viewBox: '0 0 14 14', paths: [
+        { d: 'M4,5 C4,3 10,3 10,5 L10,10 C10,12 4,12 4,10 Z', fill: '#f0c060' },
+        { d: 'M4,7 C4,6.5 10,6.5 10,7 L10,8 C10,8.5 4,8.5 4,8 Z', fill: '#3d4728' },
+        { d: 'M7,5 C4,2 1,3 2,6 Z', fill: 'rgba(196,216,168,0.65)' },
+        { d: 'M7,5 C10,2 13,3 12,6 Z', fill: 'rgba(196,216,168,0.65)' }
+    ]},
+    { type: 'bee', viewBox: '0 0 14 14', paths: [
+        { d: 'M4,5 C4,3 10,3 10,5 L10,10 C10,12 4,12 4,10 Z', fill: '#f0c060' },
+        { d: 'M4,7 C4,6.5 10,6.5 10,7 L10,8 C10,8.5 4,8.5 4,8 Z', fill: '#3d4728' },
+        { d: 'M7,5 C4,2 1,3 2,6 Z', fill: 'rgba(196,216,168,0.65)' },
+        { d: 'M7,5 C10,2 13,3 12,6 Z', fill: 'rgba(196,216,168,0.65)' }
+    ]},
+    { type: 'bee', viewBox: '0 0 14 14', paths: [
+        { d: 'M4,5 C4,3 10,3 10,5 L10,10 C10,12 4,12 4,10 Z', fill: '#e8b040' },
+        { d: 'M4,7 C4,6.5 10,6.5 10,7 L10,8 C10,8.5 4,8.5 4,8 Z', fill: '#252d10' },
+        { d: 'M7,5 C4,2 1,3 2,6 Z', fill: 'rgba(138,170,104,0.55)' },
+        { d: 'M7,5 C10,2 13,3 12,6 Z', fill: 'rgba(138,170,104,0.55)' }
+    ]}
+  ];
+  var sizes = [10, 12, 14, 16, 18];
+  var svgNS = 'http://www.w3.org/2000/svg';
+
+  configs.forEach(function(cfg, i) {
+    var isMulti = !!(cfg.paths && cfg.paths.length);
+    var vb = cfg.viewBox || '0 0 12 12';
+    var base = sizes[Math.floor(Math.random() * sizes.length)];
+    var size = cfg.type === 'butterfly' ? Math.round(base * 1.5) :
+               cfg.type === 'bee'       ? Math.round(base * 1.25) : base;
+
+    var svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('width', size);
+    svg.setAttribute('height', size);
+    svg.setAttribute('viewBox', vb);
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.className = 'sp-wind-petal';
+
+    if (isMulti) {
+      cfg.paths.forEach(function(ph) {
+        var p = document.createElementNS(svgNS, 'path');
+        p.setAttribute('d', ph.d);
+        p.setAttribute('fill', ph.fill);
+        svg.appendChild(p);
+      });
+    } else {
+      var p = document.createElementNS(svgNS, 'path');
+      p.setAttribute('d', cfg.path);
+      p.setAttribute('fill', cfg.fill);
+      svg.appendChild(p);
+    }
+
+    container.appendChild(svg);
+
+    var animator = cfg.type === 'butterfly' ? animateButterfly :
+                   cfg.type === 'bee'        ? animateBee : animateWindPetal;
+
+    splashTimers.push(gsap.delayedCall(i * 0.20, (function(el, anim) {
+      return function() { anim(el); };
+    })(svg, animator)));
+  });
+}
+
+function animateWindPetal(el) {
+  var vw = window.innerWidth;
+  var vh = window.innerHeight;
+  var startX = Math.random() * vw;
+  var driftX = (Math.random() - 0.5) * 280;
+  var duration = 5 + Math.random() * 4;
+  gsap.set(el, {
+    x: startX,
+    y: -20 - Math.random() * 40,
+    rotation: Math.random() * 360,
+    opacity: 0.30 + Math.random() * 0.35
+  });
+  gsap.to(el, {
+    y: vh + 50,
+    x: startX + driftX,
+    rotation: '+=' + (180 + Math.random() * 180),
+    duration: duration,
+    ease: 'none',
+    onComplete: function() { animateWindPetal(el); }
+  });
+}
+
+function animateButterfly(el) {
+  var vw = window.innerWidth;
+  var vh = window.innerHeight;
+  var x = Math.random() * vw;
+  var y = 80 + Math.random() * (vh * 0.65);
+  var amplitude = 60 + Math.random() * 80;
+  var stepDur  = 2 + Math.random() * 1.5;
+
+  gsap.set(el, {
+    x: x, y: y, rotation: 0,
+    opacity: 0.35 + Math.random() * 0.30
+  });
+
+  function step(cx, cy, phase) {
+    var nx = cx + (phase % 2 === 0 ? amplitude : -amplitude) + (Math.random() - 0.5) * 30;
+    var ny = cy + (Math.random() - 0.5) * 80;
+    nx = Math.max(20, Math.min(vw - 20, nx));
+    ny = Math.max(-60, Math.min(vh + 60, ny));
+    if (ny > vh + 40 || ny < -40) { animateButterfly(el); return; }
+    gsap.to(el, {
+      x: nx, y: ny,
+      rotation: phase % 2 === 0 ? 12 : -12,
+      duration: stepDur,
+      ease: 'sine.inOut',
+      onComplete: function() { step(nx, ny, phase + 1); }
+    });
+  }
+  step(x, y, 0);
+}
+
+function animateBee(el) {
+  var vw = window.innerWidth;
+  var vh = window.innerHeight;
+  var x = Math.random() * vw;
+  var y = 100 + Math.random() * (vh * 0.55);
+  var maxSteps = 7 + Math.floor(Math.random() * 4);
+  var stepCount = 0;
+
+  gsap.set(el, {
+    x: x, y: y,
+    opacity: 0.45 + Math.random() * 0.25
+  });
+
+  function buzz(cx, cy) {
+    if (stepCount >= maxSteps) { animateBee(el); return; }
+    stepCount++;
+    var nx = cx + (Math.random() - 0.5) * 90;
+    var ny = cy + (Math.random() - 0.5) * 60;
+    nx = Math.max(20, Math.min(vw - 20, nx));
+    ny = Math.max(50, Math.min(vh - 50, ny));
+    gsap.to(el, {
+      x: nx, y: ny,
+      rotation: Math.random() * 40 - 20,
+      duration: 0.30 + Math.random() * 0.35,
+      ease: 'power1.inOut',
+      onComplete: function() { buzz(nx, ny); }
+    });
+  }
+  buzz(x, y);
+}
+
+(function(){
+  var splash = document.getElementById('splash');
+  if (!splash) return;
+  if (sessionStorage.getItem('splash-seen')) { splash.style.display='none'; return; }
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dismissed = false;
+  var mouseReg = false;
+  var petalsAborted = false;
+
+  function dismiss() {
+    if (dismissed) return;
+    dismissed = true;
+    petalsAborted = true;
+    if (mouseReg) document.removeEventListener('mousemove', dismiss);
+    splashTimers.forEach(function(t) { t.kill(); });
+    var windPetals = splash.querySelectorAll('.sp-wind-petal');
+    if (windPetals.length && window.gsap) {
+      gsap.killTweensOf(windPetals);
+      gsap.to(windPetals, { opacity: 0, duration: 0.4, ease: 'power2.in' });
+    }
+    splash.classList.add('sp-out');
+    setTimeout(function() {
+      splash.style.display = 'none';
+      sessionStorage.setItem('splash-seen', '1');
+    }, 900);
+  }
+
+  splash.classList.add('sp-go');
+  splash.addEventListener('click', dismiss, { once: true });
+
+  if (!reduced) {
+    function tryInitPetals() {
+      if (petalsAborted) return;
+      if (window.gsap) {
+        initWindPetals(splash);
+      } else {
+        setTimeout(tryInitPetals, 100);
+      }
+    }
+    tryInitPetals();
+  }
+
+  setTimeout(function() {
+    if (dismissed) return;
+    mouseReg = true;
+    document.addEventListener('mousemove', dismiss, { once: true });
+  }, reduced ? 800 : 3800);
+  setTimeout(dismiss, 9000);
+})();
+</script>
+</body>
+</html>
