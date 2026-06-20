@@ -2270,7 +2270,7 @@ function initWindPetals(container) {
     var animator = cfg.type === 'butterfly' ? animateButterfly :
                    cfg.type === 'bee'        ? animateBee : animateWindPetal;
 
-    splashTimers.push(gsap.delayedCall(i * 0.20, (function(el, anim) {
+    splashTimers.push(gsap.delayedCall(i * 0.05, (function(el, anim) {
       return function() { anim(el); };
     })(svg, animator)));
   });
