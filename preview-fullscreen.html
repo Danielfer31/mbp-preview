@@ -1410,6 +1410,89 @@ function bindNavigationButtons() {
 
 bindNavigationButtons();
 
+/* ── Story card click handler ── */
+(function() {
+  var STORY_DATA = {
+    formacion: {
+      title: 'Formación médica',
+      color: '#9878cc', bg: '#ede8f5',
+      icon: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>',
+      desc: 'Información académica y de formación profesional pendiente de validación documental. Este espacio presentará la trayectoria académica de la doctora una vez que sea confirmada y aprobada para publicación.'
+    },
+    pediatria: {
+      title: 'Enfoque pediátrico',
+      color: '#6a8c50', bg: '#e0e8d0',
+      icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+      desc: 'Una forma de atención clara, humana y centrada en familias. El enfoque pediátrico de la doctora se basa en la escucha activa, el acompañamiento integral y el bienestar del niño y su entorno familiar.'
+    },
+    regional: {
+      title: 'Experiencia regional',
+      color: '#c07850', bg: '#fce8d8',
+      icon: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+      desc: 'Espacio para presentar la trayectoria regional y contexto profesional cuando la información esté verificada y aprobada por la doctora para su publicación pública.'
+    },
+    familias: {
+      title: 'Acompañamiento a familias',
+      color: '#6a8c50', bg: '#e0e8d0',
+      icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+      desc: 'Escucha, cercanía y orientación administrativa segura para familias. Este canal está disponible exclusivamente para información sobre disponibilidad y agendamiento, no para consultas médicas ni envío de documentos clínicos.'
+    },
+    vigencia: {
+      title: 'Actualización continua',
+      color: '#4d8282', bg: '#d8ecec',
+      icon: '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
+      desc: 'Compromiso con una práctica responsable e información verificable. La doctora mantiene un proceso continuo de actualización para garantizar que su práctica profesional esté alineada con las mejores evidencias disponibles.'
+    }
+  };
+
+  function openStory(storyId) {
+    var data = STORY_DATA[storyId];
+    if (!data) return;
+    var icon  = document.getElementById('svc-modal-icon');
+    var svg   = document.getElementById('svc-modal-svg');
+    var title = document.getElementById('svc-modal-title');
+    var div   = document.getElementById('svc-modal-divider');
+    var desc  = document.getElementById('svc-modal-desc');
+    var modal = document.getElementById('svc-modal');
+    var bd    = document.getElementById('svc-backdrop');
+    if (!modal || !bd) return;
+    if (icon)  icon.style.background = data.bg;
+    if (svg)   { svg.setAttribute('stroke', data.color); svg.innerHTML = data.icon; }
+    if (title) title.textContent = data.title;
+    if (div)   { div.style.background = data.color; div.style.opacity = '0.35'; }
+    if (desc)  desc.textContent = data.desc;
+    if (window.gsap) {
+      gsap.set(modal, { opacity: 0, scale: 0.85 });
+      gsap.set(bd, { opacity: 0 });
+    }
+    modal.classList.add('open');
+    bd.classList.add('open');
+    if (window.gsap) {
+      var tl = gsap.timeline();
+      tl.to(bd,    { opacity: 1, duration: 0.25, ease: 'power2.out' }, 0);
+      tl.to(modal, { opacity: 1, scale: 1, duration: 0.32, ease: 'power3.out' }, 0);
+    } else {
+      modal.style.opacity = '1';
+      bd.style.opacity = '1';
+    }
+  }
+
+  function bindStoryCards() {
+    document.querySelectorAll('.story-card:not([data-storyBound])').forEach(function(card) {
+      card.setAttribute('data-storyBound', 'true');
+      card.addEventListener('click', function(e) {
+        if (card.classList.contains('story-card-clone')) return;
+        var id = card.getAttribute('data-story');
+        if (id) openStory(id);
+      });
+    });
+  }
+
+  bindStoryCards();
+  document.addEventListener('DOMContentLoaded', bindStoryCards);
+  window.addEventListener('load', bindStoryCards);
+})();
+
 function setupProfileStoriesAutoscroll() {
   const viewport = document.querySelector('#page-perfil .stories-viewport');
   const grid = document.querySelector('#page-perfil .stories-grid');
